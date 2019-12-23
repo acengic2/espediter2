@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "355619524544",
+    "firebase_url": "https://espediter-e1b18.firebaseio.com",
+    "project_id": "espediter-e1b18",
+    "storage_bucket": "espediter-e1b18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355619524544:android:ec7dac670c5aa8edb30225",
+        "android_client_info": {
+          "package_name": "com.example.espediter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355619524544-9rs3fsbn43hh6te9ak43pcug9bi9tu74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjyHbdPPLwkmppSAVb-Rlni3Tnl2mHpRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355619524544-9rs3fsbn43hh6te9ak43pcug9bi9tu74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
