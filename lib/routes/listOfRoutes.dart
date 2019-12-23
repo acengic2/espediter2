@@ -1,5 +1,7 @@
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -17,43 +19,50 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 class ListOfRoutes extends StatelessWidget {
+  String id;
+  ListOfRoutes({this.id});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListOfRoutesPage(),
+      home: ListOfRoutesPage(id: id),
     );
   }
 }
 
 class ListOfRoutesPage extends StatefulWidget {
+  String id;
+  ListOfRoutesPage({this.id});
+
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState();
+    return _ListOfRoutesPageState(id: id);
   }
 }
 
 class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   final db = Firestore.instance;
+  String id;
+  _ListOfRoutesPageState({this.id});
 
   @override
-Widget build(BuildContext context) {
-    return 
-    WillPopScope(
+  Widget build(BuildContext context) {
+    return WillPopScope(
       onWillPop: _onBackPressed,
-      child: 
-      Scaffold(  
+      child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
           Container(
             child: StreamBuilder<QuerySnapshot>(
               stream: db.collection('Rute').snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: snapshot.data.documents
-                        .map((doc) => buildItem(doc))
-                        .toList(),
-                  );
+                if (snapshot.hasData ) {
+                    return Column(
+                      children: snapshot.data.documents
+                          .map((doc) => buildItem(doc))
+                          .toList(),
+                    );
+                  
                 } else {
                   return SizedBox();
                 }
@@ -114,8 +123,8 @@ Widget build(BuildContext context) {
   }
 
   Card buildItem(DocumentSnapshot doc) {
-    
     // dummy.toString().replaceFirst("[", "").replaceFirst("]", "");
+
 
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
@@ -237,8 +246,7 @@ Widget build(BuildContext context) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-  
-           new RichText(
+            new RichText(
               text: new TextSpan(
                 children: <TextSpan>[
                   new TextSpan(
@@ -250,13 +258,13 @@ Widget build(BuildContext context) {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: ('${doc.data['interdestination']}'),
-                    style: new TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black.withOpacity(0.8),
-                      fontFamily: "Roboto",
-                    )),
-                    new TextSpan(
+                      text: ('${doc.data['interdestination']}'),
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black.withOpacity(0.8),
+                        fontFamily: "Roboto",
+                      )),
+                  new TextSpan(
                     text: (', ${doc.data['ending_destination']}'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
@@ -268,7 +276,6 @@ Widget build(BuildContext context) {
                 ],
               ),
             ),
-
 
             // Text(
             //   '${doc.data['starting_destination']}${doc.data['interdestination']}, ${doc.data['ending_destination']} ',
@@ -291,14 +298,94 @@ Widget build(BuildContext context) {
               actions: <Widget>[
                 FlatButton(
                   child: Text("No"),
-                  onPressed: () => Navigator.pop(context,false),
+                  onPressed: () => Navigator.pop(context, false),
                 ),
                 FlatButton(
-                onPressed: () => exit(0),
-                /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
-              ),
+                  onPressed: () => exit(0),
+                  /*Navigator.of(context).pop(true)*/
+                  child: Text('Yes'),
+                ),
               ],
             ));
   }
+
+  getAllValues() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+
+    Firestore.instance.collection('Rute').document(user.uid).snapshots();
+    String idd = 'zWD6EOOFv28b7y5KHGzP';
+    DocumentSnapshot snapshot = await db.collection('Rute').document(id).get();
+    print('KONJ');
+    print(snapshot.data['user_id']);
+
+    CollectionReference ref = Firestore.instance.collection('Ruta');
+    QuerySnapshot eventsQuery = await ref
+    .where('user_id', isEqualTo: id)
+    .getDocuments();
+HashMap<String, LoggedUsers > eventsHashMap = new HashMap<String, LoggedUsers>();
+
+eventsQuery.documents.forEach((document) {
+ eventsHashMap.putIfAbsent(document['user_id'], () => new LoggedUsers(
+      email: document['email'],
+      password: document['password'],
+      role: document['role'],
+      userId: document['user_id']));
+
+
+});
+print( eventsHashMap.values.toList());
+return eventsHashMap.values.toList();
+  }
+
+  //  static Future<List<AustinFeedsMeEvent>> _getEventsFromFirestore() async {
+
+
+// HashMap<String, AustinFeedsMeEvent> eventsHashMap = new HashMap<String, AustinFeedsMeEvent>();
+
+// eventsQuery.documents.forEach((document) {
+//   eventsHashMap.putIfAbsent(document['id'], () => new AustinFeedsMeEvent(
+//       name: document['name'],
+//       time: document['time'],
+//       description: document['description'],
+//       url: document['event_url'],
+//       photoUrl: _getEventPhotoUrl(document['group']),
+//       latLng: _getLatLng(document)));
+// });
+
+// return eventsHashMap.values.toList();
+// }
 }
+class LoggedUsers {
+  static final String columnEmail = "email";
+  static final String columnPassword = "password";
+  static final String columnRole = "role";
+    static final String columnUserId = "user_id";
+    LoggedUsers({
+       this.email,
+       this.password,
+      this.role,
+      this.userId
+    });
+    final String email;
+  final int password;
+  final String role;
+  final String userId;
+  Map toMap() {
+    Map<String, dynamic> map = {
+      columnEmail: email,
+      columnPassword: password,
+      columnRole: role,
+      columnUserId: userId,
+  
+    };
+    return map;
+  }
+  static LoggedUsers fromMap(Map map) {
+    return new LoggedUsers(
+        email: map[columnEmail],
+        password: map[columnPassword],
+        role: map[columnRole],
+        userId: map[columnUserId],
+     );
+  }}

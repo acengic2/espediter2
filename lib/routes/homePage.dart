@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spediter/auth/noInternetConnection.dart';
+import 'package:spediter/routes/createRouteScreen.dart';
 import 'package:spediter/routes/noRoutes.dart';
 
 import 'package:spediter/usersPages/usersHome.dart';
@@ -57,40 +58,43 @@ class HomePage extends StatelessWidget {
 }
 
 // method for checking a role
-Center checkRole(DocumentSnapshot snapshot) {
 
-  
+
+Center checkRole(DocumentSnapshot snapshot) {
   print(
       "sadsadadadsdasdshfdhgfjglkte54352saasdsad3532543654767987098098-dasd  ====    " +
           userUid.toString());
   if (snapshot.data['role'] == "company") {
+      
+      var  loggedUserID = snapshot.data['user_id'];
+     
+      print('Isprintan aksjbfasjbf ID: ' + loggedUserID);
+
+    // getUserIDFromRoutes();
     return adminPage(snapshot);
 
   } else if (snapshot.data['role'] == "user") {
     return userPage(snapshot);
   }
-
-  // if (snapshot.data['role'] == "klient") {
-
-  //   if(snapshot.data['user.uid'] == snapshot.data['user_id']){
-
-  //     return userPage(snapshot);
-  //   }
-  //   else if(snapshot.data['user_id'] == "2")
-  //   {
-  //     return adminPage(snapshot);
-  //   }
-  // } else {
-  //   return userPage(snapshot);
-  // }
 }
 
 //if is a user go to list of routes
 Center userPage(DocumentSnapshot snapshot) {
+  
   return Center(child: ListOfUsersRoutes());
+  
 }
 
 // if is a admin go to no routes page
 Center adminPage(DocumentSnapshot snapshot) {
   return Center(child: NoRoutes());
 }
+
+// Future<List<DocumentSnapshot>> getUserIDFromRoutes() async{
+//     DocumentSnapshot data = await Firestore.instance.collection("LoggedUsers")
+//       .getDocuments()
+//       .then((QuerySnapshot snapshot) {
+//     snapshot.documents.firstWhere(data.)//forEach((f) => print('${f.data['user_id']}}'));
+//     });
+//     // return data;
+//   }
