@@ -26,8 +26,6 @@ dependencies:
   intl: ^0.15.7
   percent_indicator: ^2.1.1
   datetime_picker_formfield: ^0.4.3
-  flutter_localizations:
-    sdk: flutter
   connectivity:
   responsive_container:
   masked_text:
