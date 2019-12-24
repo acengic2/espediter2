@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:retry/retry.dart';
+import 'package:spediter/auth/signIn.dart';
 
 void main() => runApp(NoInternetConnectionLogInSrceen());
 
@@ -22,7 +27,8 @@ class NoInternetConnectionPage extends StatefulWidget {
   final String title;
 
   @override
-  _NoInternetConnectionPageState createState() => _NoInternetConnectionPageState();
+  _NoInternetConnectionPageState createState() =>
+      _NoInternetConnectionPageState();
 }
 
 class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
@@ -38,8 +44,8 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Nemate mreze',
-                      style: TextStyle(
+                  'Nemate mreže',
+                  style: TextStyle(
                       fontSize: 16,
                       fontFamily: "Roboto",
                       color: textColorGray80),
@@ -47,7 +53,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
                   child: Text(
-                    "Nazalost nemate mreze. Rijesite problem pa pokusajte ponovno.",
+                    "Nažalost nemate mreže. Riješite problem, pa pokušajte ponovno.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 14,
@@ -59,10 +65,12 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                   minWidth: 154.0,
                   height: 36.0,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     color: blueColor,
                     child: Text(
-                      "POKUSAJTE PONOVO",
+                      "POKUŠAJTE PONOVO",
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: "Roboto",
@@ -76,5 +84,40 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
         ),
       ),
     );
+  }
+}
+
+Future<void> retri() async {
+  // Create an HttpClient.
+  final client = HttpClient();
+
+  try {
+    // Get statusCode by retrying a function
+    final statusCode = await retry(
+      () async {
+        // Make a HTTP request and return the status code.
+        final request = await client
+            .getUrl(Uri.parse('https://www.google.com'))
+            .timeout(Duration(seconds: 1));
+        final response = await request.close().timeout(Duration(seconds: 1));
+        await response.drain();
+        return response.statusCode;
+      },
+      // Retry on SocketException or TimeoutException
+      retryIf: (e) => e is SocketException || e is TimeoutException,
+    );
+
+    // Print result from status code
+    if (statusCode == 200) {
+      print('google.com is running');
+    } else {
+      print('google.com is not availble...');
+    }
+  } finally {
+    // Always close an HttpClient from dart:io, to close TCP connections in the
+    // connection pool. Many servers has keep-alive to reduce round-trip time
+    // for additional requests and avoid that clients run out of port and
+    // end up in WAIT_TIME unpleasantries...
+    client.close();
   }
 }

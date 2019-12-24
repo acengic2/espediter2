@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:spediter/auth/noInternetConnection.dart';
 import 'package:spediter/routes/noRoutes.dart';
 
 import 'package:spediter/usersPages/usersHome.dart';
