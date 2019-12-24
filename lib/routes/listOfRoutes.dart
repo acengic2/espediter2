@@ -284,21 +284,23 @@ Widget build(BuildContext context) {
   }
 
   Future<bool> _onBackPressed() {
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Do you want to logout the app?"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("No"),
-                  onPressed: () => Navigator.pop(context,false),
-                ),
-                FlatButton(
-                onPressed: () => exit(0),
-                /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
-              ),
-              ],
-            ));
+    
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateRoute()));
+    // return showDialog(
+    //     context: context,
+    //     builder: (context) => AlertDialog(
+    //           title: Text("Do you want to logout the app?"),
+    //           actions: <Widget>[
+    //             FlatButton(
+    //               child: Text("No"),
+    //               onPressed: () => Navigator.pop(context,false),
+    //             ),
+    //             FlatButton(
+    //             onPressed: () => exit(0),
+    //             /*Navigator.of(context).pop(true)*/
+    //             child: Text('Yes'),
+    //           ),
+    //           ],
+    //         ));
   }
 }

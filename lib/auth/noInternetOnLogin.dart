@@ -14,10 +14,13 @@ const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
 class NoInternetConnectionLogInSrceen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'No connection screen',
-      home: NoInternetConnectionPage(title: 'No connection screen'),
+    return Scaffold(
+      body: NoInternetConnectionPage(title: 'No connection screen'),
     );
+    // return MaterialApp(
+    //   title: 'No connection screen',
+    //   home: NoInternetConnectionPage(title: 'No connection screen'),
+    // );
   }
 }
 
@@ -65,8 +68,22 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                   minWidth: 154.0,
                   height: 36.0,
                   child: RaisedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      try {
+                        final result =
+                            await InternetAddress.lookup('google.com');
+                        if (result.isNotEmpty &&
+                            result[0].rawAddress.isNotEmpty) {
+                          print('connected');
+                          Navigator.pop(this.context, false);
+                        }
+                      } on SocketException catch (_) {
+                        print('not connected');
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         NoInternetConnectionLogInSrceen()));
+                      }
+                      //Navigator.pop(this.context, false);
                     },
                     color: blueColor,
                     child: Text(

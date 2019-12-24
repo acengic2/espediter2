@@ -87,25 +87,28 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                     minWidth: 154.0,
                     height: 36.0,
                     child: RaisedButton.icon(
-                      onPressed: () async {
-                        try {
-                          final result =
-                              await InternetAddress.lookup('google.com');
-                          if (result.isNotEmpty &&
-                              result[0].rawAddress.isNotEmpty) {
-                            print('connected');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CreateRoute()),
-                            );
-                          }
-                        } on SocketException catch (_) {
-                          print('not connected');
-                          Navigator.of(context).push(MaterialPageRoute(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  NoInternetConnectionLogInSrceen()));
-                        }
+                                  CreateRoute()));
+                        // try {
+                        //   final result =
+                        //       await InternetAddress.lookup('google.com');
+                        //   if (result.isNotEmpty &&
+                        //       result[0].rawAddress.isNotEmpty) {
+                        //     print('connected');
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => CreateRoute()),
+                        //     );
+                        //   }
+                        // } on SocketException catch (_) {
+                        //   print('not connected');
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           NoInternetConnectionLogInSrceen()));
+                        // }
                       },
                       icon: Icon(
                         Icons.add,
@@ -148,25 +151,28 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                 Container(
                   margin: EdgeInsets.only(left: 4.0),
                   child: IconButton(
-                    onPressed: () async {
-                      try {
-                        final result =
-                            await InternetAddress.lookup('google.com');
-                        if (result.isNotEmpty &&
-                            result[0].rawAddress.isNotEmpty) {
-                          print('connected');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateRoute()),
-                          );
-                        }
-                      } on SocketException catch (_) {
-                        print('not connected');
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                NoInternetConnectionLogInSrceen()));
-                      }
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateRoute()));
+                      // try {
+                      //   final result =
+                      //       await InternetAddress.lookup('google.com');
+                      //   if (result.isNotEmpty &&
+                      //       result[0].rawAddress.isNotEmpty) {
+                      //     print('connected');
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => CreateRoute()),
+                      //     );
+                      //   }
+                      // } on SocketException catch (_) {
+                      //   print('not connected');
+                      //   Navigator.of(context).push(MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           NoInternetConnectionLogInSrceen()));
+                      // }
                     },
                     icon: Icon(Icons.info_outline),
                   ),
@@ -177,21 +183,24 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
         ),
         floatingActionButton: Container(
           child: FloatingActionButton(
-            onPressed: () async {
-              try {
-                final result = await InternetAddress.lookup('google.com');
-                if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-                  print('connected');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateRoute()),
-                  );
-                }
-              } on SocketException catch (_) {
-                print('not connected');
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NoInternetConnectionLogInSrceen()));
-              }
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateRoute()));
+              // try {
+              //   final result = await InternetAddress.lookup('google.com');
+              //   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+              //     print('connected');
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => CreateRoute()),
+              //     );
+              //   }
+              // } on SocketException catch (_) {
+              //   print('not connected');
+              //   Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => NoInternetConnectionLogInSrceen()));
+              // }
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(builder: (context) => CreateRoute()),

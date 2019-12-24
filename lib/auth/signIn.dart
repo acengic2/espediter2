@@ -29,8 +29,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return 
+    //MaterialApp(
+      //home: 
+      Scaffold(
         resizeToAvoidBottomPadding: false,
         body: new GestureDetector(
           onTap: () {
@@ -455,7 +457,7 @@ class _LoginState extends State<Login> {
             ],
           ),
         ),
-      ),
+      //),
     );
   }
 
