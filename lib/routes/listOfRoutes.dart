@@ -324,6 +324,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Future<bool> _onBackPressed() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateRoute()));
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(

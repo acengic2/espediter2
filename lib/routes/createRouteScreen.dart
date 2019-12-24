@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
+import 'package:spediter/auth/noInternetOnLogin.dart';
 import 'package:spediter/routes/form.dart';
 import 'package:spediter/routes/homePage.dart';
 import 'package:spediter/routes/loadingRoutes.dart';
@@ -120,6 +122,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
     //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
+
     getUserid();
   }
 
@@ -765,7 +768,29 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 ),
                                 onPressed: _isBtnDisabled
                                     ? null
-                                    : () {
+                                    : () async {
+                                        try {
+                                          final result =
+                                              await InternetAddress.lookup(
+                                                  'google.com');
+                                          if (result.isNotEmpty &&
+                                              result[0].rawAddress.isNotEmpty) {
+                                            print('connected');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreateRoute()),
+                                            );
+                                          }
+                                        } on SocketException catch (_) {
+                                          print('not connected');
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NoInternetConnectionLogInSrceen()));
+                                        }
+
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         if (!currentFocus.hasPrimaryFocus) {
@@ -981,7 +1006,4 @@ class Vehicle {
       Vehicle(9, "Traktor"),
     ];
   }
-
-
-
 }
