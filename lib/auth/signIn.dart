@@ -103,11 +103,6 @@ class _LoginState extends State<Login> {
                                         ),
                                         labelText: 'email',
                                         hasFloatingPlaceholder: true,
-                                        // labelStyle: TextStyle(
-                                        //     color: focusNode.hasFocus
-                                        //         ? Colors.red
-                                        //         : Colors.black),
-                                        //errorStyle: TextStyle(color: Colors.red),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0))),
@@ -211,11 +206,6 @@ class _LoginState extends State<Login> {
                                         ),
                                         labelText: 'lozinka',
                                         hasFloatingPlaceholder: true,
-                                        // labelStyle: TextStyle(
-                                        //     color: _focusNode.hasFocus
-                                        //         ? Colors.red
-                                        //         : Colors.black),
-                                        //errorStyle: TextStyle(color: Colors.red),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0))),

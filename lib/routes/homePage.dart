@@ -50,6 +50,7 @@ class HomePage extends StatelessWidget {
   }
 }
 // method for checking a role
+
 Center checkRole(DocumentSnapshot snapshot) {
   print(
       "sadsadadadsdasdshfdhgfjglkte54352saasdsad3532543654767987098098-dasd  ====    " +
@@ -57,9 +58,12 @@ Center checkRole(DocumentSnapshot snapshot) {
   if (snapshot.data['role'] == "company") {
       
       var  loggedUserID = snapshot.data['user_id'];
-      Center(child: CreateRoute());
-      print('Isprintan aksjbsdgsdfasjbf ID: ' + loggedUserID);
-_getEventsFromFirestore();
+
+      print('Isprintan aksjbfasjbf ID: ' + loggedUserID);
+
+    // getUserIDFromRoutes();
+    return adminPage(snapshot);
+
 
     return adminPage(snapshot);
   } else if (snapshot.data['role'] == "user") {
@@ -76,6 +80,7 @@ Center userPage(DocumentSnapshot snapshot) {
 Center adminPage(DocumentSnapshot snapshot) {
   return Center(child: NoRoutes());
 }
+
 
 
  Future<List<LoggedUsers>> _getEventsFromFirestore() async {
@@ -142,3 +147,4 @@ class LoggedUsers {
 
 
 }
+
