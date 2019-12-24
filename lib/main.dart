@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
     .then((_) {
       runApp(new MyApp());

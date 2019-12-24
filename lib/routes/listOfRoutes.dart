@@ -1,10 +1,14 @@
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
+import './companyRoutes.dart';
 
 void main() => runApp(ListOfRoutes());
 
@@ -17,49 +21,94 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 class ListOfRoutes extends StatelessWidget {
+  /// id trenutne rute [id],
+  /// id kompanije [userID]
+
+  String userID;
+  ListOfRoutes({this.userID});
+  
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListOfRoutesPage(),
+      home: ListOfRoutesPage(userID: userID),
     );
   }
 }
 
 class ListOfRoutesPage extends StatefulWidget {
+   /// id trenutne rute [id],
+  /// id kompanije [userID]
+
+  String userID;
+  ListOfRoutesPage({this.userID});
+
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState();
+    return _ListOfRoutesPageState( userID:userID);
   }
 }
 
 class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
+  ///instanca na bazu
   final db = Firestore.instance;
+  /// id trenutne rute [id],
+  /// id kompanije [userID]
+
+  String userID;
+
+  _ListOfRoutesPageState({this.userID});
 
   @override
-Widget build(BuildContext context) {
-    return 
-    WillPopScope(
+  void initState() { 
+    super.initState();
+
+    print(userID);
+    CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
+           if(docs.documents.isNotEmpty){
+             print('NOT EMPRY');
+        
+           } else {
+             print('EMPTU');           }
+    } );
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
       onWillPop: _onBackPressed,
-      child: 
-      Scaffold(  
+      child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
-          Container(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: db.collection('Rute').snapshots(),
+
+
+        
+        Container(
+          // Future builder 
+          //
+          //u future se poziva metoda iz klase CompanyRoutes koja prima id
+          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+           child: FutureBuilder<QuerySnapshot>(
+             future: CompanyRutes().getCompanyRoutes(userID),
               builder: (context, snapshot) {
+                // ukoliko postoje podatci
+                //vrati Column oi mapiraj kroz iste podatke
                 if (snapshot.hasData) {
-                  return Column(
-                    children: snapshot.data.documents
-                        .map((doc) => buildItem(doc))
-                        .toList(),
-                  );
+                    return Column(
+                      children: snapshot.data.documents
+                          .map((doc) => buildItem(doc))
+                          .toList(),
+                    );
+                  
                 } else {
                   return SizedBox();
                 }
               },
             ),
           ),
+
         ]),
         bottomNavigationBar: new BottomAppBar(
           child: Container(
@@ -114,8 +163,6 @@ Widget build(BuildContext context) {
   }
 
   Card buildItem(DocumentSnapshot doc) {
-    
-    // dummy.toString().replaceFirst("[", "").replaceFirst("]", "");
 
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
@@ -237,8 +284,7 @@ Widget build(BuildContext context) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-  
-           new RichText(
+            new RichText(
               text: new TextSpan(
                 children: <TextSpan>[
                   new TextSpan(
@@ -250,13 +296,13 @@ Widget build(BuildContext context) {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: ('${doc.data['interdestination']}'),
-                    style: new TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black.withOpacity(0.8),
-                      fontFamily: "Roboto",
-                    )),
-                    new TextSpan(
+                      text: ('${doc.data['interdestination']}'),
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black.withOpacity(0.8),
+                        fontFamily: "Roboto",
+                      )),
+                  new TextSpan(
                     text: (', ${doc.data['ending_destination']}'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
@@ -268,12 +314,6 @@ Widget build(BuildContext context) {
                 ],
               ),
             ),
-
-
-            // Text(
-            //   '${doc.data['starting_destination']}${doc.data['interdestination']}, ${doc.data['ending_destination']} ',
-            //   style: TextStyle(fontSize: 20),
-            // ),
             Row(
               children: <Widget>[leftSection, middleSection, rightSection],
             )
@@ -291,13 +331,13 @@ Widget build(BuildContext context) {
               actions: <Widget>[
                 FlatButton(
                   child: Text("No"),
-                  onPressed: () => Navigator.pop(context,false),
+                  onPressed: () => Navigator.pop(context, false),
                 ),
                 FlatButton(
-                onPressed: () => exit(0),
-                /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
-              ),
+                  onPressed: () => exit(0),
+                  /*Navigator.of(context).pop(true)*/
+                  child: Text('Yes'),
+                ),
               ],
             ));
   }
