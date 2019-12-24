@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -8,10 +8,13 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
 import 'package:spediter/auth/noInternetOnLogin.dart';
 import 'package:spediter/routes/form.dart';
+import 'package:spediter/routes/homePage.dart';
+import 'package:spediter/routes/loadingRoutes.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
 import 'listOfRoutes.dart';
+
 
 void main() => runApp(CreateRoute());
 
@@ -22,6 +25,7 @@ NoRoutes noRoutes = new NoRoutes();
 
 class CreateRoute extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,10 +74,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   var focusDimensions = new FocusNode();
   var focusStarting = new FocusNode();
   var focusEnding = new FocusNode();
-  // key za formu
-  //final _formKey = GlobalKey<FormState>();
-  // instanca za bazu
-  //final db = Firestore.instance;
 
   int onceToast = 0;
 
@@ -82,6 +82,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   );
 
   // variables
+  String userUid;
+  String userID;
   String id;
 //  ScrollController _scroll;
   String listOfInterdestinations = "";
@@ -120,6 +122,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
     //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
+
+    getUserid();
   }
 
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
@@ -929,6 +933,21 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     }
   }
 
+  getUserid() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    
+   Firestore.instance
+        .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
+        .document(user.uid) // takes user.id
+        .snapshots()
+        .toString();
+
+    userID = user.uid;
+    print('Ovo je user id ' + userID);
+   
+  }
+
   // funkcija koja snima informacije u bazu
   createData() async {
     DocumentReference ref = await db.collection('Rute').add({
@@ -943,15 +962,19 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'departure_date': '$formatted',
       'dimensions': '$dimensionsVar',
       'goods': '$goodsVar',
-      'vehicle': '$vehicleVar'
+      'vehicle': '$vehicleVar',
+      'user_id': '$userID'
     });
     print('proslo1111');
     setState(() => id = ref.documentID);
     print(ref.documentID);
     print('Unos uspjesan');
+    // navigiramo do ListOfRoutes i saljemo userID i id
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListOfRoutes()),
+
+      MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
+
     );
   }
 
