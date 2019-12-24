@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spediter/auth/noInternetConnection.dart';
-import 'package:spediter/routes/createRouteScreen.dart';
+import 'package:spediter/routes/listOfRoutes.dart';
 import 'package:spediter/routes/noRoutes.dart';
 
 import 'package:spediter/usersPages/usersHome.dart';
@@ -58,20 +58,29 @@ class HomePage extends StatelessWidget {
 }
 
 // method for checking a role
+String usID;
+checkForID() async {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    
+   Firestore.instance
+        .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
+        .document(user.uid) // takes user.id
+        .snapshots()
+        .toString();
 
+    usID = user.uid;
+    print(usID);
+    
+}
 
-Center checkRole(DocumentSnapshot snapshot) {
-  print(
-      "sadsadadadsdasdshfdhgfjglkte54352saasdsad3532543654767987098098-dasd  ====    " +
-          userUid.toString());
+checkRole(DocumentSnapshot snapshot)  {
+  checkForID();
   if (snapshot.data['role'] == "company") {
       
-      var  loggedUserID = snapshot.data['user_id'];
-     
-      print('Isprintan aksjbfasjbf ID: ' + loggedUserID);
-
-    // getUserIDFromRoutes();
-    return adminPage(snapshot);
+       return ListOfRoutes(userID: usID);
+    //getUserIDFromRoutes();
+    // return adminPage(snapshot);
 
   } else if (snapshot.data['role'] == "user") {
     return userPage(snapshot);
@@ -80,21 +89,10 @@ Center checkRole(DocumentSnapshot snapshot) {
 
 //if is a user go to list of routes
 Center userPage(DocumentSnapshot snapshot) {
-  
   return Center(child: ListOfUsersRoutes());
-  
 }
 
-// if is a admin go to no routes page
-Center adminPage(DocumentSnapshot snapshot) {
-  return Center(child: NoRoutes());
-}
-
-// Future<List<DocumentSnapshot>> getUserIDFromRoutes() async{
-//     DocumentSnapshot data = await Firestore.instance.collection("LoggedUsers")
-//       .getDocuments()
-//       .then((QuerySnapshot snapshot) {
-//     snapshot.documents.firstWhere(data.)//forEach((f) => print('${f.data['user_id']}}'));
-//     });
-//     // return data;
-//   }
+// // if is a admin go to no routes page
+// Center adminPage(DocumentSnapshot snapshot) {
+//   return Center(child: NoRoutes());
+// }

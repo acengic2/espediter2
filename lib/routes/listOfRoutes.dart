@@ -23,14 +23,16 @@ final rightSection = new Container();
 class ListOfRoutes extends StatelessWidget {
   /// id trenutne rute [id],
   /// id kompanije [userID]
-  String id;
+
   String userID;
-  ListOfRoutes({this.id, this.userID});
+  ListOfRoutes({this.userID});
+  
+  
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListOfRoutesPage(id: id, userID: userID),
+      home: ListOfRoutesPage(userID: userID),
     );
   }
 }
@@ -38,13 +40,13 @@ class ListOfRoutes extends StatelessWidget {
 class ListOfRoutesPage extends StatefulWidget {
    /// id trenutne rute [id],
   /// id kompanije [userID]
-  String id;
+
   String userID;
-  ListOfRoutesPage({this.id, this.userID});
+  ListOfRoutesPage({this.userID});
 
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState(id: id, userID:userID);
+    return _ListOfRoutesPageState( userID:userID);
   }
 }
 
@@ -53,15 +55,15 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   final db = Firestore.instance;
   /// id trenutne rute [id],
   /// id kompanije [userID]
-  String id;
+
   String userID;
 
-  _ListOfRoutesPageState({this.id, this.userID});
+  _ListOfRoutesPageState({this.userID});
 
   @override
   void initState() { 
     super.initState();
-    print(id);
+
     print(userID);
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
            if(docs.documents.isNotEmpty){
@@ -86,10 +88,13 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         Container(
           // Future builder 
           //
-          //u future se poziva metoda iz klase CompanyRoutes koja
+          //u future se poziva metoda iz klase CompanyRoutes koja prima id
+          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
            child: FutureBuilder<QuerySnapshot>(
              future: CompanyRutes().getCompanyRoutes(userID),
               builder: (context, snapshot) {
+                // ukoliko postoje podatci
+                //vrati Column oi mapiraj kroz iste podatke
                 if (snapshot.hasData) {
                     return Column(
                       children: snapshot.data.documents
@@ -158,8 +163,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Card buildItem(DocumentSnapshot doc) {
-    // dummy.toString().replaceFirst("[", "").replaceFirst("]", "");
-
 
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
@@ -311,11 +314,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                 ],
               ),
             ),
-
-            // Text(
-            //   '${doc.data['starting_destination']}${doc.data['interdestination']}, ${doc.data['ending_destination']} ',
-            //   style: TextStyle(fontSize: 20),
-            // ),
             Row(
               children: <Widget>[leftSection, middleSection, rightSection],
             )

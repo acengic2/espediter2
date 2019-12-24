@@ -1,9 +1,14 @@
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:spediter/routes/companyRoutes.dart';
+import 'package:spediter/routes/createRouteScreen.dart';
+
 
 void main() => runApp(ListOfUsersRoutes());
 
@@ -16,36 +21,96 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 class ListOfUsersRoutes extends StatelessWidget {
+  /// id trenutne rute [id],
+  /// id kompanije [userID]
+
+  String userID;
+  ListOfUsersRoutes({this.userID});
+  
+  
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListOfRoutesPage(),
+      home: ListOfUsersRoutesPage(userID: userID),
     );
   }
 }
 
-class ListOfRoutesPage extends StatefulWidget {
+class ListOfUsersRoutesPage extends StatefulWidget {
+   /// id trenutne rute [id],
+  /// id kompanije [userID]
+ 
+ 
+  String userID;
+  ListOfUsersRoutesPage({ this.userID});
+
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState();
+    return _ListOfUsersRoutesPageState(userID:userID);
   }
 }
 
-class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
+class _ListOfUsersRoutesPageState extends State<ListOfUsersRoutesPage> {
+  ///instanca na bazu
   final db = Firestore.instance;
+  /// id trenutne rute [id],
+  /// id kompanije [userID]
+  String userID;
+
+  _ListOfUsersRoutesPageState({this.userID});
 
   @override
-Widget build(BuildContext context) {
-    return 
-    WillPopScope(
+  void initState() { 
+    super.initState();
+ 
+    
+    CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
+           if(docs.documents.isNotEmpty){
+             print('NOT EMPRY');
+
+        
+           } else {
+             print('EMPTU');           }
+    } );
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
       onWillPop: _onBackPressed,
-      child: 
-      Scaffold(  
+      child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
-          Container(
-            child:Text("OVO JE PAGE STO USER VIDI KAD SE LOGIRA!!!!!")
+        Container(
+          // Future builder 
+          //
+          //u future se poziva metoda iz klase CompanyRoutes koja prima id
+          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+           child: FutureBuilder<QuerySnapshot>(
+             future: CompanyRutes().getCompanyRoutes(userID),
+              builder: (context, snapshot) {
+                print('DOVDJE');
+                print(userID);
+                // ukoliko postoje podatci
+                //vrati Column oi mapiraj kroz iste podatke
+                if (snapshot.hasData) {
+                   print('asasasas' + userID);
+                    return Column(
+                      children: snapshot.data.documents
+                          .map((doc) => buildItem(doc))
+                          .toList(),
+                    );
+                  
+                } else {
+                  return SizedBox();
+                }
+              },
+            ),
           ),
+
         ]),
         bottomNavigationBar: new BottomAppBar(
           child: Container(
@@ -69,10 +134,10 @@ Widget build(BuildContext context) {
                   margin: EdgeInsets.only(left: 4.0),
                   child: IconButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => CreateRoute()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateRoute()),
+                      );
                     },
                     icon: Icon(Icons.info_outline),
                   ),
@@ -84,10 +149,10 @@ Widget build(BuildContext context) {
         floatingActionButton: Container(
           child: FloatingActionButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => CreateRoute()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreateRoute()),
+              );
             },
             tooltip: '+',
             child: Icon(Icons.add),
@@ -100,8 +165,6 @@ Widget build(BuildContext context) {
   }
 
   Card buildItem(DocumentSnapshot doc) {
-    List dummy = doc.data['interdestination'];
-    dummy.toString().replaceFirst("[", "").replaceFirst("]", "");
 
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
@@ -223,9 +286,35 @@ Widget build(BuildContext context) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              '${doc.data['starting_destination']}, ${dummy.toString().replaceFirst("[", "").replaceFirst("]", "")}, ${doc.data['ending_destination']} ',
-              style: TextStyle(fontSize: 20),
+            new RichText(
+              text: new TextSpan(
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: '${doc.data['starting_destination']}',
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black.withOpacity(0.8),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Roboto",
+                      )),
+                  new TextSpan(
+                      text: ('${doc.data['interdestination']}'),
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black.withOpacity(0.8),
+                        fontFamily: "Roboto",
+                      )),
+                  new TextSpan(
+                    text: (', ${doc.data['ending_destination']}'),
+                    style: new TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.black.withOpacity(0.8),
+                      fontFamily: "Roboto",
+                    ),
+                  ),
+                ],
+              ),
             ),
             Row(
               children: <Widget>[leftSection, middleSection, rightSection],
@@ -244,13 +333,13 @@ Widget build(BuildContext context) {
               actions: <Widget>[
                 FlatButton(
                   child: Text("No"),
-                  onPressed: () => Navigator.pop(context,false),
+                  onPressed: () => Navigator.pop(context, false),
                 ),
                 FlatButton(
-                onPressed: () => exit(0),
-                /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
-              ),
+                  onPressed: () => exit(0),
+                  /*Navigator.of(context).pop(true)*/
+                  child: Text('Yes'),
+                ),
               ],
             ));
   }

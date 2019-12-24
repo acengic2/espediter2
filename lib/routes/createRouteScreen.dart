@@ -919,8 +919,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
    
   }
 
-  
-
   // funkcija koja snima informacije u bazu
   createData() async {
     DocumentReference ref = await db.collection('Rute').add({
@@ -942,9 +940,10 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     setState(() => id = ref.documentID);
     print(ref.documentID);
     print('Unos uspjesan');
+    // navigiramo do ListOfRoutes i saljemo userID i id
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListOfRoutes(id: id, userID: userID)),
+      MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
     );
   }
 
