@@ -1,10 +1,12 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:spediter/auth/loading.dart';
+
+import 'noInternetOnLogin.dart';
 
 void main() => runApp(Login());
 
@@ -27,8 +29,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return 
+    //MaterialApp(
+      //home: 
+      Scaffold(
         resizeToAvoidBottomPadding: false,
         body: new GestureDetector(
           onTap: () {
@@ -77,7 +81,7 @@ class _LoginState extends State<Login> {
                                     keyboardType: TextInputType.visiblePassword,
                                     autofocus: true,
                                     enableInteractiveSelection: false,
-                                  autovalidate: false,
+                                    autovalidate: false,
 
                                     decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
@@ -107,7 +111,6 @@ class _LoginState extends State<Login> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0))),
                                     validator: (input) {
-                                      
                                       if (input == '') {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
@@ -303,7 +306,21 @@ class _LoginState extends State<Login> {
                                         ),
                                       ),
                                       color: Color.fromRGBO(3, 54, 255, 1.0),
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        try {
+                                          final result =
+                                              await InternetAddress.lookup(
+                                                  'google.com');
+                                          if (result.isNotEmpty &&
+                                              result[0].rawAddress.isNotEmpty) {
+                                            print('connected');
+                                          }
+                                        } on SocketException catch (_) {
+                                          print('not connected');
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) => NoInternetConnectionLogInSrceen()));
+                                        }
+
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         if (!currentFocus.hasPrimaryFocus) {
@@ -350,7 +367,7 @@ class _LoginState extends State<Login> {
                                           onceToast = 0;
                                           onceBtnPressed = 0;
                                           print('LOADING');
-                                          
+
                                           return Container(
                                             width: 0,
                                             height: 0,
@@ -430,7 +447,7 @@ class _LoginState extends State<Login> {
             ],
           ),
         ),
-      ),
+      //),
     );
   }
 

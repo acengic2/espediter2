@@ -1,7 +1,5 @@
-import 'dart:collection';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -324,6 +322,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Future<bool> _onBackPressed() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateRoute()));
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(

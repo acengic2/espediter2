@@ -1,13 +1,14 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
+import 'package:spediter/auth/noInternetOnLogin.dart';
 import 'package:spediter/routes/form.dart';
-import 'package:spediter/routes/homePage.dart';
-import 'package:spediter/routes/loadingRoutes.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
@@ -31,15 +32,15 @@ class CreateRoute extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // localizationsDelegates: [
-      //   // ... app-specific localization delegate[s] here
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      // ],
-      // supportedLocales: [
-      //   const Locale('bs'), // Bosnian
-      //   const Locale('en'), // English
-      // ],
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('bs'), // Bosnian
+        const Locale('en'), // English
+      ],
       home: CreateRouteScreenPage(title: 'Kreiraj Rutu'),
     );
   }
@@ -120,6 +121,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
     //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
+
     getUserid();
   }
 
@@ -200,6 +202,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   padding:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
+                                  
+         
                                     // style: TextStyle(fontSize: 10.0),
                                     resetIcon: null,
                                     readOnly: true,
@@ -220,10 +224,12 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         (context, currentValue) async {
                                       final DateTime picked =
                                           await showDatePicker(
+                                            locale: Locale('bs'),
                                               context: context,
                                               initialDate: DateTime.now(),
                                               firstDate: DateTime(2018),
                                               lastDate: DateTime(2100));
+                                             
                                       setState(() {
                                         selectedDateP = picked;
                                         if (selectedDateP == null) {
@@ -446,6 +452,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   padding:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
+                                    
                                     // style: TextStyle(fontSize: 10.0),
                                     resetIcon: null,
                                     readOnly: true,
@@ -467,6 +474,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         (context, currentValue) async {
                                       final DateTime picked =
                                           await showDatePicker(
+                                            locale: Locale('bs'),
                                               context: context,
                                               initialDate: DateTime.now(),
                                               firstDate: DateTime(2018),
@@ -765,7 +773,29 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 ),
                                 onPressed: _isBtnDisabled
                                     ? null
-                                    : () {
+                                    : () async {
+                                        try {
+                                          final result =
+                                              await InternetAddress.lookup(
+                                                  'google.com');
+                                          if (result.isNotEmpty &&
+                                              result[0].rawAddress.isNotEmpty) {
+                                            print('connected');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreateRoute()),
+                                            );
+                                          }
+                                        } on SocketException catch (_) {
+                                          print('not connected');
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NoInternetConnectionLogInSrceen()));
+                                        }
+
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         if (!currentFocus.hasPrimaryFocus) {
@@ -981,7 +1011,4 @@ class Vehicle {
       Vehicle(9, "Traktor"),
     ];
   }
-
-
-
 }
