@@ -32,6 +32,7 @@ class ListOfRoutes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ListOfRoutesPage(userID: userID),
     );
   }
@@ -93,7 +94,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
            child: FutureBuilder<QuerySnapshot>(
              future: CompanyRutes().getCompanyRoutes(userID),
               builder: (context, snapshot) {
-                // ukoliko postoje podatci
+                // ukoliko postoje podaci
                 //vrati Column oi mapiraj kroz iste podatke
                 if (snapshot.hasData) {
                     return Column(

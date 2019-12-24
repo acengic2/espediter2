@@ -10,6 +10,7 @@ void main() => runApp(Login());
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
+  
 
   @override
   _LoginState createState() => _LoginState();
@@ -28,6 +29,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: new GestureDetector(
