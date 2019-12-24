@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Company Routes klasa
-
 class CompanyRutes {
   // getCompanyRoutes
   //
@@ -13,4 +11,6 @@ class CompanyRutes {
         .where('user_id', isEqualTo: id)
         .getDocuments();
   }
+
 }
+
