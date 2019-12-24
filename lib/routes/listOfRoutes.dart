@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
+import './companyRoutes.dart';
 
 void main() => runApp(ListOfRoutes());
 
@@ -19,31 +21,57 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 class ListOfRoutes extends StatelessWidget {
+  /// id trenutne rute [id],
+  /// id kompanije [userID]
   String id;
-  ListOfRoutes({this.id});
+  String userID;
+  ListOfRoutes({this.id, this.userID});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListOfRoutesPage(id: id),
+      home: ListOfRoutesPage(id: id, userID: userID),
     );
   }
 }
 
 class ListOfRoutesPage extends StatefulWidget {
+   /// id trenutne rute [id],
+  /// id kompanije [userID]
   String id;
-  ListOfRoutesPage({this.id});
+  String userID;
+  ListOfRoutesPage({this.id, this.userID});
 
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState(id: id);
+    return _ListOfRoutesPageState(id: id, userID:userID);
   }
 }
 
 class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
+  ///instanca na bazu
   final db = Firestore.instance;
+  /// id trenutne rute [id],
+  /// id kompanije [userID]
   String id;
-  _ListOfRoutesPageState({this.id});
+  String userID;
+
+  _ListOfRoutesPageState({this.id, this.userID});
+
+  @override
+  void initState() { 
+    super.initState();
+    print(id);
+    print(userID);
+    CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
+           if(docs.documents.isNotEmpty){
+             print('NOT EMPRY');
+        
+           } else {
+             print('EMPTU');           }
+    } );
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +80,17 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
-          Container(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: db.collection('Rute').snapshots(),
+
+
+        
+        Container(
+          // Future builder 
+          //
+          //u future se poziva metoda iz klase CompanyRoutes koja
+           child: FutureBuilder<QuerySnapshot>(
+             future: CompanyRutes().getCompanyRoutes(userID),
               builder: (context, snapshot) {
-                if (snapshot.hasData ) {
+                if (snapshot.hasData) {
                     return Column(
                       children: snapshot.data.documents
                           .map((doc) => buildItem(doc))
@@ -69,6 +103,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
               },
             ),
           ),
+
         ]),
         bottomNavigationBar: new BottomAppBar(
           child: Container(
@@ -308,84 +343,4 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
               ],
             ));
   }
-
-  getAllValues() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
-
-    Firestore.instance.collection('Rute').document(user.uid).snapshots();
-    String idd = 'zWD6EOOFv28b7y5KHGzP';
-    DocumentSnapshot snapshot = await db.collection('Rute').document(id).get();
-    print('KONJ');
-    print(snapshot.data['user_id']);
-
-    CollectionReference ref = Firestore.instance.collection('Ruta');
-    QuerySnapshot eventsQuery = await ref
-    .where('user_id', isEqualTo: id)
-    .getDocuments();
-HashMap<String, LoggedUsers > eventsHashMap = new HashMap<String, LoggedUsers>();
-
-eventsQuery.documents.forEach((document) {
- eventsHashMap.putIfAbsent(document['user_id'], () => new LoggedUsers(
-      email: document['email'],
-      password: document['password'],
-      role: document['role'],
-      userId: document['user_id']));
-
-
-});
-print( eventsHashMap.values.toList());
-return eventsHashMap.values.toList();
-  }
-
-  //  static Future<List<AustinFeedsMeEvent>> _getEventsFromFirestore() async {
-
-
-// HashMap<String, AustinFeedsMeEvent> eventsHashMap = new HashMap<String, AustinFeedsMeEvent>();
-
-// eventsQuery.documents.forEach((document) {
-//   eventsHashMap.putIfAbsent(document['id'], () => new AustinFeedsMeEvent(
-//       name: document['name'],
-//       time: document['time'],
-//       description: document['description'],
-//       url: document['event_url'],
-//       photoUrl: _getEventPhotoUrl(document['group']),
-//       latLng: _getLatLng(document)));
-// });
-
-// return eventsHashMap.values.toList();
-// }
 }
-class LoggedUsers {
-  static final String columnEmail = "email";
-  static final String columnPassword = "password";
-  static final String columnRole = "role";
-    static final String columnUserId = "user_id";
-    LoggedUsers({
-       this.email,
-       this.password,
-      this.role,
-      this.userId
-    });
-    final String email;
-  final int password;
-  final String role;
-  final String userId;
-  Map toMap() {
-    Map<String, dynamic> map = {
-      columnEmail: email,
-      columnPassword: password,
-      columnRole: role,
-      columnUserId: userId,
-  
-    };
-    return map;
-  }
-  static LoggedUsers fromMap(Map map) {
-    return new LoggedUsers(
-        email: map[columnEmail],
-        password: map[columnPassword],
-        role: map[columnRole],
-        userId: map[columnUserId],
-     );
-  }}

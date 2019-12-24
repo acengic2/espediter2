@@ -915,6 +915,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         .toString();
 
     userID = user.uid;
+    print('Ovo je user id ' + userID);
    
   }
 
@@ -943,7 +944,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     print('Unos uspjesan');
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListOfRoutes(id: id)),
+      MaterialPageRoute(builder: (context) => ListOfRoutes(id: id, userID: userID)),
     );
   }
 
