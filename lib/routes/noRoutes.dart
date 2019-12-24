@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import '../auth/noInternetOnLogin.dart';
 import './createRouteScreen.dart';
 
 void main() => runApp(NoRoutes());
