@@ -345,6 +345,9 @@ class _LoginState extends State<Login> {
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
+                                            Timer(Duration(seconds: 2), () {
+                                              onceToast = 0;
+                                            });
                                           }
                                         } else {
                                           if (onceBtnPressed == 0) {
