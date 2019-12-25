@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:spediter/routes/createRouteScreen.dart';
 import './inderdestination.dart';
 
 typedef OnDelete();
-
+typedef OnAdd();
 
 class InterdestinationForm extends StatefulWidget {
   final Interdestination interdestination;
   final state = _UserFormState();
   final OnDelete onDelete;
+  final OnAdd onAdd;
+ 
 
-  
-  InterdestinationForm(
-      {Key key,
-      this.interdestination,
-      this.onDelete,
-      })
-      : super(key: key);
+  InterdestinationForm({
+    Key key,
+    this.interdestination,
+    this.onDelete, 
+    this.onAdd,
 
+  }) : super(key: key);
 
   @override
   _UserFormState createState() => state;
 
-      bool isValid() => state.validate();
-
+  bool isValid() => state.validate();
 }
 
 class _UserFormState extends State<InterdestinationForm> {
@@ -34,33 +35,53 @@ class _UserFormState extends State<InterdestinationForm> {
         margin: EdgeInsets.only(bottom: 2, left: 16.0, right: 16.0, top: 2),
         child: Row(children: <Widget>[
           Expanded(
-            flex: 1,
-            child: Container(
-              child: Icon(
-                Icons.brightness_1,
-                color: Color.fromRGBO(112, 112, 112, 1),
-                size: 20.0,
-              ),
-            ),
-          ),
+              flex: 1,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 10.0),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      child: Icon(
+                        Icons.brightness_1,
+                        color: Color.fromRGBO(0, 0, 0, 0.5),
+                        size: 15.0,
+                      ),
+                    ),
+                    Container(
+                      child: Icon(
+                        Icons.brightness_1,
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        size: 30.0,
+                      ),
+                    )
+                  ],
+                ),
+              )),
           Expanded(
               flex: 9,
               child: Container(
                   height: 36.0,
                   margin: EdgeInsets.only(
-                      bottom: 8, left: 9, right: 5,),
+                    bottom: 8,
+                    left: 9,
+                    right: 5,
+                  ),
                   child: TextFormField(
+                    key: UniqueKey(),
+                    onTap: widget.onAdd,
+                    textCapitalization: TextCapitalization.sentences,
                     initialValue: widget.interdestination.interdestinationData,
                     onChanged: (val) =>
                         widget.interdestination.interdestinationData = val,
-                         validator: (val) =>
-                      val.length > 3 ? null : 'Unesite ime grada',
+                    validator: (val) =>
+                        val.length > 3 ? null : 'Unesite ime grada',
                     decoration: InputDecoration(
                         hasFloatingPlaceholder: false,
-                        suffixIcon: IconButton(
-                          onPressed: widget.onDelete,
-                          icon: Icon(Icons.clear),
-                        ),
+                        // suffixIcon: IconButton(
+                        //   onPressed: widget.onDelete,
+                        //   icon: Icon(Icons.clear),
+                        // ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0)),
                           borderSide:
@@ -77,9 +98,25 @@ class _UserFormState extends State<InterdestinationForm> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0))),
                   ))),
+                  Expanded(
+              flex: 1,
+              child: Container(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      child:  IconButton(
+                          onPressed: widget.onDelete,
+                          icon: Icon(Icons.clear),
+                        ),
+                    ),
+                  ],
+                ),
+              )),
         ]));
   }
-   ///form validator
+
+  ///form validator
   bool validate() {
     var valid = form.currentState.validate();
     if (valid) form.currentState.save();
@@ -87,6 +124,3 @@ class _UserFormState extends State<InterdestinationForm> {
   }
 
 }
-
-
-
