@@ -68,6 +68,7 @@ class _UserFormState extends State<InterdestinationForm> {
                     right: 5,
                   ),
                   child: TextFormField(
+                    key: UniqueKey(),
                     onTap: widget.onAdd,
                     textCapitalization: TextCapitalization.sentences,
                     initialValue: widget.interdestination.interdestinationData,
