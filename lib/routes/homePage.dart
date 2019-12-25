@@ -1,11 +1,7 @@
-import 'dart:collection';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:spediter/auth/noInternetConnection.dart';
 import 'package:spediter/routes/listOfRoutes.dart';
-import 'package:spediter/routes/noRoutes.dart';
 import 'package:spediter/usersPages/usersHome.dart';
 void main() => runApp(HomePage());
 String userUid;
@@ -69,11 +65,14 @@ checkForID() async {
 checkRole(DocumentSnapshot snapshot)  {
   checkForID();
   if (snapshot.data['role'] == "company") {
+      
        return ListOfRoutes(userID: usID);
+    //getUserIDFromRoutes();
+    // return adminPage(snapshot);
+
+
   } else if (snapshot.data['role'] == "user") {
     return userPage(snapshot);
-  } else {
-     return NoRoutes();
   }
 }
 //if is a user go to list of routes
@@ -81,3 +80,7 @@ Center userPage(DocumentSnapshot snapshot) {
   return Center(child: ListOfUsersRoutes());
 }
 
+// // if is a admin go to no routes page
+// Center adminPage(DocumentSnapshot snapshot) {
+//   return Center(child: NoRoutes());
+// }

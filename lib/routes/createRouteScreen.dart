@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,10 +7,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
-import 'package:spediter/auth/noInternetOnLogin.dart';
 import 'package:spediter/routes/form.dart';
-import 'package:spediter/routes/homePage.dart';
-import 'package:spediter/routes/loadingRoutes.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
@@ -29,11 +26,19 @@ class CreateRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Kreiraj Rutu',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // localizationsDelegates: [
+      //   // ... app-specific localization delegate[s] here
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      // ],
+      // supportedLocales: [
+      //   const Locale('bs'), // Bosnian
+      //   const Locale('en'), // English
+      // ],
       home: CreateRouteScreenPage(title: 'Kreiraj Rutu'),
     );
   }
@@ -109,7 +114,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   bool _isBtnDisabled = true;
 
-   getUserid() async {
+  getUserid() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
 
@@ -128,6 +133,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
     //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
+
     getUserid();
     onceToast = 0;
   }
@@ -161,15 +167,12 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         interdestinations.add(InterdestinationForm(
           interdestination: _interdestination,
           onDelete: () => onDelete(_interdestination),
+          onAdd: () => onAddForm(),
         ));
       });
     }
 
-    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-
-    return Scaffold( 
-
-      key: scaffoldKey,
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -178,7 +181,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
+              MaterialPageRoute(
+                  builder: (context) => ListOfRoutes(userID: userID)),
             );
           },
         ),
@@ -190,7 +194,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
             onceToast = 0;
-            onceBtnPressed = 0;
           },
           child: ListView(
             children: <Widget>[
@@ -324,15 +327,31 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 bottom: 2, left: 16.0, right: 16.0, top: 2),
                             child: Row(children: <Widget>[
                               Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Icon(
-                                    Icons.brightness_1,
-                                    color: Color.fromRGBO(3, 54, 255, 1.0),
-                                    size: 20.0,
-                                  ),
-                                ),
-                              ),
+                                  flex: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 10.0),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Icon(
+                                            Icons.brightness_1,
+                                            color:
+                                                Color.fromRGBO(3, 54, 255, 1.0),
+                                            size: 15.0,
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Icon(
+                                            Icons.brightness_1,
+                                            color:
+                                                Color.fromRGBO(3, 54, 255, 0.2),
+                                            size: 30.0,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )),
                               Expanded(
                                   flex: 9,
                                   child: Container(
@@ -340,6 +359,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                           left: 9, bottom: 8, right: 5),
                                       height: 36,
                                       child: TextFormField(
+                                        textCapitalization:
+                                            TextCapitalization.sentences,
                                         //   onFieldSubmitted: (term) => _add(),
                                         decoration: InputDecoration(
                                             hasFloatingPlaceholder: false,
@@ -386,7 +407,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     shrinkWrap: true,
                                     addAutomaticKeepAlives: true,
                                     itemCount: interdestinations.length,
-                                    itemBuilder: (_, i) => interdestinations[i],
+                                    itemBuilder: (_, i) => interdestinations[i]
                                   ),
                                 ),
                               ),
@@ -401,15 +422,31 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 bottom: 2, left: 16.0, right: 16.0, top: 2),
                             child: Row(children: <Widget>[
                               Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Icon(
-                                    Icons.brightness_1,
-                                    color: Color.fromRGBO(174, 7, 37, 1.0),
-                                    size: 18.0,
-                                  ),
-                                ),
-                              ),
+                                  flex: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 10.0),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Icon(
+                                            Icons.brightness_1,
+                                            color:
+                                                Color.fromRGBO(174, 7, 37, 1.0),
+                                            size: 15.0,
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Icon(
+                                            Icons.brightness_1,
+                                            color:
+                                                Color.fromRGBO(174, 7, 37, 0.2),
+                                            size: 30.0,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )),
                               Expanded(
                                   flex: 9,
                                   child: Container(
@@ -418,6 +455,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       height: 36,
                                       child: TextFormField(
                                         onTap: onAddForm,
+                                        textCapitalization:
+                                            TextCapitalization.sentences,
                                         // onFieldSubmitted: (term) => _add(),
 
                                         decoration: InputDecoration(
@@ -567,9 +606,20 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                             ],
                           ),
                         ),
-                        Divider(
-                          thickness: 8,
-                          color: Color.fromRGBO(0, 0, 0, 0.12),
+
+                        Container(
+                          height: 8,
+                          decoration: BoxDecoration(
+                              border: Border(
+                            top: BorderSide(
+                                width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
+                            bottom: BorderSide(
+                                width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
+                          )),
+                          child: Divider(
+                            thickness: 8,
+                            color: Color.fromRGBO(0, 0, 0, 0.03),
+                          ),
                         ),
 
                         ////// Popunjenost u procentimaaaaaaaaaaaaaaaaa
@@ -698,6 +748,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             focusNode: focusGoods,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -733,6 +784,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 8),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             focusNode: focusDimensions,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -795,6 +847,29 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 onPressed: _isBtnDisabled
                                     ? null
                                     : () {
+                                        // async {
+                                        //     try {
+                                        //       final result =
+                                        //           await InternetAddress.lookup(
+                                        //               'google.com');
+                                        //       if (result.isNotEmpty &&
+                                        //           result[0].rawAddress.isNotEmpty) {
+                                        //         print('connected');
+                                        //         Navigator.push(
+                                        //           context,
+                                        //           MaterialPageRoute(
+                                        //               builder: (context) =>
+                                        //                   CreateRoute()),
+                                        //         );
+                                        //       }
+                                        //     } on SocketException catch (_) {
+                                        //       print('not connected');
+                                        //       Navigator.of(context).push(
+                                        //           MaterialPageRoute(
+                                        //               builder: (context) =>
+                                        //                   NoInternetConnectionLogInSrceen()));
+                                        //     }
+
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         if (!currentFocus.hasPrimaryFocus) {
@@ -826,8 +901,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             );
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                             Timer(Duration(seconds: 2), () {
+                                              onceToast = 1;
+                                            Timer(Duration(seconds: 2), () {
                                               onceToast = 0;
                                             });
                                           }
@@ -854,11 +929,18 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               onceToast = 0;
                                             });
                                           }
-                                        } else if ((formatted
-                                                    .compareTo(formatted2) ==
-                                                0) ||
-                                            (formatted.compareTo(formatted2) >
-                                                0)) {
+                                        }
+                                        TimeOfDay t = TimeOfDay(
+                                            hour: int.parse(DateFormat('kk:mm')
+                                                .format(DateTime.now())
+                                                .split(":")[0]),
+                                            minute: int.parse(
+                                                DateFormat('kk:mm')
+                                                    .format(DateTime.now())
+                                                    .split(":")[1]));
+                                        if (formatted2.compareTo(formatP
+                                                .format(DateTime.now())) <
+                                            0) {
                                           if (onceToast == 0) {
                                             final snackBar = SnackBar(
                                               duration: Duration(seconds: 2),
@@ -867,7 +949,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               backgroundColor: Color.fromRGBO(
                                                   28, 28, 28, 1.0),
                                               content: Text(
-                                                  'Datum dolaska ne moze biti manji od datuma polaska'),
+                                                  'Datum dolaska ne može biti manji od današnjeg datuma.'),
                                               action: SnackBarAction(
                                                 label: 'Undo',
                                                 onPressed: () {},
@@ -876,16 +958,148 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
-                                             Timer(Duration(seconds: 2), () {
+                                            Timer(Duration(seconds: 2), () {
                                               onceToast = 0;
                                             });
                                           }
+                                        } else if (formatted2.compareTo(formatP
+                                                .format(DateTime.now())) ==
+                                            0) {
+                                          if (timeD.compareTo(t.toString()) <
+                                              0) {
+                                            if (onceToast == 0) {
+                                              final snackBar = SnackBar(
+                                                duration: Duration(seconds: 2),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor: Color.fromRGBO(
+                                                    28, 28, 28, 1.0),
+                                                content: Text(
+                                                    'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
+                                                action: SnackBarAction(
+                                                  label: 'Undo',
+                                                  onPressed: () {},
+                                                ),
+                                              );
+                                              Scaffold.of(context)
+                                                  .showSnackBar(snackBar);
+                                              onceToast = 1;
+                                              Timer(Duration(seconds: 2), () {
+                                                onceToast = 0;
+                                              });
+                                            }
+                                          }
+                                          if (timeD.compareTo(t.toString()) ==
+                                              0) {
+                                            if (onceToast == 0) {
+                                              final snackBar = SnackBar(
+                                                duration: Duration(seconds: 2),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor: Color.fromRGBO(
+                                                    28, 28, 28, 1.0),
+                                                content: Text(
+                                                    'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+                                                action: SnackBarAction(
+                                                  label: 'Undo',
+                                                  onPressed: () {},
+                                                ),
+                                              );
+                                              Scaffold.of(context)
+                                                  .showSnackBar(snackBar);
+                                              onceToast = 1;
+                                              Timer(Duration(seconds: 2), () {
+                                                onceToast = 0;
+                                              });
+                                            }
+                                          }
+                                        } else if (formatted2.compareTo(formatP
+                                                .format(DateTime.now())) >
+                                            0) {
+                                          if (formatted.compareTo(formatted2) >
+                                              0) {
+                                            if (onceToast == 0) {
+                                              final snackBar = SnackBar(
+                                                duration: Duration(seconds: 2),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor: Color.fromRGBO(
+                                                    28, 28, 28, 1.0),
+                                                content: Text(
+                                                    'Datum polaska ne može biti veći od datuma dolaska.'),
+                                                action: SnackBarAction(
+                                                  label: 'Undo',
+                                                  onPressed: () {},
+                                                ),
+                                              );
+                                              Scaffold.of(context)
+                                                  .showSnackBar(snackBar);
+                                              onceToast = 1;
+                                              Timer(Duration(seconds: 2), () {
+                                                onceToast = 0;
+                                              });
+                                            }
+                                          } else if (formatted
+                                                  .compareTo(formatted2) ==
+                                              0) {
+                                            if (timeP.compareTo(timeD) > 0) {
+                                              if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                            } else if (timeP.compareTo(timeD) ==
+                                                0) {
+                                              if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Datumi i vremena ne mogu biti jednaki.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                            }
                                         } else {
                                           if (onceBtnPressed == 0) {
+                                            print('btn kreiraj');
                                             onSave();
                                             createData();
                                             onceBtnPressed = 1;
                                           }
+                                        }
                                         }
                                       }),
                           ),
@@ -948,8 +1162,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       _isBtnDisabled = true;
     }
   }
-
- 
 
   // funkcija koja snima informacije u bazu
   createData() async {
