@@ -59,7 +59,7 @@ class CreateRouteScreenPage extends StatefulWidget {
 class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   List<InterdestinationForm> interdestinations = [];
 
-  final format = DateFormat("dd MMMM");
+  final format = DateFormat.MMMMd('bs');
   final formatTime = DateFormat("HH:mm");
   final formatP = DateFormat('dd/MM/yyyy');
   // key za formu
