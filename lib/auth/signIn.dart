@@ -29,424 +29,445 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    //MaterialApp(
-      //home: 
-      Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: new GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 72.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset('assets/img/Logo.png'),
-                          Container(
-                            margin: EdgeInsets.only(left: 16.0),
-                            child: Text('e-Špediter',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'RobotoMono',
-                                  fontWeight: FontWeight.w500,
-                                )),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Form(
-                            key: _formKey,
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      bottom: 24.0,
-                                      left: 24.0,
-                                      right: 24.0,
-                                      top: 24.0),
-                                  child: TextFormField(
-                                    focusNode: focusNode,
-
-                                    autocorrect: false,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    autofocus: true,
-                                    enableInteractiveSelection: false,
-                                    autovalidate: false,
-
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
-                                          borderSide: BorderSide(
-                                              color: Color.fromRGBO(
-                                                  0, 0, 0, 0.12)),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
-                                          borderSide: BorderSide(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
-                                          borderSide: BorderSide(
-                                              color: Color.fromRGBO(
-                                                  3, 54, 255, 1.0)),
-                                        ),
-                                        labelText: 'email',
-                                        hasFloatingPlaceholder: true,
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0))),
-                                    validator: (input) {
-                                      if (input == '') {
-                                        if (onceToast == 0) {
-                                          final snackBar = SnackBar(
-                                            duration: Duration(seconds: 2),
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor:
-                                                Color.fromRGBO(28, 28, 28, 1.0),
-                                            content:
-                                                Text('Email polje je prazno'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                          onceToast = 1;
-                                        }
-                                        return '';
-                                      } else if (!EmailValidator.validate(
-                                          input, true)) {
-                                        if (onceToast == 0) {
-                                          final snackBar = SnackBar(
-                                            duration: Duration(seconds: 2),
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor:
-                                                Color.fromRGBO(28, 28, 28, 1.0),
-                                            content: Text('Email nije validan'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                          onceToast = 1;
-                                        }
-                                        return '';
-                                      } else if (userExist != 'User postoji') {
-                                        if (onceToast == 0) {
-                                          final snackBar = SnackBar(
-                                            duration: Duration(seconds: 2),
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor:
-                                                Color.fromRGBO(28, 28, 28, 1.0),
-                                            content: Text(
-                                                'User sa unesenim emailom ne postoji'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                          onceToast = 1;
-                                        }
-                                        return '';
-                                      }
-                                      return null;
-                                    },
-                                    onChanged: (input) {
-                                      setState(() {
-                                        _email = input;
-                                      });
-                                    },
-                                    //  (val) => !EmailValidator.validate(val,true)
-                                    // ? 'Not a valid email' : null,
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      bottom: 24.0, left: 24.0, right: 24.0),
-                                  child: TextFormField(
-                                    focusNode: _focusNode,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
-                                          borderSide: BorderSide(
-                                              color: Color.fromRGBO(
-                                                  0, 0, 0, 0.12)),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
-                                          borderSide: BorderSide(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
-                                          borderSide: BorderSide(
-                                              color: Color.fromRGBO(
-                                                  3, 54, 255, 1.0)),
-                                        ),
-                                        labelText: 'lozinka',
-                                        hasFloatingPlaceholder: true,
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0))),
-                                    validator: (input) {
-                                      if (input == '') {
-                                        if (onceToast == 0) {
-                                          final snackBar = SnackBar(
-                                            duration: Duration(seconds: 2),
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor:
-                                                Color.fromRGBO(28, 28, 28, 1.0),
-                                            content: Text(
-                                                'Password polje je prazno'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                          onceToast = 1;
-                                        }
-                                        return '';
-                                      } else if (input.length < 6) {
-                                        if (onceToast == 0) {
-                                          final snackBar = SnackBar(
-                                            duration: Duration(seconds: 2),
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor:
-                                                Color.fromRGBO(28, 28, 28, 1.0),
-                                            content: Text(
-                                                'Password mora biti veći od 6 karaktera'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                          onceToast = 1;
-                                        }
-                                        return '';
-                                      } else if (passExist != 'Pass postoji') {
-                                        if (onceToast == 0) {
-                                          final snackBar = SnackBar(
-                                            duration: Duration(seconds: 2),
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor:
-                                                Color.fromRGBO(28, 28, 28, 1.0),
-                                            content:
-                                                Text('Password nije tačan'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                          onceToast = 1;
-                                        }
-                                        return '';
-                                      }
-                                      return null;
-                                    },
-                                    obscureText: true,
-                                    onChanged: (input) {
-                                      setState(() {
-                                        _password = input;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
+    return
+        //MaterialApp(
+        //home:
+        Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: new GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 72.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset('assets/img/Logo.png'),
+                        Container(
+                          margin: EdgeInsets.only(left: 16.0),
+                          child: Text('e-Špediter',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'RobotoMono',
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(
+                                    bottom: 24.0,
                                     left: 24.0,
                                     right: 24.0,
-                                    bottom: 284.0,
-                                  ),
-                                  child: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      minWidth: double.infinity,
-                                    ),
-                                    child: RaisedButton(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(4.0),
+                                    top: 24.0),
+                                child: TextFormField(
+                                  focusNode: focusNode,
+                                  autocorrect: false,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  autofocus: true,
+                                  enableInteractiveSelection: false,
+                                  autovalidate: false,
+                                  decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                        borderSide: BorderSide(
+                                            color:
+                                                Color.fromRGBO(0, 0, 0, 0.12)),
                                       ),
-                                      child: Text(
-                                        'PRIJAVA',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontFamily: 'RobotoMono',
-                                          fontWeight: FontWeight.w500,
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                        borderSide: BorderSide(
+                                          color: Colors.red,
                                         ),
                                       ),
-                                      color: Color.fromRGBO(3, 54, 255, 1.0),
-                                      onPressed: () async {
-                                        try {
-                                          final result =
-                                              await InternetAddress.lookup(
-                                                  'google.com');
-                                          if (result.isNotEmpty &&
-                                              result[0].rawAddress.isNotEmpty) {
-                                            print('connected');
-                                          }
-                                        } on SocketException catch (_) {
-                                          print('not connected');
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) => NoInternetConnectionLogInSrceen()));
-                                        }
-
-                                        FocusScopeNode currentFocus =
-                                            FocusScope.of(context);
-                                        if (!currentFocus.hasPrimaryFocus) {
-                                          currentFocus.unfocus();
-                                        }
-
-                                        if (_email == '' && _password == '') {
-                                          if (onceToast == 0) {
-                                            final snackBar = SnackBar(
-                                              backgroundColor: Color.fromRGBO(
-                                                  28, 28, 28, 1.0),
-                                              duration: Duration(seconds: 2),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              content:
-                                                  Text('Oba polja su prazna'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                          }
-                                        } else {
-                                          if (onceBtnPressed == 0) {
-                                            signIn(
-                                                _email, _password, userExist);
-                                            onceBtnPressed = 1;
-                                          }
-                                        }
-                                      },
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                        borderSide: BorderSide(
+                                            color: Color.fromRGBO(
+                                                3, 54, 255, 1.0)),
+                                      ),
+                                      labelText: 'email',
+                                      hasFloatingPlaceholder: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0))),
+                                  validator: (input) {
+                                    if (input == '') {
+                                      if (onceToast == 0) {
+                                        final snackBar = SnackBar(
+                                          duration: Duration(seconds: 2),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              Color.fromRGBO(28, 28, 28, 1.0),
+                                          content:
+                                              Text('Email polje je prazno'),
+                                          action: SnackBarAction(
+                                            label: 'Undo',
+                                            onPressed: () {},
+                                          ),
+                                        );
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackBar);
+                                        onceToast = 1;
+                                        Timer(Duration(seconds: 2), () {
+                                          onceToast = 0;
+                                        });
+                                      }
+                                      return '';
+                                    } else if (!EmailValidator.validate(
+                                        input, true)) {
+                                      if (onceToast == 0) {
+                                        final snackBar = SnackBar(
+                                          duration: Duration(seconds: 2),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              Color.fromRGBO(28, 28, 28, 1.0),
+                                          content: Text('Email nije validan'),
+                                          action: SnackBarAction(
+                                            label: 'Undo',
+                                            onPressed: () {},
+                                          ),
+                                        );
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackBar);
+                                        onceToast = 1;
+                                      }
+                                      Timer(Duration(seconds: 2), () {
+                                        onceToast = 0;
+                                      });
+                                      return '';
+                                    } else if (userExist != 'User postoji') {
+                                      if (onceToast == 0) {
+                                        final snackBar = SnackBar(
+                                          duration: Duration(seconds: 2),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              Color.fromRGBO(28, 28, 28, 1.0),
+                                          content: Text(
+                                              'User sa unesenim emailom ne postoji'),
+                                          action: SnackBarAction(
+                                            label: 'Undo',
+                                            onPressed: () {},
+                                          ),
+                                        );
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackBar);
+                                        onceToast = 1;
+                                      }
+                                      Timer(Duration(seconds: 2), () {
+                                        onceToast = 0;
+                                      });
+                                      return '';
+                                    }
+                                    Timer(Duration(seconds: 2), () {
+                                      onceToast = 0;
+                                    });
+                                    return null;
+                                  },
+                                  onChanged: (input) {
+                                    setState(() {
+                                      _email = input;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    bottom: 24.0, left: 24.0, right: 24.0),
+                                child: TextFormField(
+                                  focusNode: _focusNode,
+                                  decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                        borderSide: BorderSide(
+                                            color:
+                                                Color.fromRGBO(0, 0, 0, 0.12)),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                        borderSide: BorderSide(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                        borderSide: BorderSide(
+                                            color: Color.fromRGBO(
+                                                3, 54, 255, 1.0)),
+                                      ),
+                                      labelText: 'lozinka',
+                                      hasFloatingPlaceholder: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0))),
+                                  validator: (input) {
+                                    if (input == '') {
+                                      if (onceToast == 0) {
+                                        final snackBar = SnackBar(
+                                          duration: Duration(seconds: 2),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              Color.fromRGBO(28, 28, 28, 1.0),
+                                          content:
+                                              Text('Password polje je prazno'),
+                                          action: SnackBarAction(
+                                            label: 'Undo',
+                                            onPressed: () {},
+                                          ),
+                                        );
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackBar);
+                                        onceToast = 1;
+                                      }
+                                      Timer(Duration(seconds: 2), () {
+                                        onceToast = 0;
+                                      });
+                                      return '';
+                                    } else if (input.length < 6) {
+                                      if (onceToast == 0) {
+                                        final snackBar = SnackBar(
+                                          duration: Duration(seconds: 2),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              Color.fromRGBO(28, 28, 28, 1.0),
+                                          content: Text(
+                                              'Password mora biti veći od 6 karaktera'),
+                                          action: SnackBarAction(
+                                            label: 'Undo',
+                                            onPressed: () {},
+                                          ),
+                                        );
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackBar);
+                                        onceToast = 1;
+                                      }
+                                      Timer(Duration(seconds: 2), () {
+                                        onceToast = 0;
+                                      });
+                                      return '';
+                                    } else if (passExist != 'Pass postoji') {
+                                      if (onceToast == 0) {
+                                        final snackBar = SnackBar(
+                                          duration: Duration(seconds: 2),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              Color.fromRGBO(28, 28, 28, 1.0),
+                                          content: Text('Password nije tačan'),
+                                          action: SnackBarAction(
+                                            label: 'Undo',
+                                            onPressed: () {},
+                                          ),
+                                        );
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackBar);
+                                        onceToast = 1;
+                                      }
+                                      Timer(Duration(seconds: 2), () {
+                                        onceToast = 0;
+                                      });
+                                      return '';
+                                    }
+                                    Timer(Duration(seconds: 2), () {
+                                      onceToast = 0;
+                                    });
+                                    return null;
+                                  },
+                                  obscureText: true,
+                                  onChanged: (input) {
+                                    setState(() {
+                                      _password = input;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                  left: 24.0,
+                                  right: 24.0,
+                                  bottom: 284.0,
+                                ),
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    minWidth: double.infinity,
+                                  ),
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4.0),
                                     ),
+                                    child: Text(
+                                      'PRIJAVA',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'RobotoMono',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    color: Color.fromRGBO(3, 54, 255, 1.0),
+                                    onPressed: () async {
+                                      try {
+                                        final result =
+                                            await InternetAddress.lookup(
+                                                'google.com');
+                                        if (result.isNotEmpty &&
+                                            result[0].rawAddress.isNotEmpty) {
+                                          print('connected');
+                                        }
+                                      } on SocketException catch (_) {
+                                        print('not connected');
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NoInternetConnectionLogInSrceen()));
+                                      }
+
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      if (!currentFocus.hasPrimaryFocus) {
+                                        currentFocus.unfocus();
+                                      }
+
+                                      if (_email == '' && _password == '') {
+                                        if (onceToast == 0) {
+                                          final snackBar = SnackBar(
+                                            backgroundColor:
+                                                Color.fromRGBO(28, 28, 28, 1.0),
+                                            duration: Duration(seconds: 2),
+                                            behavior: SnackBarBehavior.floating,
+                                            content:
+                                                Text('Oba polja su prazna'),
+                                            action: SnackBarAction(
+                                              label: 'Undo',
+                                              onPressed: () {},
+                                            ),
+                                          );
+                                          Scaffold.of(context)
+                                              .showSnackBar(snackBar);
+                                          onceToast = 1;
+                                          Timer(Duration(seconds: 2), () {
+                                            onceToast = 0;
+                                          });
+                                        }
+                                      } else {
+                                        if (onceBtnPressed == 0) {
+                                          signIn(_email, _password, userExist);
+                                          onceBtnPressed = 1;
+                                        }
+                                      }
+                                    },
                                   ),
                                 ),
-                                Column(
-                                  children: <Widget>[
-                                    FutureBuilder(
-                                      future: doesPassAlreadyExist(_password),
-                                      builder: (context,
-                                          AsyncSnapshot<bool> result) {
-                                        if (!result.hasData) {
-                                          onceToast = 0;
-                                          onceBtnPressed = 0;
-                                          print('LOADING');
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  FutureBuilder(
+                                    future: doesPassAlreadyExist(_password),
+                                    builder:
+                                        (context, AsyncSnapshot<bool> result) {
+                                      if (!result.hasData) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        print('LOADING');
 
-                                          return Container(
-                                            width: 0,
-                                            height: 0,
-                                          );
-                                        } // future still needs to be finished (loading)
-                                        if (result.data) {
-                                          passExist = 'Pass postoji';
-                                          onceToast = 0;
-                                          onceBtnPressed = 0;
-                                          return Container(
-                                            width: 0,
-                                            height: 0,
-                                          );
-                                        } // result.data is the returned bool from doesNameAlreadyExists
+                                        return Container(
+                                          width: 0,
+                                          height: 0,
+                                        );
+                                      } // future still needs to be finished (loading)
+                                      if (result.data) {
+                                        passExist = 'Pass postoji';
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        return Container(
+                                          width: 0,
+                                          height: 0,
+                                        );
+                                      } // result.data is the returned bool from doesNameAlreadyExists
 
-                                        else {
-                                          passExist = 'Pass ne postoji';
-                                          onceToast = 0;
-                                          onceBtnPressed = 0;
-                                          return Container(
-                                            width: 0,
-                                            height: 0,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    FutureBuilder(
-                                      future: doesNameAlreadyExist(_email),
-                                      builder: (context,
-                                          AsyncSnapshot<bool> result) {
-                                        if (!result.hasData) {
-                                          onceToast = 0;
-                                          onceBtnPressed = 0;
-                                          print('LOADING');
-                                          return Container(
-                                            width: 0,
-                                            height: 0,
-                                          );
-                                        } // future still needs to be finished (loading)
-                                        if (result.data) {
-                                          onceToast = 0;
-                                          onceBtnPressed = 0;
-                                          userExist = 'User postoji';
-                                          return Container(
-                                            width: 0,
-                                            height: 0,
-                                          );
-                                        } // result.data is the returned bool from doesNameAlreadyExists
+                                      else {
+                                        passExist = 'Pass ne postoji';
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        return Container(
+                                          width: 0,
+                                          height: 0,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  FutureBuilder(
+                                    future: doesNameAlreadyExist(_email),
+                                    builder:
+                                        (context, AsyncSnapshot<bool> result) {
+                                      if (!result.hasData) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        print('LOADING');
+                                        return Container(
+                                          width: 0,
+                                          height: 0,
+                                        );
+                                      } // future still needs to be finished (loading)
+                                      if (result.data) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        userExist = 'User postoji';
+                                        return Container(
+                                          width: 0,
+                                          height: 0,
+                                        );
+                                      } // result.data is the returned bool from doesNameAlreadyExists
 
-                                        else {
-                                          onceToast = 0;
-                                          onceBtnPressed = 0;
-                                          userExist = 'User ne postoji';
-                                          passExist = 'Pass ne postoji';
-                                          return Container(
-                                            width: 0,
-                                            height: 0,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                                      else {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        userExist = 'User ne postoji';
+                                        passExist = 'Pass ne postoji';
+                                        return Container(
+                                          width: 0,
+                                          height: 0,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
       //),
     );
   }
@@ -470,21 +491,6 @@ class _LoginState extends State<Login> {
         print(e.message);
       }
     }
-
-    //  else {
-    //   if (onceToast == 0) {
-    //     final snackBar = SnackBar(
-    //       backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-    //       content: Text('Email ili password nije validan'),
-    //       action: SnackBarAction(
-    //         label: 'Undo',
-    //         onPressed: () {},
-    //       ),
-    //     );
-    //     Scaffold.of(context).showSnackBar(snackBar);
-    //     onceToast = 1;
-    //   }
-    // }
   }
 
 // provjera emaila

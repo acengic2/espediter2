@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
+import 'package:spediter/routes/noRoutes.dart';
 import './createRouteScreen.dart';
 import './companyRoutes.dart';
 
@@ -26,19 +27,18 @@ class ListOfRoutes extends StatelessWidget {
 
   String userID;
   ListOfRoutes({this.userID});
-  
-  
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ListOfRoutesPage(userID: userID),
     );
   }
 }
 
 class ListOfRoutesPage extends StatefulWidget {
-   /// id trenutne rute [id],
+  /// id trenutne rute [id],
   /// id kompanije [userID]
 
   String userID;
@@ -46,33 +46,38 @@ class ListOfRoutesPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState( userID:userID);
+    return _ListOfRoutesPageState(userID: userID);
   }
 }
 
 class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   ///instanca na bazu
   final db = Firestore.instance;
+
   /// id trenutne rute [id],
   /// id kompanije [userID]
 
   String userID;
+  bool imaliRuta = false;
 
   _ListOfRoutesPageState({this.userID});
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
 
     print(userID);
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
-           if(docs.documents.isNotEmpty){
-             print('NOT EMPRY');
-        
-           } else {
-             print('EMPTU');           }
-    } );
-    
+      if (docs.documents.isNotEmpty) {
+        print('NOT EMPRY');
+        imaliRuta = true;
+      } else {
+        print('EMPTU');
+        imaliRuta = false;
+        Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => NoRoutes()));
+      }
+    });
   }
 
   @override
@@ -82,33 +87,26 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
-
-
-        
-        Container(
-          // Future builder 
-          //
-          //u future se poziva metoda iz klase CompanyRoutes koja prima id
-          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-           child: FutureBuilder<QuerySnapshot>(
-             future: CompanyRutes().getCompanyRoutes(userID),
-              builder: (context, snapshot) {
-                // ukoliko postoje podatci
-                //vrati Column oi mapiraj kroz iste podatke
-                if (snapshot.hasData) {
-                    return Column(
-                      children: snapshot.data.documents
-                          .map((doc) => buildItem(doc))
-                          .toList(),
-                    );
-                  
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
-          ),
-
+          Container(
+              // Future builder
+              //
+              //u future se poziva metoda iz klase CompanyRoutes koja prima id
+              //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+              child: FutureBuilder<QuerySnapshot>(
+                      future: CompanyRutes().getCompanyRoutes(userID),
+                      builder: (context, snapshot) {
+                        // ukoliko postoje podatci
+                        //vrati Column oi mapiraj kroz iste podatke
+                        if (snapshot.hasData) {
+                          return Column(
+                            children: snapshot.data.documents
+                                .map((doc) => buildItem(doc))
+                                .toList(),
+                          );
+                        }
+                      },
+                    )
+          )
         ]),
         bottomNavigationBar: new BottomAppBar(
           child: Container(
@@ -163,7 +161,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Card buildItem(DocumentSnapshot doc) {
-
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
     String departureDate =
@@ -324,7 +321,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateRoute()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => CreateRoute()));
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
