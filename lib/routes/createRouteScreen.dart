@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
 import 'package:spediter/routes/form.dart';
+import 'package:spediter/utils/screenUtils.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
@@ -105,6 +107,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   DateTime selectedDateP;
   DateTime selectedDateD;
 
+  bool _screenUtilActive = true;
+
   // DateTime selectedDateP = DateTime.now();
   // DateTime selectedDateD = DateTime.now();
 
@@ -114,6 +118,16 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   Vehicle _selectedVehicle;
 
   bool _isBtnDisabled = true;
+
+  setScreenSize() {
+    if (!_screenUtilActive)
+      Constant.setScreenAwareConstant(context);
+    else
+      Constant.setDefaultSize(context);
+    setState(() {
+      _screenUtilActive = !_screenUtilActive;
+    });
+  }
 
   getUserid() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -150,15 +164,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   @override
   Widget build(BuildContext context) {
+     
     void onDelete(Interdestination _interdestination) {
       setState(() {
-        var find = interdestinations.firstWhere(
-          (it) => it.interdestination == _interdestination,
-          orElse: () => null,
-        );
-        if (find != null)
-          interdestinations.removeAt(interdestinations.indexOf(find));
-      });
+      var find = interdestinations.firstWhere(
+        (it) => it.interdestination == _interdestination,
+        orElse: () => null,
+      );
+      if (find != null) interdestinations.removeAt(interdestinations.indexOf(find));
+    });
     }
 
     ///on add form
@@ -173,7 +187,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       });
     }
 
-    return Scaffold(
+     double defaultScreenWidth = 400.0;
+  double defaultScreenHeight = 810.0;
+  ScreenUtil.instance = ScreenUtil(
+    width: defaultScreenWidth,
+    height: defaultScreenHeight,
+    allowFontScaling: true,
+  )..init(context);
+
+  return SafeArea( child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -221,6 +243,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   
          
                                     // style: TextStyle(fontSize: 10.0),
+                                  style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
                                     resetIcon: null,
                                     readOnly: true,
                                     decoration: InputDecoration(
@@ -282,6 +305,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   child: DateTimeField(
                                     resetIcon: null,
                                     readOnly: true,
+                                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
                                     //textAlign: TextAlign.center,
                                     decoration: InputDecoration(
                                       hintText: "Vrijeme polaska",
@@ -409,11 +433,12 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               Expanded(
                                 child: SizedBox(
                                   child: ListView.builder(
-                                    shrinkWrap: true,
-                                    addAutomaticKeepAlives: true,
-                                    itemCount: interdestinations.length,
-                                    itemBuilder: (_, i) => interdestinations[i]
-                                  ),
+                                      shrinkWrap: true,
+                                      addAutomaticKeepAlives: true,
+                                      itemCount: interdestinations.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return interdestinations[index];
+                                      }),
                                 ),
                               ),
                             ],
@@ -514,6 +539,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     // style: TextStyle(fontSize: 10.0),
                                     resetIcon: null,
                                     readOnly: true,
+                                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
                                     decoration: InputDecoration(
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -573,6 +599,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   child: DateTimeField(
                                     resetIcon: null,
                                     readOnly: true,
+                                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
                                     decoration: InputDecoration(
                                         hintText: "Vrijeme dolaska",
                                         contentPadding: EdgeInsets.fromLTRB(
@@ -908,7 +935,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             );
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
-                                              onceToast = 1;
+                                            onceToast = 1;
                                             Timer(Duration(seconds: 2), () {
                                               onceToast = 0;
                                             });
@@ -1099,14 +1126,14 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 });
                                               }
                                             }
-                                        } else {
-                                          if (onceBtnPressed == 0) {
-                                            print('btn kreiraj');
-                                            onSave();
-                                            createData();
-                                            onceBtnPressed = 1;
+                                          } else {
+                                            if (onceBtnPressed == 0) {
+                                              print('btn kreiraj');
+                                              onSave();
+                                              createData();
+                                              onceBtnPressed = 1;
+                                            }
                                           }
-                                        }
                                         }
                                       }),
                           ),
@@ -1121,7 +1148,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         ),
         // ),]
       ),
-    );
+    ),
+  );
   }
 
   ///on save forms
