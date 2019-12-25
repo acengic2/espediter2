@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +6,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
 import './companyRoutes.dart';
+import 'noRoutes.dart';
 
 void main() => runApp(ListOfRoutes());
 
@@ -18,13 +18,14 @@ final leftSection = new Container();
 final middleSection = new Container();
 final rightSection = new Container();
 
+String capacityString;
+
 class ListOfRoutes extends StatelessWidget {
   /// id trenutne rute [id],
   /// id kompanije [userID]
 
   String userID;
   ListOfRoutes({this.userID});
-  
   
 
   @override
@@ -55,6 +56,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   /// id kompanije [userID]
 
   String userID;
+  bool imaliRuta = true;
 
   _ListOfRoutesPageState({this.userID});
 
@@ -66,11 +68,14 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
            if(docs.documents.isNotEmpty){
              print('NOT EMPRY');
-        
+             imaliRuta = true;
            } else {
-             print('EMPTU');           }
+             print('EMPTU');
+            imaliRuta = false;
+        Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => NoRoutes()));           
+             }
     } );
-    
   }
 
   @override
@@ -167,6 +172,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     String departureDate =
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
+    capacityString = doc.data['capacity'];
+    capacityString = capacityString.substring(0, 1) + '.' + capacityString.substring(1, capacityString.length);
+
     final leftSection = new Container(
         height: 32,
         width: 62,
@@ -220,7 +228,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: ('${doc.data['capacity']} t'),
+                    text: ('$capacityString t'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,
