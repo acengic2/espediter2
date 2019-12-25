@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
@@ -176,9 +177,10 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     capacityString = capacityString.substring(0, 1) + '.' + capacityString.substring(1, capacityString.length);
 
     final leftSection = new Container(
-        height: 32,
-        width: 62,
-        margin: EdgeInsets.only(top: 8, bottom: 16),
+       height: 32,
+       width: 62,
+       margin: EdgeInsets.only(top: 8, bottom: 16),
+
         decoration: new BoxDecoration(
           shape: BoxShape.rectangle,
           color: blueColor,
@@ -285,9 +287,11 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     );
 
     return Card(
+      
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+
+        child: Column(          
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new RichText(
