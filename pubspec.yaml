@@ -31,6 +31,7 @@ dependencies:
   masked_text:
   flutter_masked_text:
   retry: ^3.0.0+1
+  flutter_screenutil: ^0.7.0
   
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

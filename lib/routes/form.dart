@@ -10,6 +10,9 @@ class InterdestinationForm extends StatefulWidget {
   final state = _UserFormState();
   final OnDelete onDelete;
   final OnAdd onAdd;
+
+  
+  
  
 
   InterdestinationForm({
@@ -26,8 +29,13 @@ class InterdestinationForm extends StatefulWidget {
   bool isValid() => state.validate();
 }
 
+
+
 class _UserFormState extends State<InterdestinationForm> {
   final form = GlobalKey<FormState>();
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +72,11 @@ class _UserFormState extends State<InterdestinationForm> {
                   height: 36.0,
                   margin: EdgeInsets.only(
                     bottom: 8,
-                    left: 9,
+                    left: 12,
                     right: 5,
                   ),
                   child: TextFormField(
+                    key: UniqueKey(),
                     onTap: widget.onAdd,
                     textCapitalization: TextCapitalization.sentences,
                     initialValue: widget.interdestination.interdestinationData,
@@ -77,10 +86,6 @@ class _UserFormState extends State<InterdestinationForm> {
                         val.length > 3 ? null : 'Unesite ime grada',
                     decoration: InputDecoration(
                         hasFloatingPlaceholder: false,
-                        // suffixIcon: IconButton(
-                        //   onPressed: widget.onDelete,
-                        //   icon: Icon(Icons.clear),
-                        // ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0)),
                           borderSide:
@@ -100,12 +105,13 @@ class _UserFormState extends State<InterdestinationForm> {
                   Expanded(
               flex: 1,
               child: Container(
+                margin: EdgeInsets.only(bottom: 2.0, ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
                     Container(
                       child:  IconButton(
-                          onPressed: widget.onDelete,
+                          onPressed:  widget.onDelete,
                           icon: Icon(Icons.clear),
                         ),
                     ),
