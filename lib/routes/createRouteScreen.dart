@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,10 +5,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
-import 'package:spediter/auth/noInternetOnLogin.dart';
 import 'package:spediter/routes/form.dart';
-import 'package:spediter/routes/homePage.dart';
-import 'package:spediter/routes/loadingRoutes.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
@@ -311,12 +307,27 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               Expanded(
                                 flex: 1,
                                 child: Container(
-                                  child: Icon(
-                                    Icons.brightness_1,
-                                    color: Color.fromRGBO(3, 54, 255, 1.0),
-                                    size: 20.0,
+                                  margin: EdgeInsets.only(bottom: 10.0),
+                                  child: Stack(
+                                  alignment: Alignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Icon(
+                                      Icons.brightness_1,
+                                      color: Color.fromRGBO(3, 54, 255, 1.0),
+                                      size: 15.0,
+                                    ),
                                   ),
+                                  Container(
+                                      child: Icon(
+                                      Icons.brightness_1,
+                                      color: Color.fromRGBO(3, 54, 255, 0.2),
+                                      size: 30.0,
+                                  ),
+                                  )
+                                  ],
                                 ),
+                                ) 
                               ),
                               Expanded(
                                   flex: 9,
@@ -325,6 +336,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                           left: 9, bottom: 8, right: 5),
                                       height: 36,
                                       child: TextFormField(
+                                        textCapitalization: TextCapitalization.sentences,
                                         //   onFieldSubmitted: (term) => _add(),
                                         decoration: InputDecoration(
                                             hasFloatingPlaceholder: false,
@@ -387,12 +399,27 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               Expanded(
                                 flex: 1,
                                 child: Container(
-                                  child: Icon(
-                                    Icons.brightness_1,
-                                    color: Color.fromRGBO(174, 7, 37, 1.0),
-                                    size: 18.0,
+                                  margin: EdgeInsets.only(bottom: 10.0),
+                                  child: Stack(
+                                  alignment: Alignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Icon(
+                                      Icons.brightness_1,
+                                      color: Color.fromRGBO(174, 7, 37, 1.0),
+                                      size: 15.0,
+                                    ),
                                   ),
+                                  Container(
+                                      child: Icon(
+                                      Icons.brightness_1,
+                                      color: Color.fromRGBO(174, 7, 37, 0.2),
+                                      size: 30.0,
+                                  ),
+                                  )
+                                  ],
                                 ),
+                                )
                               ),
                               Expanded(
                                   flex: 9,
@@ -402,6 +429,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       height: 36,
                                       child: TextFormField(
                                         onTap: onAddForm,
+                                        textCapitalization: TextCapitalization.sentences,
                                         // onFieldSubmitted: (term) => _add(),
 
                                         decoration: InputDecoration(
@@ -546,10 +574,20 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                             ],
                           ),
                         ),
-                        Divider(
-                          thickness: 8,
-                          color: Color.fromRGBO(0, 0, 0, 0.12),
-                        ),
+                        
+                        Container(
+                          height: 8,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
+                              bottom: BorderSide(width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
+                              )
+                              ),
+                            child: Divider(
+                              thickness: 8,
+                              color: Color.fromRGBO(0, 0, 0, 0.03),
+                            ),
+                          ),
 
                         ////// Popunjenost u procentimaaaaaaaaaaaaaaaaa
                         Container(
@@ -674,6 +712,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             focusNode: focusGoods,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -708,6 +747,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 8),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             focusNode: focusDimensions,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -768,28 +808,29 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 ),
                                 onPressed: _isBtnDisabled
                                     ? null
-                                    : () async {
-                                        try {
-                                          final result =
-                                              await InternetAddress.lookup(
-                                                  'google.com');
-                                          if (result.isNotEmpty &&
-                                              result[0].rawAddress.isNotEmpty) {
-                                            print('connected');
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CreateRoute()),
-                                            );
-                                          }
-                                        } on SocketException catch (_) {
-                                          print('not connected');
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      NoInternetConnectionLogInSrceen()));
-                                        }
+                                    : () {
+                                    // async {
+                                    //     try {
+                                    //       final result =
+                                    //           await InternetAddress.lookup(
+                                    //               'google.com');
+                                    //       if (result.isNotEmpty &&
+                                    //           result[0].rawAddress.isNotEmpty) {
+                                    //         print('connected');
+                                    //         Navigator.push(
+                                    //           context,
+                                    //           MaterialPageRoute(
+                                    //               builder: (context) =>
+                                    //                   CreateRoute()),
+                                    //         );
+                                    //       }
+                                    //     } on SocketException catch (_) {
+                                    //       print('not connected');
+                                    //       Navigator.of(context).push(
+                                    //           MaterialPageRoute(
+                                    //               builder: (context) =>
+                                    //                   NoInternetConnectionLogInSrceen()));
+                                    //     }
 
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
@@ -844,12 +885,10 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
                                           }
-                                        } else if ((formatted
-                                                    .compareTo(formatted2) ==
-                                                0) ||
-                                            (formatted.compareTo(formatted2) >
-                                                0)) {
-                                          if (onceToast == 0) {
+                                        } 
+                                        TimeOfDay t = TimeOfDay(hour:int.parse(DateFormat('kk:mm').format(DateTime.now()).split(":")[0]),minute: int.parse(DateFormat('kk:mm').format(DateTime.now()).split(":")[1]));
+                              if (formatted2.compareTo(formatP.format(DateTime.now())) < 0) {
+                                if (onceToast == 0) {
                                             final snackBar = SnackBar(
                                               duration: Duration(seconds: 2),
                                               behavior:
@@ -857,7 +896,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               backgroundColor: Color.fromRGBO(
                                                   28, 28, 28, 1.0),
                                               content: Text(
-                                                  'Datum dolaska ne moze biti manji od datuma polaska'),
+                                                  'Datum dolaska ne može biti manji od današnjeg datuma.'),
                                               action: SnackBarAction(
                                                 label: 'Undo',
                                                 onPressed: () {},
@@ -867,7 +906,138 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
                                           }
-                                        } else {
+                              } 
+                              else if (formatted2.compareTo(formatP.format(DateTime.now())) == 0) {
+                                if (timeD.compareTo(t.toString()) < 0) {
+                                  if (onceToast == 0) {
+                                            final snackBar = SnackBar(
+                                              duration: Duration(seconds: 2),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              backgroundColor: Color.fromRGBO(
+                                                  28, 28, 28, 1.0),
+                                              content: Text(
+                                                  'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
+                                              action: SnackBarAction(
+                                                label: 'Undo',
+                                                onPressed: () {},
+                                              ),
+                                            );
+                                            Scaffold.of(context)
+                                                .showSnackBar(snackBar);
+                                            onceToast = 1;
+                                          }
+                                }
+                                if (timeD.compareTo(t.toString()) == 0) {
+                                  if (onceToast == 0) {
+                                            final snackBar = SnackBar(
+                                              duration: Duration(seconds: 2),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              backgroundColor: Color.fromRGBO(
+                                                  28, 28, 28, 1.0),
+                                              content: Text(
+                                                  'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+                                              action: SnackBarAction(
+                                                label: 'Undo',
+                                                onPressed: () {},
+                                              ),
+                                            );
+                                            Scaffold.of(context)
+                                                .showSnackBar(snackBar);
+                                            onceToast = 1;
+                                          }
+                                } 
+                              }
+                              else if (formatted2.compareTo(formatP.format(DateTime.now())) > 0) {
+                                if (formatted.compareTo(formatted2) > 0) {
+                                  if (onceToast == 0) {
+                                            final snackBar = SnackBar(
+                                              duration: Duration(seconds: 2),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              backgroundColor: Color.fromRGBO(
+                                                  28, 28, 28, 1.0),
+                                              content: Text(
+                                                  'Datum polaska ne može biti veći od datuma dolaska.'),
+                                              action: SnackBarAction(
+                                                label: 'Undo',
+                                                onPressed: () {},
+                                              ),
+                                            );
+                                            Scaffold.of(context)
+                                                .showSnackBar(snackBar);
+                                            onceToast = 1;
+                                          }
+                                } 
+                                else if (formatted.compareTo(formatted2) == 0) {
+                                  if (timeP.compareTo(timeD) > 0) {
+                                    if (onceToast == 0) {
+                                            final snackBar = SnackBar(
+                                              duration: Duration(seconds: 2),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              backgroundColor: Color.fromRGBO(
+                                                  28, 28, 28, 1.0),
+                                              content: Text(
+                                                  'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
+                                              action: SnackBarAction(
+                                                label: 'Undo',
+                                                onPressed: () {},
+                                              ),
+                                            );
+                                            Scaffold.of(context)
+                                                .showSnackBar(snackBar);
+                                            onceToast = 1;
+                                          }
+                                  } 
+                                  else if (timeP.compareTo(timeD) == 0) {
+                                    if (onceToast == 0) {
+                                            final snackBar = SnackBar(
+                                              duration: Duration(seconds: 2),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              backgroundColor: Color.fromRGBO(
+                                                  28, 28, 28, 1.0),
+                                              content: Text(
+                                                  'Datumi i vremena ne mogu biti jednaki.'),
+                                              action: SnackBarAction(
+                                                label: 'Undo',
+                                                onPressed: () {},
+                                              ),
+                                            );
+                                            Scaffold.of(context)
+                                                .showSnackBar(snackBar);
+                                            onceToast = 1;
+                                          }
+                                  } 
+                                }
+                              }
+                                        // else if ((formatted
+                                        //             .compareTo(formatted2) ==
+                                        //         0) ||
+                                        //     (formatted.compareTo(formatted2) >
+                                        //         0)) {
+                                        //   if (onceToast == 0) {
+                                        //     final snackBar = SnackBar(
+                                        //       duration: Duration(seconds: 2),
+                                        //       behavior:
+                                        //           SnackBarBehavior.floating,
+                                        //       backgroundColor: Color.fromRGBO(
+                                        //           28, 28, 28, 1.0),
+                                        //       content: Text(
+                                        //           'Datum dolaska ne moze biti manji od datuma polaska'),
+                                        //       action: SnackBarAction(
+                                        //         label: 'Undo',
+                                        //         onPressed: () {},
+                                        //       ),
+                                        //     );
+                                        //     Scaffold.of(context)
+                                        //         .showSnackBar(snackBar);
+                                        //     onceToast = 1;
+                                        //   }
+                                        // } 
+                                        else {
                                           onSave();
                                           createData();
                                         }
