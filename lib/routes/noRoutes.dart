@@ -1,7 +1,7 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../auth/noInternetOnLogin.dart';
 import './createRouteScreen.dart';
 
 void main() => runApp(NoRoutes());
@@ -35,31 +35,29 @@ class NoRoutesScreenPage extends StatefulWidget {
 }
 
 class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
-
-
-Future<bool> _onBackPressed()=> showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Do you want to logout the app?"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("No"),
-                  onPressed: () => Navigator.pop(context,false),
-                ),
-                // FlatButton(
-                // onPressed: () => exit(0),
-                // /*Navigator.of(context).pop(true)*/
-                // child: Text('Yes'),
+  Future<bool> _onBackPressed() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text("Do you want to logout the app?"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("No"),
+                onPressed: () => Navigator.pop(context, false),
+              ),
+              // FlatButton(
+              // onPressed: () => exit(0),
+              // /*Navigator.of(context).pop(true)*/
+              // child: Text('Yes'),
               // ),
-              ],
-            ));
+            ],
+          ));
 
   @override
   Widget build(BuildContext context) {
-     return WillPopScope(
-          onWillPop: _onBackPressed,
-            child: Scaffold(  
-                      resizeToAvoidBottomPadding: false,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Container(
           // margin:EdgeInsets.only(top: 257.0) ,
           child: Center(
@@ -91,11 +89,27 @@ Future<bool> _onBackPressed()=> showDialog(
                     height: 36.0,
                     child: RaisedButton.icon(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CreateRoute()),
-                        );
+                        Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateRoute()));
+                        // try {
+                        //   final result =
+                        //       await InternetAddress.lookup('google.com');
+                        //   if (result.isNotEmpty &&
+                        //       result[0].rawAddress.isNotEmpty) {
+                        //     print('connected');
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => CreateRoute()),
+                        //     );
+                        //   }
+                        // } on SocketException catch (_) {
+                        //   print('not connected');
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           NoInternetConnectionLogInSrceen()));
+                        // }
                       },
                       icon: Icon(
                         Icons.add,
@@ -139,11 +153,27 @@ Future<bool> _onBackPressed()=> showDialog(
                   margin: EdgeInsets.only(left: 4.0),
                   child: IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreateRoute()),
-                      );
+                      Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateRoute()));
+                      // try {
+                      //   final result =
+                      //       await InternetAddress.lookup('google.com');
+                      //   if (result.isNotEmpty &&
+                      //       result[0].rawAddress.isNotEmpty) {
+                      //     print('connected');
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => CreateRoute()),
+                      //     );
+                      //   }
+                      // } on SocketException catch (_) {
+                      //   print('not connected');
+                      //   Navigator.of(context).push(MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           NoInternetConnectionLogInSrceen()));
+                      // }
                     },
                     icon: Icon(Icons.info_outline),
                   ),
@@ -155,10 +185,27 @@ Future<bool> _onBackPressed()=> showDialog(
         floatingActionButton: Container(
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateRoute()),
-              );
+              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateRoute()));
+              // try {
+              //   final result = await InternetAddress.lookup('google.com');
+              //   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+              //     print('connected');
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => CreateRoute()),
+              //     );
+              //   }
+              // } on SocketException catch (_) {
+              //   print('not connected');
+              //   Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => NoInternetConnectionLogInSrceen()));
+              // }
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => CreateRoute()),
+              // );
             },
             tooltip: '+',
             child: Icon(Icons.add),
@@ -166,10 +213,7 @@ Future<bool> _onBackPressed()=> showDialog(
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-    ),
-     );
+      ),
+    );
   }
-
-   
-
 }

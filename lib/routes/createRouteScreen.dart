@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
+import 'package:spediter/auth/noInternetOnLogin.dart';
 import 'package:spediter/routes/form.dart';
 import 'package:spediter/routes/homePage.dart';
 import 'package:spediter/routes/loadingRoutes.dart';
@@ -12,7 +15,6 @@ import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
 import 'listOfRoutes.dart';
-
 
 void main() => runApp(CreateRoute());
 
@@ -32,15 +34,6 @@ class CreateRoute extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // localizationsDelegates: [
-      //   // ... app-specific localization delegate[s] here
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      // ],
-      // supportedLocales: [
-      //   const Locale('bs'), // Bosnian
-      //   const Locale('en'), // English
-      // ],
       home: CreateRouteScreenPage(title: 'Kreiraj Rutu'),
     );
   }
@@ -74,7 +67,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   var focusStarting = new FocusNode();
   var focusEnding = new FocusNode();
 
-  int onceToast = 0;
+  int onceToast = 0, onceBtnPressed = 0;
 
   var controller = new MaskedTextController(
     mask: '0.00',
@@ -116,12 +109,27 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   bool _isBtnDisabled = true;
 
+   getUserid() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+
+    Firestore.instance
+        .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
+        .document(user.uid) // takes user.id
+        .snapshots()
+        .toString();
+
+    userID = user.uid;
+    print('Ovo je user id ' + userID);
+  }
+
   @override
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
     //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
     getUserid();
+    onceToast = 0;
   }
 
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
@@ -157,7 +165,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       });
     }
 
-    return Scaffold(
+    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+    return Scaffold( 
+
+      key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -166,7 +178,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NoRoutes()),
+              MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
             );
           },
         ),
@@ -178,6 +190,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
             onceToast = 0;
+            onceBtnPressed = 0;
           },
           child: ListView(
             children: <Widget>[
@@ -245,6 +258,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       return selectedDateP;
                                     },
                                     onChanged: (input) {
+                                      onceToast = 0;
+                                      onceBtnPressed = 0;
                                       areFieldsEmpty();
                                     },
                                   ),
@@ -291,6 +306,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
+                                      onceToast = 0;
+                                      onceBtnPressed = 0;
                                       areFieldsEmpty();
                                     },
                                   ),
@@ -350,6 +367,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         onChanged: (input) {
                                           setState(() {
                                             onceToast = 0;
+                                            onceBtnPressed = 0;
                                             startingDestination = input;
                                             areFieldsEmpty();
                                           });
@@ -428,6 +446,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         onChanged: (input) {
                                           setState(() {
                                             onceToast = 0;
+                                            onceBtnPressed = 0;
                                             endingDestination = input;
                                             areFieldsEmpty();
                                           });
@@ -492,6 +511,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       return selectedDateD;
                                     },
                                     onChanged: (input) {
+                                      onceToast = 0;
+                                      onceBtnPressed = 0;
                                       areFieldsEmpty();
                                     },
                                   ),
@@ -536,6 +557,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
+                                      onceToast = 0;
+                                      onceBtnPressed = 0;
                                       areFieldsEmpty();
                                     },
                                   ),
@@ -583,6 +606,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 } else {
                                   percentageVar = null;
                                 }
+                                onceToast = 0;
+                                onceBtnPressed = 0;
                                 areFieldsEmpty();
                               });
                             },
@@ -621,6 +646,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               setState(() {
                                 capacityVar = input;
                                 onceToast = 0;
+                                onceBtnPressed = 0;
                                 areFieldsEmpty();
                               });
                             },
@@ -695,6 +721,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               setState(() {
                                 goodsVar = input;
                                 onceToast = 0;
+                                onceBtnPressed = 0;
                                 areFieldsEmpty();
                               });
                             },
@@ -730,6 +757,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               setState(() {
                                 dimensionsVar = input;
                                 onceToast = 0;
+                                onceBtnPressed = 0;
                                 areFieldsEmpty();
                               });
                             },
@@ -799,6 +827,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
+                                             Timer(Duration(seconds: 2), () {
+                                              onceToast = 0;
+                                            });
                                           }
                                         } else if (percentageVar < 0 ||
                                             percentageVar > 100) {
@@ -819,6 +850,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
+                                            Timer(Duration(seconds: 2), () {
+                                              onceToast = 0;
+                                            });
                                           }
                                         } else if ((formatted
                                                     .compareTo(formatted2) ==
@@ -842,10 +876,16 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             Scaffold.of(context)
                                                 .showSnackBar(snackBar);
                                             onceToast = 1;
+                                             Timer(Duration(seconds: 2), () {
+                                              onceToast = 0;
+                                            });
                                           }
                                         } else {
-                                          onSave();
-                                          createData();
+                                          if (onceBtnPressed == 0) {
+                                            onSave();
+                                            createData();
+                                            onceBtnPressed = 1;
+                                          }
                                         }
                                       }),
                           ),
@@ -909,20 +949,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     }
   }
 
-  getUserid() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
-    
-   Firestore.instance
-        .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
-        .document(user.uid) // takes user.id
-        .snapshots()
-        .toString();
-
-    userID = user.uid;
-    print('Ovo je user id ' + userID);
-   
-  }
+ 
 
   // funkcija koja snima informacije u bazu
   createData() async {
@@ -948,9 +975,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     // navigiramo do ListOfRoutes i saljemo userID i id
     Navigator.push(
       context,
-
       MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
-
     );
   }
 
@@ -959,6 +984,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       _selectedVehicle = vehicle;
       vehicleVar = _selectedVehicle.name;
     });
+    onceToast = 0;
+    onceBtnPressed = 0;
     areFieldsEmpty();
   }
 }
@@ -982,7 +1009,4 @@ class Vehicle {
       Vehicle(9, "Traktor"),
     ];
   }
-
-
-
 }

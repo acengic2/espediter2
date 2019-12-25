@@ -69,14 +69,11 @@ checkForID() async {
 checkRole(DocumentSnapshot snapshot)  {
   checkForID();
   if (snapshot.data['role'] == "company") {
-      
        return ListOfRoutes(userID: usID);
-    //getUserIDFromRoutes();
-    // return adminPage(snapshot);
-
-
   } else if (snapshot.data['role'] == "user") {
     return userPage(snapshot);
+  } else {
+     return NoRoutes();
   }
 }
 //if is a user go to list of routes
@@ -84,7 +81,3 @@ Center userPage(DocumentSnapshot snapshot) {
   return Center(child: ListOfUsersRoutes());
 }
 
-// // if is a admin go to no routes page
-// Center adminPage(DocumentSnapshot snapshot) {
-//   return Center(child: NoRoutes());
-// }
