@@ -26,7 +26,6 @@ class ListOfRoutes extends StatelessWidget {
   /// id kompanije [userID]
   String userID;
   ListOfRoutes({this.userID});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -37,44 +36,45 @@ class ListOfRoutes extends StatelessWidget {
 }
 
 class ListOfRoutesPage extends StatefulWidget {
-   /// id trenutne rute [id],
+  /// id trenutne rute [id],
   /// id kompanije [userID]
   String userID;
   ListOfRoutesPage({this.userID});
 
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState( userID:userID);
+    return _ListOfRoutesPageState(userID: userID);
   }
 }
 
 class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   ///instanca na bazu
   final db = Firestore.instance;
+
   /// id trenutne rute [id],
   /// id kompanije [userID]
   String userID;
   bool imaliRuta = true;
 
-
   _ListOfRoutesPageState({this.userID});
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     print(userID);
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
-           if(docs.documents.isNotEmpty){
-             print('NOT EMPRY');
-             imaliRuta = true;
-           } else {
-             print('EMPTU');
-            imaliRuta = false;
-        Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => NoRoutes()));           
-             }
-    } );
+      if (docs.documents.isNotEmpty) {
+        print('NOT EMPRY');
+        imaliRuta = true;
+      } else {
+        print('EMPTU');
+        imaliRuta = false;
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     
@@ -91,29 +91,28 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
-        Container(
-          // Future builder 
-          //
-          //u future se poziva metoda iz klase CompanyRoutes koja prima id
-          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-           child: FutureBuilder<QuerySnapshot>(
-             future: CompanyRutes().getCompanyRoutes(userID),
+          Container(
+            // Future builder
+            //
+            //u future se poziva metoda iz klase CompanyRoutes koja prima id
+            //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+            child: FutureBuilder<QuerySnapshot>(
+              future: CompanyRutes().getCompanyRoutes(userID),
               builder: (context, snapshot) {
                 // ukoliko postoje podatci
                 //vrati Column oi mapiraj kroz iste podatke
                 if (snapshot.hasData) {
-                    return Column(
-                      children: snapshot.data.documents
-                          .map((doc) => buildItem(doc))
-                          .toList(),
-                    );
+                  return Column(
+                    children: snapshot.data.documents
+                        .map((doc) => buildItem(doc))
+                        .toList(),
+                  );
                 } else {
                   return SizedBox();
                 }
               },
             ),
           ),
-
         ]),
         bottomNavigationBar: new BottomAppBar(
           child: Container(
@@ -168,7 +167,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Card buildItem(DocumentSnapshot doc) {
-
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
     String departureDate =
@@ -178,10 +176,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     // String capacityStringFinal = capacityString.substring(0,1) + '.' + capacityString.substring(1,2);
 
     final leftSection = new Container(
-       height: 32,
-       width: 62,
-       margin: EdgeInsets.only(top: 8, bottom: 16),
-
+        height: 32,
+        width: 62,
+        margin: EdgeInsets.only(top: 8, bottom: 16),
         decoration: new BoxDecoration(
           shape: BoxShape.rectangle,
           color: blueColor,
@@ -245,62 +242,66 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           ],
         ));
 
-        @override
- 
-
+    @override
     String availability = doc.data['availability'];
-     
-    final rightSection = new Container(
-      margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 0.0),
-      //  margin: EdgeInsets.only(top: ScreenUtil.instance.setWidth(50.0)),
 
-      
-      decoration: BoxDecoration(
-          border: Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
-          borderRadius: BorderRadius.all(Radius.circular(1.0))),
-      child: new Padding(
-        padding: EdgeInsets.only(left: 0.0, right: 0.0),
-        child:       
-            LinearPercentIndicator(
-              
-          width: ScreenUtil.instance.setWidth(142.0),
-          lineHeight: 30.0,
-          percent: (double.parse(availability)) / 100,
-         
-          center: RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Popunjenost: ',
-                    style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14.0,
-                        color: Colors.black.withOpacity(0.6))),
-                TextSpan(
-                  text: ('${doc.data['availability']} %'),
-                  style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.8)),
-                ),
-              ],
-            ),
+    final rightSection = new Stack(
+    // fit: StackFit.passthrough,
+      //fit: StackFit.expand,
+      children: <Widget>[
+        Container(
+          width: 150,
+          height: 32 ,
+            margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 1.0),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    width: 1.0, color: Colors.black.withOpacity(0.12)),
+                borderRadius: BorderRadius.all(Radius.circular(1.0))),
           ),
-          linearStrokeCap: LinearStrokeCap.butt,
-          backgroundColor: Colors.white,
-          progressColor: Color.fromRGBO(3, 54, 255, 0.12),
-        ),
+          Container(
+            margin:  EdgeInsets.only(top: 9),
+           child: LinearPercentIndicator(
+         padding: EdgeInsets.only(left: 1),
+              width: 149.0,
+              lineHeight: 30.0,
+              percent: (double.parse(availability)) / 100,
+              center: RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Popunjenost: ',
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: Colors.black.withOpacity(0.6))),
+                    TextSpan(
+                      text: ('${doc.data['availability']} %'),
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.8)),
+                    ),
+                  ],
+                ),
+              ),
+              linearStrokeCap: LinearStrokeCap.butt,
+              backgroundColor: Colors.white,
+              progressColor: Color.fromRGBO(3, 54, 255, 0.12),
+            )
+          )
+       
 
-      ),
+
+
+
+      ],
     );
 
     return Card(
-      
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-
-        child: Column(          
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new RichText(
@@ -314,7 +315,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontWeight: FontWeight.bold,
                         fontFamily: "Roboto",
                       )),
-                      new TextSpan(
+                  new TextSpan(
                       text: (', '),
                       style: new TextStyle(
                         fontSize: 20.0,
@@ -350,7 +351,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateRoute()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => CreateRoute()));
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
