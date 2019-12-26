@@ -165,7 +165,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    String capacityStringFinal = capacityString.substring(0,3);
+    // String capacityStringFinal = capacityString.substring(0,1) + '.' + capacityString.substring(1,2);
 
     final leftSection = new Container(
        height: 32,
@@ -196,7 +196,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
     final middleSection = new Container(
         height: 32,
-        width: 130,
+        width: 110,
         margin: EdgeInsets.only(left: 4.0, right: 4.0, top: 8, bottom: 16),
         decoration: new BoxDecoration(
           shape: BoxShape.rectangle,
@@ -221,7 +221,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: ('$capacityStringFinal t'),
+                    text: ('$capacityString t'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,

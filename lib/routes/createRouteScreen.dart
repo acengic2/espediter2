@@ -105,10 +105,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   DateTime selectedDateP;
   DateTime selectedDateD;
 
-
-/// Timestamp var [unos u bazu zbog ordera ispisa]
- int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
-
+  /// Timestamp var [unos u bazu zbog ordera ispisa]
+  int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
 
   bool _screenUtilActive = true;
 
@@ -160,6 +158,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     }
     return items;
   }
+
   @override
   Widget build(BuildContext context) {
     void onDelete(Interdestination _interdestination) {
@@ -257,7 +256,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         contentPadding: EdgeInsets.fromLTRB(
                                             20.0, 10.0, 20.0, 10.0),
                                       ),
-                                     format: format,
+                                      format: format,
                                       onShowPicker:
                                           (context, currentValue) async {
                                         final DateTime picked =
@@ -673,29 +672,31 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               focusNode: focusPercentage,
                               decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                    borderSide: BorderSide(
-                                        color: Color.fromRGBO(0, 0, 0, 0.12))),
-                                labelText: 'Popunjenost u procentima',
-                                labelStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 0.5)),
-                                hasFloatingPlaceholder: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                            onChanged: (input) {
-                              setState(() {
-                                if (input != '') {
-                                  percentageVar = int.parse(input);
-                                } else {
-                                  percentageVar = null;
-                                }
-                                onceToast = 0;
-                                onceBtnPressed = 0;
-                                areFieldsEmpty();
-                              });
-                            },
-                          ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0)),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromRGBO(0, 0, 0, 0.12))),
+                                  labelText: 'Popunjenost u procentima',
+                                  labelStyle: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
+                                  hasFloatingPlaceholder: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
+                              onChanged: (input) {
+                                setState(() {
+                                  if (input != '') {
+                                    percentageVar = int.parse(input);
+                                  } else {
+                                    percentageVar = null;
+                                  }
+                                  onceToast = 0;
+                                  onceBtnPressed = 0;
+                                  areFieldsEmpty();
+                                });
+                              },
+                            ),
                           ),
                           ////// kapacitet y tonamaaaaaaaa
 
@@ -731,6 +732,14 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 print(input);
                                 setState(() {
                                   capacityVar = input;
+
+                                  double capacityDouble =
+                                      double.parse(capacityVar);
+                                  if (capacityDouble >= 10) {
+                                    capacityDouble = capacityDouble / 10.0;
+                                  }
+                                  capacityVar = capacityDouble.toString();
+
                                   print(capacityVar);
                                   onceToast = 0;
                                   onceBtnPressed = 0;
@@ -1190,7 +1199,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         }
         print(listOfInterdestinations);
         if (listOfInterdestinations == ', ') {
-          listOfInterdestinations = listOfInterdestinations.substring(0, listOfInterdestinations.length - 2);
+          listOfInterdestinations = listOfInterdestinations.substring(
+              0, listOfInterdestinations.length - 2);
         }
       }
     }
@@ -1200,7 +1210,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   areFieldsEmpty() {
     if ((percentageVar != null) &&
         (dimensionsVar != '' && dimensionsVar != null) &&
-        (capacityVar != null && capacityVar != '' && capacityVar != '.') &&
+        (capacityVar != null && capacityVar != '') &&
         (goodsVar != '' && goodsVar != null) &&
         (endingDestination != '' && endingDestination != null) &&
         (startingDestination != '' && startingDestination != null) &&
@@ -1210,20 +1220,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         (timeP != null && timeP != '' && timeP != 'Vrijeme polaska') &&
         (_selectedVehicle != null)) {
       _isBtnDisabled = false;
-    } else if ((percentageVar == null) ||
-        (dimensionsVar == '' || dimensionsVar == null) ||
-        (capacityVar == null || capacityVar == '' || capacityVar == '.') ||
-        (goodsVar == '' || goodsVar == null) ||
-        (endingDestination == '' || endingDestination == null) ||
-        (startingDestination == '' || startingDestination == null) ||
-        (selectedDateD == null) ||
-        (selectedDateP == null) ||
-        (timeD == null || timeD == '' || timeD == 'Vrijeme dolaska') ||
-        (timeP == null || timeP == '' || timeP == 'Vrijeme polaska') ||
-        (_selectedVehicle == null)) {
+    } else 
+        {
       _isBtnDisabled = true;
     }
   }
+
+  //input goes to double
+  // input divide 10
+  // vrati to string i upisati u bazu
 
   // funkcija koja snima informacije u bazu
   createData() async {
