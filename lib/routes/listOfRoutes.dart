@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
@@ -54,7 +55,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   /// id kompanije [userID]
   String userID;
   bool imaliRuta = true;
-  
+
 
   _ListOfRoutesPageState({this.userID});
 
@@ -76,6 +77,15 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   }
   @override
   Widget build(BuildContext context) {
+    
+  double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
+  
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -242,6 +252,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
      
     final rightSection = new Container(
       margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 0.0),
+      //  margin: EdgeInsets.only(top: ScreenUtil.instance.setWidth(50.0)),
+
       
       decoration: BoxDecoration(
           border: Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
@@ -251,7 +263,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         child:       
             LinearPercentIndicator(
               
-          width: 150.0,
+          width: ScreenUtil.instance.setWidth(142.0),
           lineHeight: 30.0,
           percent: (double.parse(availability)) / 100,
          
@@ -262,13 +274,13 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                     text: 'Popunjenost: ',
                     style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 14,
+                        fontSize: 14.0,
                         color: Colors.black.withOpacity(0.6))),
                 TextSpan(
                   text: ('${doc.data['availability']} %'),
                   style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: Colors.black.withOpacity(0.8)),
                 ),
