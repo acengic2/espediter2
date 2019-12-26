@@ -73,7 +73,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
            } else {
              print('EMPTU');
             imaliRuta = false;
-        Navigator.of(context).push(
+            Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => NoRoutes()));           
              }
     } );
@@ -99,6 +99,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
               builder: (context, snapshot) {
                 // ukoliko postoje podatci
                 //vrati Column oi mapiraj kroz iste podatke
+           
                 if (snapshot.hasData) {
                     return Column(
                       children: snapshot.data.documents

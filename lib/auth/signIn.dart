@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:spediter/auth/loading.dart';
+import 'package:spediter/routes/companyRoutes.dart';
 
 import 'noInternetOnLogin.dart';
 
@@ -26,9 +27,47 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final db = Firestore.instance;
   int onceToast = 0, onceBtnPressed = 0;
+   String userID;
 
   @override
   Widget build(BuildContext context) {
+
+    signIn(_email, _password, userExist) async {
+    final _formState = _formKey.currentState;
+    if (_formState.validate()) {
+      try {
+        AuthResult result = await _auth.signInWithEmailAndPassword(
+            email: _email, password: _password);
+        //.then((currentUser) => Firestore.instance.collection("users").document(currentUser.uid).get().then(DocumentSnapshot result) =>
+        FirebaseUser user = result.user;
+        String userEmail = user.email;
+       userID = user.uid;
+        // print('SADSADSADDSADSAD $userEmail');
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShowLoading(user: user, email: userEmail)));
+        print('User ' + user.email + ' je uspjesno logovan');
+        return print(user);
+      } catch (e) {
+        err = e.message;
+        print(e.message);
+      }
+    }
+
+    //  else {
+    //   if (onceToast == 0) {
+    //     final snackBar = SnackBar(
+    //       backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //       content: Text('Email ili password nije validan'),
+    //       action: SnackBarAction(
+    //         label: 'Undo',
+    //         onPressed: () {},
+    //       ),
+    //     );
+    //     Scaffold.of(context).showSnackBar(snackBar);
+    //     onceToast = 1;
+    //   }
+    // }
+  }
     return 
     //MaterialApp(
       //home: 
@@ -433,6 +472,7 @@ class _LoginState extends State<Login> {
                                             width: 0,
                                             height: 0,
                                           );
+                                          
                                         }
                                       },
                                     ),
@@ -454,41 +494,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  signIn(_email, _password, userExist) async {
-    final _formState = _formKey.currentState;
-    if (_formState.validate()) {
-      try {
-        AuthResult result = await _auth.signInWithEmailAndPassword(
-            email: _email, password: _password);
-        //.then((currentUser) => Firestore.instance.collection("users").document(currentUser.uid).get().then(DocumentSnapshot result) =>
-        FirebaseUser user = result.user;
-        String userEmail = user.email;
-        // print('SADSADSADDSADSAD $userEmail');
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ShowLoading(user: user, email: userEmail)));
-        print('User ' + user.email + ' je uspjesno logovan');
-        return print(user);
-      } catch (e) {
-        err = e.message;
-        print(e.message);
-      }
-    }
-
-    //  else {
-    //   if (onceToast == 0) {
-    //     final snackBar = SnackBar(
-    //       backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-    //       content: Text('Email ili password nije validan'),
-    //       action: SnackBarAction(
-    //         label: 'Undo',
-    //         onPressed: () {},
-    //       ),
-    //     );
-    //     Scaffold.of(context).showSnackBar(snackBar);
-    //     onceToast = 1;
-    //   }
-    // }
-  }
+  
 
 // provjera emaila
   Future<bool> doesNameAlreadyExist(String name) async {
