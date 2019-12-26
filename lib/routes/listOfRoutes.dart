@@ -174,7 +174,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    capacityString = capacityString.substring(0, 1) + '.' + capacityString.substring(1, capacityString.length);
 
     final leftSection = new Container(
        height: 32,

@@ -727,6 +727,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0))),
                             onChanged: (input) {
+                              input=input.substring(0,3);
                               setState(() {
                                 capacityVar = input;
                                 onceToast = 0;
