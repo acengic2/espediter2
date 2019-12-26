@@ -1,7 +1,5 @@
 import 'dart:async';
 
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
-import 'package:spediter/routes/companyRoutes.dart';
 import 'package:spediter/routes/form.dart';
 import 'package:spediter/routes/loadingRoutes.dart';
 import 'package:spediter/utils/screenUtils.dart';
@@ -71,7 +68,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   // instanca za bazu
   final db = Firestore.instance;
 
-  ///fokusi
+  // fokusi
   var focusPercentage = new FocusNode();
   var focusCapacity = new FocusNode();
   var focusGoods = new FocusNode();
@@ -85,11 +82,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     mask: '0.0',
   );
 
-  /// variables
+  // variables
   String userUid;
   String userID;
   String id;
-///  ScrollController _scroll;
+//  ScrollController _scroll;
   String listOfInterdestinations = "";
   String goodsVar = '',
       dimensionsVar = '',
@@ -109,10 +106,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   DateTime selectedDateP;
   DateTime selectedDateD;
-
-  /// Timestamp var [unos u bazu zbog ordera ispisa]
- int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
-
 
   bool _screenUtilActive = true;
 
@@ -155,10 +148,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
     //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
-    
+
     getUserid();
     onceToast = 0;
-    print(dateOfSubmit);
   }
 
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
@@ -1258,8 +1250,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'dimensions': '$dimensionsVar',
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
-      'user_id': '$userID',
-      'timestamp': '$dateOfSubmit'
+      'user_id': '$userID'
     });
     print('proslo1111');
     setState(() => id = ref.documentID);
