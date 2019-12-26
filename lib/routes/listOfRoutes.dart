@@ -23,7 +23,6 @@ String capacityString;
 class ListOfRoutes extends StatelessWidget {
   /// id trenutne rute [id],
   /// id kompanije [userID]
-
   String userID;
   ListOfRoutes({this.userID});
   
@@ -39,7 +38,6 @@ class ListOfRoutes extends StatelessWidget {
 class ListOfRoutesPage extends StatefulWidget {
    /// id trenutne rute [id],
   /// id kompanije [userID]
-
   String userID;
   ListOfRoutesPage({this.userID});
 
@@ -54,16 +52,15 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   final db = Firestore.instance;
   /// id trenutne rute [id],
   /// id kompanije [userID]
-
   String userID;
   bool imaliRuta = true;
+  
 
   _ListOfRoutesPageState({this.userID});
 
   @override
   void initState() { 
     super.initState();
-
     print(userID);
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
            if(docs.documents.isNotEmpty){
@@ -77,7 +74,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
              }
     } );
   }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -85,9 +81,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: ListView(children: <Widget>[
-
-
-        
         Container(
           // Future builder 
           //
@@ -104,7 +97,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                           .map((doc) => buildItem(doc))
                           .toList(),
                     );
-                  
                 } else {
                   return SizedBox();
                 }
@@ -173,7 +165,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    String capacityStringFinal = capacityString.substring(0,3);
+    // String capacityStringFinal = capacityString.substring(0,1) + '.' + capacityString.substring(1,2);
 
     final leftSection = new Container(
        height: 32,
@@ -195,7 +187,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                     style: new TextStyle(
                       fontSize: 14.0,
                       color: Colors.white,
-                      fontFamily: "RobotoMono",
+                      fontFamily: "Roboto",
                     )),
               ],
             ),
@@ -225,15 +217,15 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                       text: 'Kapacitet: ',
                       style: new TextStyle(
                         fontSize: 14.0,
-                        color: Colors.black.withOpacity(0.8),
+                        color: Colors.black.withOpacity(0.6),
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: ('$capacityStringFinal t'),
+                    text: ('$capacityString t'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,
-                      color: Colors.black.withOpacity(0.8),
+                      color: Colors.black.withOpacity(1.0),
                       fontFamily: "Roboto",
                     ),
                   ),
@@ -243,36 +235,41 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           ],
         ));
 
-    String availability = doc.data['availability'];
+        @override
+ 
 
+    String availability = doc.data['availability'];
+     
     final rightSection = new Container(
-      // width: 140,
-      // height: 32,
       margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 0.0),
+      
       decoration: BoxDecoration(
           border: Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
           borderRadius: BorderRadius.all(Radius.circular(1.0))),
       child: new Padding(
         padding: EdgeInsets.only(left: 0.0, right: 0.0),
-        child: new LinearPercentIndicator(
+        child:       
+            LinearPercentIndicator(
+              
           width: 150.0,
           lineHeight: 30.0,
           percent: (double.parse(availability)) / 100,
+         
           center: RichText(
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
                     text: 'Popunjenost: ',
                     style: TextStyle(
-                        fontFamily: 'RobotoMono',
+                        fontFamily: 'Roboto',
                         fontSize: 14,
-                        color: Colors.black.withOpacity(0.8))),
+                        color: Colors.black.withOpacity(0.6))),
                 TextSpan(
                   text: ('${doc.data['availability']} %'),
                   style: TextStyle(
-                      fontFamily: 'RobotoMono',
+                      fontFamily: 'Roboto',
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.bold,
                       color: Colors.black.withOpacity(0.8)),
                 ),
               ],
@@ -282,6 +279,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           backgroundColor: Colors.white,
           progressColor: Color.fromRGBO(3, 54, 255, 0.12),
         ),
+
       ),
     );
 
@@ -304,15 +302,22 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontWeight: FontWeight.bold,
                         fontFamily: "Roboto",
                       )),
+                      new TextSpan(
+                      text: (', '),
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black.withOpacity(0.6),
+                        fontFamily: "Roboto",
+                      )),
                   new TextSpan(
                       text: ('${doc.data['interdestination']}'),
                       style: new TextStyle(
                         fontSize: 20.0,
-                        color: Colors.black.withOpacity(0.8),
+                        color: Colors.black.withOpacity(0.6),
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: (', ${doc.data['ending_destination']}'),
+                    text: ('${doc.data['ending_destination']}'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
@@ -345,7 +350,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                 ),
                 FlatButton(
                   onPressed: () => exit(0),
-                  /*Navigator.of(context).pop(true)*/
                   child: Text('Yes'),
                 ),
               ],

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +26,6 @@ NoRoutes noRoutes = new NoRoutes();
 
 class CreateRoute extends StatelessWidget {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -86,7 +85,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   String userUid;
   String userID;
   String id;
-//  ScrollController _scroll;
   String listOfInterdestinations = "";
   String goodsVar = '',
       dimensionsVar = '',
@@ -106,6 +104,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   DateTime selectedDateP;
   DateTime selectedDateD;
+
+  /// Timestamp var [unos u bazu zbog ordera ispisa]
+  int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
 
   bool _screenUtilActive = true;
 
@@ -138,7 +139,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         .document(user.uid) // takes user.id
         .snapshots()
         .toString();
-
     userID = user.uid;
     print('Ovo je user id ' + userID);
   }
@@ -146,16 +146,13 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   @override
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
-    //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
-
     getUserid();
     onceToast = 0;
   }
 
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
     List<DropdownMenuItem<Vehicle>> items = List();
-
     for (Vehicle vehicle in vehicles) {
       items.add(DropdownMenuItem(value: vehicle, child: Text(vehicle.name)));
     }
@@ -259,7 +256,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         contentPadding: EdgeInsets.fromLTRB(
                                             20.0, 10.0, 20.0, 10.0),
                                       ),
-                                     format: format,
+                                      format: format,
                                       onShowPicker:
                                           (context, currentValue) async {
                                         final DateTime picked =
@@ -675,12 +672,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               focusNode: focusPercentage,
                               decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                    borderSide: BorderSide(
-                                        color: Color.fromRGBO(0, 0, 0, 0.12)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(4.0)),
                                       borderSide: BorderSide(
@@ -695,7 +686,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                           BorderRadius.circular(5.0))),
                               onChanged: (input) {
                                 setState(() {
-                                  //var one = int.parse(input);
                                   if (input != '') {
                                     percentageVar = int.parse(input);
                                   } else {
@@ -708,7 +698,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               },
                             ),
                           ),
-
                           ////// kapacitet y tonamaaaaaaaa
 
                           Container(
@@ -743,6 +732,14 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 print(input);
                                 setState(() {
                                   capacityVar = input;
+
+                                  double capacityDouble =
+                                      double.parse(capacityVar);
+                                  if (capacityDouble >= 10) {
+                                    capacityDouble = capacityDouble / 10.0;
+                                  }
+                                  capacityVar = capacityDouble.toString();
+
                                   print(capacityVar);
                                   onceToast = 0;
                                   onceBtnPressed = 0;
@@ -1196,12 +1193,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       interdestinations.forEach((form) => allValid = allValid);
       if (allValid) {
         var data = interdestinations.map((it) => it.interdestination).toList();
-
         print(data.length);
         for (int i = 0; i < data.length; i++) {
-          listOfInterdestinations += ', ${data[i].interdestinationData}';
+          listOfInterdestinations += '${data[i].interdestinationData}, ';
         }
         print(listOfInterdestinations);
+        if (listOfInterdestinations == ', ') {
+          listOfInterdestinations = listOfInterdestinations.substring(
+              0, listOfInterdestinations.length - 2);
+        }
       }
     }
   }
@@ -1210,7 +1210,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   areFieldsEmpty() {
     if ((percentageVar != null) &&
         (dimensionsVar != '' && dimensionsVar != null) &&
-        (capacityVar != null && capacityVar != '' && capacityVar != '.') &&
+        (capacityVar != null && capacityVar != '') &&
         (goodsVar != '' && goodsVar != null) &&
         (endingDestination != '' && endingDestination != null) &&
         (startingDestination != '' && startingDestination != null) &&
@@ -1220,20 +1220,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         (timeP != null && timeP != '' && timeP != 'Vrijeme polaska') &&
         (_selectedVehicle != null)) {
       _isBtnDisabled = false;
-    } else if ((percentageVar == null) ||
-        (dimensionsVar == '' || dimensionsVar == null) ||
-        (capacityVar == null || capacityVar == '' || capacityVar == '.') ||
-        (goodsVar == '' || goodsVar == null) ||
-        (endingDestination == '' || endingDestination == null) ||
-        (startingDestination == '' || startingDestination == null) ||
-        (selectedDateD == null) ||
-        (selectedDateP == null) ||
-        (timeD == null || timeD == '' || timeD == 'Vrijeme dolaska') ||
-        (timeP == null || timeP == '' || timeP == 'Vrijeme polaska') ||
-        (_selectedVehicle == null)) {
+    } else 
+        {
       _isBtnDisabled = true;
     }
   }
+
+  //input goes to double
+  // input divide 10
+  // vrati to string i upisati u bazu
 
   // funkcija koja snima informacije u bazu
   createData() async {
@@ -1250,7 +1245,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'dimensions': '$dimensionsVar',
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
-      'user_id': '$userID'
+      'user_id': '$userID',
+      'timestamp': '$dateOfSubmit'
     });
     print('proslo1111');
     setState(() => id = ref.documentID);
@@ -1280,9 +1276,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 class Vehicle {
   int id;
   String name;
-
   Vehicle(this.id, this.name);
-
   static List<Vehicle> getVehicle() {
     return <Vehicle>[
       Vehicle(1, "Kiper"),
