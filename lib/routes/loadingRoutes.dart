@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'listOfRoutes.dart';
 
-
 void main() => runApp(ShowLoadingRoutes());
 
 class ShowLoadingRoutes extends StatefulWidget {

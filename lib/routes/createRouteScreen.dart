@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,7 +25,6 @@ NoRoutes noRoutes = new NoRoutes();
 
 class CreateRoute extends StatelessWidget {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -85,7 +84,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   String userUid;
   String userID;
   String id;
-//  ScrollController _scroll;
   String listOfInterdestinations = "";
   String goodsVar = '',
       dimensionsVar = '',
@@ -143,7 +141,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         .document(user.uid) // takes user.id
         .snapshots()
         .toString();
-
     userID = user.uid;
     print('Ovo je user id ' + userID);
   }
@@ -151,22 +148,18 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   @override
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_vehicle);
-    //_selectedVehicle = _dropdownMenuItems[0].value;
     super.initState();
-
     getUserid();
     onceToast = 0;
   }
 
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
     List<DropdownMenuItem<Vehicle>> items = List();
-
     for (Vehicle vehicle in vehicles) {
       items.add(DropdownMenuItem(value: vehicle, child: Text(vehicle.name)));
     }
     return items;
   }
-
   @override
   Widget build(BuildContext context) {
      
@@ -215,7 +208,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           },
         ),
         title: const Text('Kreiranje Rute',
-            style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))),
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              color: Color.fromRGBO(0, 0, 0, 0.8))),
       ),
       body: Builder(
         builder: (context) => new GestureDetector(
@@ -327,7 +324,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     format: formatTime,
                                     onShowPicker:
                                         (context, currentValue) async {
-                                      // currentValue = DateTime.now();s
                                       final time = await showTimePicker(
                                         context: context,
                                         initialTime: TimeOfDay.fromDateTime(
@@ -355,7 +351,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                         ),
 
                         /// DEstinaije polaksa
-
                         Container(
                             margin: EdgeInsets.only(
                                 bottom: 2, left: 16.0, right: 16.0, top: 2),
@@ -431,7 +426,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                             ])),
 
                         // Medju dest
-
                         Container(
                           child: Row(
                             children: <Widget>[
@@ -451,7 +445,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                         ),
 
                         ///KRajna destinacije
-
                         Container(
                             margin: EdgeInsets.only(
                                 bottom: 2, left: 16.0, right: 16.0, top: 2),
@@ -558,7 +551,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                           20.0, 10.0, 20.0, 10.0),
                                     ),
                                     format: format,
-
                                     onShowPicker:
                                         (context, currentValue) async {
                                       final DateTime picked =
@@ -689,7 +681,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     borderRadius: BorderRadius.circular(5.0))),
                             onChanged: (input) {
                               setState(() {
-                                //var one = int.parse(input);
                                 if (input != '') {
                                   percentageVar = int.parse(input);
                                 } else {
@@ -733,7 +724,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     borderRadius: BorderRadius.circular(5.0))),
                             onChanged: (input) {
                               setState(() {
-                                capacityVar = input;
+                                double parsedInput = double.parse(input);
+                                parsedInput = parsedInput / 10;
+                                capacityVar = parsedInput.toString();
                                 onceToast = 0;
                                 onceBtnPressed = 0;
                                 areFieldsEmpty();
@@ -772,7 +765,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontFamily: "Roboto",
-                                    color: Color.fromRGBO(0, 0, 0, 0.5)),
+                                    color: Color.fromRGBO(0, 0, 0, 0.4)),
                                 isExpanded: true,
                                 items: _dropdownMenuItems,
                                 underline: Container(color: Colors.white),
@@ -1133,10 +1126,10 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             }
                                           } else {
                                             if (onceBtnPressed == 0) {
-                                              print('btn kreiraj');
                                               onSave();
                                               createData();
                                               onceBtnPressed = 1;
+
                                             }
                                           }
                                         }
@@ -1164,12 +1157,14 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       interdestinations.forEach((form) => allValid = allValid);
       if (allValid) {
         var data = interdestinations.map((it) => it.interdestination).toList();
-
         print(data.length);
         for (int i = 0; i < data.length; i++) {
-          listOfInterdestinations += ', ${data[i].interdestinationData}';
+          listOfInterdestinations += '${data[i].interdestinationData}, ';
         }
         print(listOfInterdestinations);
+        if (listOfInterdestinations == ', ') {
+          listOfInterdestinations = listOfInterdestinations.substring(0, listOfInterdestinations.length - 2);
+        }
       }
     }
   }
@@ -1246,9 +1241,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 class Vehicle {
   int id;
   String name;
-
   Vehicle(this.id, this.name);
-
   static List<Vehicle> getVehicle() {
     return <Vehicle>[
       Vehicle(1, "Kiper"),
