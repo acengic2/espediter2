@@ -35,6 +35,9 @@ dependencies:
   flutter_masked_text:
   retry: ^3.0.0+1
   flutter_screenutil: ^0.7.0
+
+  firebase_core: ^0.4.0+9
+
   rxdart: ^0.23.1
  
   
