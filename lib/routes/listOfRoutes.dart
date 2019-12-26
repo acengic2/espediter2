@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
@@ -166,7 +165,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    capacityString = capacityString.substring(0, 1) + '.' + capacityString.substring(1, capacityString.length);
+    String capacityStringFinal = capacityString.substring(0,3);
 
     final leftSection = new Container(
        height: 32,
@@ -222,7 +221,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: ('$capacityString t'),
+                    text: ('$capacityStringFinal t'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,

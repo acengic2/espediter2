@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
 import 'package:spediter/routes/form.dart';
+import 'package:spediter/routes/loadingRoutes.dart';
 import 'package:spediter/utils/screenUtils.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
@@ -100,7 +101,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       timeD;
   int percentageVar;
   String capacityVar;
-  String capacityBaza;
 
   DateTime selectedDateP;
   DateTime selectedDateD;
@@ -162,15 +162,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   }
   @override
   Widget build(BuildContext context) {
-     
     void onDelete(Interdestination _interdestination) {
       setState(() {
-      var find = interdestinations.firstWhere(
-        (it) => it.interdestination == _interdestination,
-        orElse: () => null,
-      );
-      if (find != null) interdestinations.removeAt(interdestinations.indexOf(find));
-    });
+        var find = interdestinations.firstWhere(
+          (it) => it.interdestination == _interdestination,
+          orElse: () => null,
+        );
+        if (find != null)
+          interdestinations.removeAt(interdestinations.indexOf(find));
+      });
     }
 
     ///on add form
@@ -185,420 +185,131 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       });
     }
 
-     double defaultScreenWidth = 400.0;
-  double defaultScreenHeight = 810.0;
-  ScreenUtil.instance = ScreenUtil(
-    width: defaultScreenWidth,
-    height: defaultScreenHeight,
-    allowFontScaling: true,
-  )..init(context);
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
 
-  return SafeArea( child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ListOfRoutes(userID: userID)),
-            );
-          },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ListOfRoutes(userID: userID)),
+              );
+            },
+          ),
+          title: const Text('Kreiranje Rute',
+              style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))),
         ),
-        title: const Text('Kreiranje Rute',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Color.fromRGBO(0, 0, 0, 0.8))),
-      ),
-      body: Builder(
-        builder: (context) => new GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-            onceToast = 0;
-          },
-          child: ListView(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        ///datum i vrijeme polaska
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 8, left: 16.0, right: 16.0, top: 16),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 5,
-                                child: Container(
-                                  height: 36.0,
-                                  padding:
-                                      EdgeInsets.only(left: 4.0, right: 4.0),
-                                  child: DateTimeField(
-                                  
-         
-                                    // style: TextStyle(fontSize: 10.0),
-                                  style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
-                                    resetIcon: null,
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.0)),
-                                        borderSide: BorderSide(
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.12)),
-                                      ),
-                                      hintText: 'Datum polaska',
-                                      contentPadding: EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
-                                    ),
-                                    format: format,
-                                    onShowPicker:
-                                        (context, currentValue) async {
-                                      final DateTime picked =
-                                          await showDatePicker(
-                                            locale: Locale('bs'),
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2018),
-                                              lastDate: DateTime(2100));
-                                             
-                                      setState(() {
-                                        selectedDateP = picked;
-                                        if (selectedDateP == null) {
-                                          selectedDateP = DateTime.now();
-                                        } else {
-                                          selectedDateP = picked;
-                                        }
-                                      });
-                                      setState(() {
-                                        formatted =
-                                            formatP.format(selectedDateP);
-                                        if (selectedDateP == null) {
-                                          selectedDateP = DateTime.now();
-                                        } else {
-                                          selectedDateP = picked;
-                                        }
-                                      });
-                                      return selectedDateP;
-                                    },
-                                    onChanged: (input) {
-                                      onceToast = 0;
-                                      onceBtnPressed = 0;
-                                      areFieldsEmpty();
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Container(
-                                  height: 36.0,
-                                  margin:
-                                      EdgeInsets.only(left: 4.0, right: 4.0),
-                                  child: DateTimeField(
-                                    resetIcon: null,
-                                    readOnly: true,
-                                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
-                                    //textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      hintText: "Vrijeme polaska",
-                                      contentPadding: EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.0)),
-                                        borderSide: BorderSide(
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.12)),
-                                      ),
-                                    ),
-                                    format: formatTime,
-                                    onShowPicker:
-                                        (context, currentValue) async {
-                                      final time = await showTimePicker(
-                                        context: context,
-                                        initialTime: TimeOfDay.fromDateTime(
-                                            currentValue ?? DateTime.now()),
-                                      );
-                                      setState(() {
-                                        timeP = time.toString();
-                                      });
-                                      if (timeP == 'null') {
-                                        timeP = '';
-                                      } else if (timeP != 'null') {
-                                        return DateTimeField.convert(time);
-                                      }
-                                    },
-                                    onChanged: (input) {
-                                      onceToast = 0;
-                                      onceBtnPressed = 0;
-                                      areFieldsEmpty();
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        /// DEstinaije polaksa
-                        Container(
+        body: Builder(
+          builder: (context) => new GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+              onceToast = 0;
+            },
+            child: ListView(
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          ///datum i vrijeme polaska
+                          Container(
                             margin: EdgeInsets.only(
-                                bottom: 2, left: 16.0, right: 16.0, top: 2),
-                            child: Row(children: <Widget>[
-                              Expanded(
-                                  flex: 1,
+                                bottom: 8, left: 16.0, right: 16.0, top: 16),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 5,
                                   child: Container(
-                                    margin: EdgeInsets.only(bottom: 10.0),
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Icon(
-                                            Icons.brightness_1,
-                                            color:
-                                                Color.fromRGBO(3, 54, 255, 1.0),
-                                            size: 15.0,
-                                          ),
+                                    height: 36.0,
+                                    padding:
+                                        EdgeInsets.only(left: 4.0, right: 4.0),
+                                    child: DateTimeField(
+                                      // style: TextStyle(fontSize: 10.0),
+                                      style: TextStyle(
+                                          fontSize:
+                                              ScreenUtil.instance.setSp(15.0)),
+                                      resetIcon: null,
+                                      readOnly: true,
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0)),
+                                          borderSide: BorderSide(
+                                              color: Color.fromRGBO(
+                                                  0, 0, 0, 0.12)),
                                         ),
-                                        Container(
-                                          child: Icon(
-                                            Icons.brightness_1,
-                                            color:
-                                                Color.fromRGBO(3, 54, 255, 0.2),
-                                            size: 30.0,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                              Expanded(
-                                  flex: 9,
-                                  child: Container(
-                                      margin: EdgeInsets.only(
-                                          left: 9, bottom: 8, right: 5),
-                                      height: 36,
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        //   onFieldSubmitted: (term) => _add(),
-                                        decoration: InputDecoration(
-                                            hasFloatingPlaceholder: false,
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4.0)),
-                                              borderSide: BorderSide(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 0.12)),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                                borderSide: BorderSide(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 0.12))),
-                                            labelText: 'Startna destinacija',
-                                            labelStyle: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.5)),
-                                            border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        5.0))),
-                                        onChanged: (input) {
-                                          setState(() {
-                                            onceToast = 0;
-                                            onceBtnPressed = 0;
-                                            startingDestination = input;
-                                            areFieldsEmpty();
-                                          });
-                                        },
-                                      )))
-                            ])),
-
-                        // Medju dest
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: SizedBox(
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      addAutomaticKeepAlives: true,
-                                      itemCount: interdestinations.length,
-                                      itemBuilder: (BuildContext context, int index) {
-                                        return interdestinations[index];
-                                      }),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        ///KRajna destinacije
-                        Container(
-                            margin: EdgeInsets.only(
-                                bottom: 2, left: 16.0, right: 16.0, top: 2),
-                            child: Row(children: <Widget>[
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 10.0),
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Icon(
-                                            Icons.brightness_1,
-                                            color:
-                                                Color.fromRGBO(174, 7, 37, 1.0),
-                                            size: 15.0,
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Icon(
-                                            Icons.brightness_1,
-                                            color:
-                                                Color.fromRGBO(174, 7, 37, 0.2),
-                                            size: 30.0,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                              Expanded(
-                                  flex: 9,
-                                  child: Container(
-                                      margin: EdgeInsets.only(
-                                          left: 9, bottom: 8, right: 5),
-                                      height: 36,
-                                      child: TextFormField(
-                                        onTap: onAddForm,
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        // onFieldSubmitted: (term) => _add(),
-
-                                        decoration: InputDecoration(
-                                            hasFloatingPlaceholder: false,
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4.0)),
-                                              borderSide: BorderSide(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 0.12)),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                                borderSide: BorderSide(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 0.12))),
-                                            labelText: 'Krajnja destinacija',
-                                            labelStyle: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.5)),
-                                            border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        5.0))),
-                                        onChanged: (input) {
-                                          setState(() {
-                                            onceToast = 0;
-                                            onceBtnPressed = 0;
-                                            endingDestination = input;
-                                            areFieldsEmpty();
-                                          });
-                                        },
-                                      )))
-                            ])),
-
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 11.5, left: 16.0, right: 16.0, top: 2),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 5,
-                                child: Container(
-                                  height: 36.0,
-                                  padding:
-                                      EdgeInsets.only(left: 4.0, right: 4.0),
-                                  child: DateTimeField(
-                                    
-                                    // style: TextStyle(fontSize: 10.0),
-                                    resetIcon: null,
-                                    readOnly: true,
-                                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.0)),
-                                        borderSide: BorderSide(
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.12)),
+                                        hintText: 'Datum polaska',
+                                        contentPadding: EdgeInsets.fromLTRB(
+                                            20.0, 10.0, 20.0, 10.0),
                                       ),
-                                      hintText: 'Datum dolaska',
-                                      contentPadding: EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
+                                     format: format,
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        final DateTime picked =
+                                            await showDatePicker(
+                                                locale: Locale('bs'),
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2018),
+                                                lastDate: DateTime(2100));
+
+                                        setState(() {
+                                          selectedDateP = picked;
+                                          if (selectedDateP == null) {
+                                            selectedDateP = DateTime.now();
+                                          } else {
+                                            selectedDateP = picked;
+                                          }
+                                        });
+                                        setState(() {
+                                          formatted =
+                                              formatP.format(selectedDateP);
+                                          if (selectedDateP == null) {
+                                            selectedDateP = DateTime.now();
+                                          } else {
+                                            selectedDateP = picked;
+                                          }
+                                        });
+                                        return selectedDateP;
+                                      },
+                                      onChanged: (input) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        areFieldsEmpty();
+                                      },
                                     ),
-                                    format: format,
-                                    onShowPicker:
-                                        (context, currentValue) async {
-                                      final DateTime picked =
-                                          await showDatePicker(
-                                            locale: Locale('bs'),
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2018),
-                                              lastDate: DateTime(2100));
-                                      setState(() {
-                                        selectedDateD = picked;
-                                        if (selectedDateD == null) {
-                                          selectedDateD = DateTime.now();
-                                        } else {
-                                          selectedDateD = picked;
-                                        }
-                                      });
-                                      setState(() {
-                                        formatted2 =
-                                            formatP.format(selectedDateD);
-                                        if (selectedDateD == null) {
-                                          selectedDateD = DateTime.now();
-                                        } else {
-                                          selectedDateD = picked;
-                                        }
-                                      });
-                                      return selectedDateD;
-                                    },
-                                    onChanged: (input) {
-                                      onceToast = 0;
-                                      onceBtnPressed = 0;
-                                      areFieldsEmpty();
-                                    },
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Container(
-                                  height: 36.0,
-                                  margin:
-                                      EdgeInsets.only(left: 4.0, right: 4.0),
-                                  child: DateTimeField(
-                                    resetIcon: null,
-                                    readOnly: true,
-                                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(15.0)),
-                                    decoration: InputDecoration(
-                                        hintText: "Vrijeme dolaska",
+                                Expanded(
+                                  flex: 5,
+                                  child: Container(
+                                    height: 36.0,
+                                    margin:
+                                        EdgeInsets.only(left: 4.0, right: 4.0),
+                                    child: DateTimeField(
+                                      resetIcon: null,
+                                      readOnly: true,
+                                      style: TextStyle(
+                                          fontSize:
+                                              ScreenUtil.instance.setSp(15.0)),
+                                      //textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        hintText: "Vrijeme polaska",
                                         contentPadding: EdgeInsets.fromLTRB(
                                             20.0, 10.0, 20.0, 10.0),
                                         enabledBorder: OutlineInputBorder(
@@ -607,68 +318,361 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                           borderSide: BorderSide(
                                               color: Color.fromRGBO(
                                                   0, 0, 0, 0.12)),
-                                        )),
-                                    format: formatTime,
-                                    onShowPicker:
-                                        (context, currentValue) async {
-                                      final time1 = await showTimePicker(
-                                        context: context,
-                                        initialTime: TimeOfDay.fromDateTime(
-                                            currentValue ?? DateTime.now()),
-                                      );
-                                      setState(() {
-                                        timeD = time1.toString();
-                                        // if(timeD == def)
-                                      });
-                                      if (timeD == 'null') {
-                                        timeD = '';
-                                      } else if (timeD != 'null') {
-                                        return DateTimeField.convert(time1);
-                                      }
-                                    },
-                                    onChanged: (input) {
-                                      onceToast = 0;
-                                      onceBtnPressed = 0;
-                                      areFieldsEmpty();
-                                    },
+                                        ),
+                                      ),
+                                      format: formatTime,
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        // currentValue = DateTime.now();s
+                                        final time = await showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.fromDateTime(
+                                              currentValue ?? DateTime.now()),
+                                        );
+                                        setState(() {
+                                          timeP = time.toString();
+                                        });
+                                        if (timeP == 'null') {
+                                          timeP = '';
+                                        } else if (timeP != 'null') {
+                                          return DateTimeField.convert(time);
+                                        }
+                                      },
+                                      onChanged: (input) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        areFieldsEmpty();
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
 
-                        Container(
-                          height: 8,
-                          decoration: BoxDecoration(
-                              border: Border(
-                            top: BorderSide(
-                                width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
-                            bottom: BorderSide(
-                                width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
-                          )),
-                          child: Divider(
-                            thickness: 8,
-                            color: Color.fromRGBO(0, 0, 0, 0.03),
-                          ),
-                        ),
+                          /// DEstinaije polaksa
 
-                        ////// Popunjenost u procentimaaaaaaaaaaaaaaaaa
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 2, left: 16.0, right: 16.0, top: 11.5),
-                          child: TextFormField(
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: false),
-                            focusNode: focusPercentage,
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4.0)),
-                                  borderSide: BorderSide(
-                                      color: Color.fromRGBO(0, 0, 0, 0.12)),
+                          Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 2, left: 16.0, right: 16.0, top: 2),
+                              child: Row(children: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      margin: EdgeInsets.only(bottom: 10.0),
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            child: Icon(
+                                              Icons.brightness_1,
+                                              color: Color.fromRGBO(
+                                                  3, 54, 255, 1.0),
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Icon(
+                                              Icons.brightness_1,
+                                              color: Color.fromRGBO(
+                                                  3, 54, 255, 0.2),
+                                              size: 30.0,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                                Expanded(
+                                    flex: 9,
+                                    child: Container(
+                                        margin: EdgeInsets.only(
+                                            left: 9, bottom: 8, right: 5),
+                                        height: 36,
+                                        child: TextFormField(
+                                          textCapitalization:
+                                              TextCapitalization.sentences,
+                                          //   onFieldSubmitted: (term) => _add(),
+                                          decoration: InputDecoration(
+                                              hasFloatingPlaceholder: false,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(4.0)),
+                                                borderSide: BorderSide(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 0.12)),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(4.0)),
+                                                  borderSide: BorderSide(
+                                                      color: Color.fromRGBO(
+                                                          0, 0, 0, 0.12))),
+                                              labelText: 'Startna destinacija',
+                                              labelStyle: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 0.5)),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0))),
+                                          onChanged: (input) {
+                                            setState(() {
+                                              onceToast = 0;
+                                              onceBtnPressed = 0;
+                                              startingDestination = input;
+                                              areFieldsEmpty();
+                                            });
+                                          },
+                                        )))
+                              ])),
+
+                          // Medju dest
+
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        addAutomaticKeepAlives: true,
+                                        itemCount: interdestinations.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return interdestinations[index];
+                                        }),
+                                  ),
                                 ),
-                                focusedBorder: OutlineInputBorder(
+                              ],
+                            ),
+                          ),
+
+                          ///KRajna destinacije
+
+                          Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 2, left: 16.0, right: 16.0, top: 2),
+                              child: Row(children: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      margin: EdgeInsets.only(bottom: 10.0),
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            child: Icon(
+                                              Icons.brightness_1,
+                                              color: Color.fromRGBO(
+                                                  174, 7, 37, 1.0),
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Icon(
+                                              Icons.brightness_1,
+                                              color: Color.fromRGBO(
+                                                  174, 7, 37, 0.2),
+                                              size: 30.0,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                                Expanded(
+                                    flex: 9,
+                                    child: Container(
+                                        margin: EdgeInsets.only(
+                                            left: 9, bottom: 8, right: 5),
+                                        height: 36,
+                                        child: TextFormField(
+                                          onTap: onAddForm,
+                                          textCapitalization:
+                                              TextCapitalization.sentences,
+                                          // onFieldSubmitted: (term) => _add(),
+
+                                          decoration: InputDecoration(
+                                              hasFloatingPlaceholder: false,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(4.0)),
+                                                borderSide: BorderSide(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 0.12)),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(4.0)),
+                                                  borderSide: BorderSide(
+                                                      color: Color.fromRGBO(
+                                                          0, 0, 0, 0.12))),
+                                              labelText: 'Krajnja destinacija',
+                                              labelStyle: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 0.5)),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0))),
+                                          onChanged: (input) {
+                                            setState(() {
+                                              onceToast = 0;
+                                              onceBtnPressed = 0;
+                                              endingDestination = input;
+                                              areFieldsEmpty();
+                                            });
+                                          },
+                                        )))
+                              ])),
+
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 11.5, left: 16.0, right: 16.0, top: 2),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 5,
+                                  child: Container(
+                                    height: 36.0,
+                                    padding:
+                                        EdgeInsets.only(left: 4.0, right: 4.0),
+                                    child: DateTimeField(
+                                      resetIcon: null,
+                                      readOnly: true,
+                                      style: TextStyle(
+                                          fontSize:
+                                              ScreenUtil.instance.setSp(15.0)),
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0)),
+                                          borderSide: BorderSide(
+                                              color: Color.fromRGBO(
+                                                  0, 0, 0, 0.12)),
+                                        ),
+                                        hintText: 'Datum dolaska',
+                                        contentPadding: EdgeInsets.fromLTRB(
+                                            20.0, 10.0, 20.0, 10.0),
+                                      ),
+                                      format: format,
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        final DateTime picked =
+                                            await showDatePicker(
+                                                locale: Locale('bs'),
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2018),
+                                                lastDate: DateTime(2100));
+                                        setState(() {
+                                          selectedDateD = picked;
+                                          if (selectedDateD == null) {
+                                            selectedDateD = DateTime.now();
+                                          } else {
+                                            selectedDateD = picked;
+                                          }
+                                        });
+                                        setState(() {
+                                          formatted2 =
+                                              formatP.format(selectedDateD);
+                                          if (selectedDateD == null) {
+                                            selectedDateD = DateTime.now();
+                                          } else {
+                                            selectedDateD = picked;
+                                          }
+                                        });
+                                        return selectedDateD;
+                                      },
+                                      onChanged: (input) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        areFieldsEmpty();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 5,
+                                  child: Container(
+                                    height: 36.0,
+                                    margin:
+                                        EdgeInsets.only(left: 4.0, right: 4.0),
+                                    child: DateTimeField(
+                                      resetIcon: null,
+                                      readOnly: true,
+                                      style: TextStyle(
+                                          fontSize:
+                                              ScreenUtil.instance.setSp(15.0)),
+                                      decoration: InputDecoration(
+                                          hintText: "Vrijeme dolaska",
+                                          contentPadding: EdgeInsets.fromLTRB(
+                                              20.0, 10.0, 20.0, 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4.0)),
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    0, 0, 0, 0.12)),
+                                          )),
+                                      format: formatTime,
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        final time1 = await showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.fromDateTime(
+                                              currentValue ?? DateTime.now()),
+                                        );
+                                        setState(() {
+                                          timeD = time1.toString();
+                                          // if(timeD == def)
+                                        });
+                                        if (timeD == 'null') {
+                                          timeD = '';
+                                        } else if (timeD != 'null') {
+                                          return DateTimeField.convert(time1);
+                                        }
+                                      },
+                                      onChanged: (input) {
+                                        onceToast = 0;
+                                        onceBtnPressed = 0;
+                                        areFieldsEmpty();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                            height: 8,
+                            decoration: BoxDecoration(
+                                border: Border(
+                              top: BorderSide(
+                                  width: 1,
+                                  color: Color.fromRGBO(0, 0, 0, 0.12)),
+                              bottom: BorderSide(
+                                  width: 1,
+                                  color: Color.fromRGBO(0, 0, 0, 0.12)),
+                            )),
+                            child: Divider(
+                              thickness: 8,
+                              color: Color.fromRGBO(0, 0, 0, 0.03),
+                            ),
+                          ),
+
+                          ////// Popunjenost u procentimaaaaaaaaaaaaaaaaa
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 2, left: 16.0, right: 16.0, top: 11.5),
+                            child: TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false),
+                              focusNode: focusPercentage,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(4.0)),
                                     borderSide: BorderSide(
@@ -692,313 +696,241 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               });
                             },
                           ),
-                        ),
-
-                        ////// kapacitet y tonamaaaaaaaa
-
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
-                          child: TextFormField(
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                            controller: controller,
-                            focusNode: focusCapacity,
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4.0)),
-                                  borderSide: BorderSide(
-                                      color: Color.fromRGBO(0, 0, 0, 0.12)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                    borderSide: BorderSide(
-                                        color: Color.fromRGBO(0, 0, 0, 0.12))),
-                                labelText: 'Kapacitet u tonama',
-                                labelStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 0.5)),
-                                hasFloatingPlaceholder: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                            onChanged: (input) {
-                              setState(() {
-                                double parsedInput = double.parse(input);
-                                parsedInput = parsedInput / 10;
-                                capacityVar = parsedInput.toString();
-                                onceToast = 0;
-                                onceBtnPressed = 0;
-                                areFieldsEmpty();
-                              });
-                            },
                           ),
-                        ),
+                          ////// kapacitet y tonamaaaaaaaa
 
-                        //// VRSTE VOZILAAAA
-                        ///
-                        ResponsiveContainer(
-                          heightPercent:
-                              (68.0 / MediaQuery.of(context).size.height) * 100,
-                          widthPercent: 100.0,
-                          child: Container(
+                          Container(
                             margin: EdgeInsets.only(
                                 bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    width: 1.0,
-                                    style: BorderStyle.solid,
-                                    color: Color.fromRGBO(0, 0, 0, 0.12)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0)),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, top: 5.0),
-                              child: DropdownButton(
-                                // JUSUF - Izbacio ubacio hint i disabledHint:
-                                hint: Text('Vrsta Vozila'),
-                                disabledHint: Text('Vrsta Vozila'),
-                                value: _selectedVehicle,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "Roboto",
-                                    color: Color.fromRGBO(0, 0, 0, 0.4)),
-                                isExpanded: true,
-                                items: _dropdownMenuItems,
-                                underline: Container(color: Colors.white),
-                                onChanged: onChangeDropdownItem,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        // VRSTE ROBEEEEEEEEEE
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
-                          child: TextFormField(
-                            textCapitalization: TextCapitalization.sentences,
-                            focusNode: focusGoods,
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4.0)),
-                                  borderSide: BorderSide(
-                                      color: Color.fromRGBO(0, 0, 0, 0.12)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
+                            child: TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              controller: controller,
+                              focusNode: focusCapacity,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(4.0)),
                                     borderSide: BorderSide(
-                                        color: Color.fromRGBO(0, 0, 0, 0.12))),
-                                labelText: 'Vrsta robe',
-                                labelStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 0.5)),
-                                hasFloatingPlaceholder: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                            onChanged: (input) {
-                              setState(() {
-                                goodsVar = input;
-                                onceToast = 0;
-                                onceBtnPressed = 0;
-                                areFieldsEmpty();
-                              });
-                            },
-                          ),
-                        ),
-
-                        ///DIMENZIJEEE
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 4.5, left: 16.0, right: 16.0, top: 8),
-                          child: TextFormField(
-                            textCapitalization: TextCapitalization.sentences,
-                            focusNode: focusDimensions,
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4.0)),
-                                  borderSide: BorderSide(
-                                      color: Color.fromRGBO(0, 0, 0, 0.12)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                    borderSide: BorderSide(
-                                        color: Color.fromRGBO(0, 0, 0, 0.12))),
-                                labelText: 'Dimenzije',
-                                hintText: '16m x 2.5m x 3m',
-                                labelStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 0.5)),
-                                hasFloatingPlaceholder: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                            onChanged: (input) {
-                              setState(() {
-                                dimensionsVar = input;
-                                onceToast = 0;
-                                onceBtnPressed = 0;
-                                areFieldsEmpty();
-                              });
-                            },
-                          ),
-                        ),
-
-                        /// BUTTOON
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 16.0,
-                            right: 16.0,
-                            bottom: 56.0,
-                            top: 8,
-                          ),
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(
-                              minWidth: double.infinity,
-                            ),
-                            child: RaisedButton(
-                                disabledColor: Color.fromRGBO(219, 219, 219, 1),
-                                disabledTextColor: Color.fromRGBO(0, 0, 0, 1),
-                                color: Color.fromRGBO(3, 54, 255, 1),
-                                textColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                child: Text(
-                                  'KREIRAJ RUTU',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w500,
+                                        color: Color.fromRGBO(0, 0, 0, 0.12)),
                                   ),
-                                ),
-                                onPressed: _isBtnDisabled
-                                    ? null
-                                    : () {
-                                        // async {
-                                        //     try {
-                                        //       final result =
-                                        //           await InternetAddress.lookup(
-                                        //               'google.com');
-                                        //       if (result.isNotEmpty &&
-                                        //           result[0].rawAddress.isNotEmpty) {
-                                        //         print('connected');
-                                        //         Navigator.push(
-                                        //           context,
-                                        //           MaterialPageRoute(
-                                        //               builder: (context) =>
-                                        //                   CreateRoute()),
-                                        //         );
-                                        //       }
-                                        //     } on SocketException catch (_) {
-                                        //       print('not connected');
-                                        //       Navigator.of(context).push(
-                                        //           MaterialPageRoute(
-                                        //               builder: (context) =>
-                                        //                   NoInternetConnectionLogInSrceen()));
-                                        //     }
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0)),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromRGBO(0, 0, 0, 0.12))),
+                                  labelText: 'Kapacitet u tonama',
+                                  labelStyle: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
+                                  hasFloatingPlaceholder: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
+                              onChanged: (input) {
+                                print(input);
+                                setState(() {
+                                  capacityVar = input;
+                                  print(capacityVar);
+                                  onceToast = 0;
+                                  onceBtnPressed = 0;
+                                  areFieldsEmpty();
+                                });
+                              },
+                            ),
+                          ),
 
-                                        FocusScopeNode currentFocus =
-                                            FocusScope.of(context);
-                                        if (!currentFocus.hasPrimaryFocus) {
-                                          currentFocus.unfocus();
-                                        }
-                                        if ((percentageVar == null) ||
-                                            (dimensionsVar == '') ||
-                                            (capacityVar == null) ||
-                                            (goodsVar == '') ||
-                                            (endingDestination == '') ||
-                                            (startingDestination == '') ||
-                                            (selectedDateD == null) ||
-                                            (selectedDateP == null) ||
-                                            (timeD == null) ||
-                                            (timeP == null)) {
-                                          if (onceToast == 0) {
-                                            final snackBar = SnackBar(
-                                              duration: Duration(seconds: 2),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              backgroundColor: Color.fromRGBO(
-                                                  28, 28, 28, 1.0),
-                                              content: Text(
-                                                  'Sva polja moraju biti popunjena'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                            Timer(Duration(seconds: 2), () {
-                                              onceToast = 0;
-                                            });
+                          //// VRSTE VOZILAAAA
+                          ///
+                          ResponsiveContainer(
+                            heightPercent:
+                                (68.0 / MediaQuery.of(context).size.height) *
+                                    100,
+                            widthPercent: 100.0,
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 4.5,
+                                  left: 16.0,
+                                  right: 16.0,
+                                  top: 4.5),
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      width: 1.0,
+                                      style: BorderStyle.solid,
+                                      color: Color.fromRGBO(0, 0, 0, 0.12)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                ),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 5.0),
+                                child: DropdownButton(
+                                  // JUSUF - Izbacio ubacio hint i disabledHint:
+                                  hint: Text('Vrsta Vozila'),
+                                  disabledHint: Text('Vrsta Vozila'),
+                                  value: _selectedVehicle,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "Roboto",
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
+                                  isExpanded: true,
+                                  items: _dropdownMenuItems,
+                                  underline: Container(color: Colors.white),
+                                  onChanged: onChangeDropdownItem,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // VRSTE ROBEEEEEEEEEE
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
+                            child: TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              focusNode: focusGoods,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
+                                    borderSide: BorderSide(
+                                        color: Color.fromRGBO(0, 0, 0, 0.12)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0)),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromRGBO(0, 0, 0, 0.12))),
+                                  labelText: 'Vrsta robe',
+                                  labelStyle: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
+                                  hasFloatingPlaceholder: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
+                              onChanged: (input) {
+                                setState(() {
+                                  goodsVar = input;
+                                  onceToast = 0;
+                                  onceBtnPressed = 0;
+                                  areFieldsEmpty();
+                                });
+                              },
+                            ),
+                          ),
+
+                          ///DIMENZIJEEE
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 4.5, left: 16.0, right: 16.0, top: 8),
+                            child: TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              focusNode: focusDimensions,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
+                                    borderSide: BorderSide(
+                                        color: Color.fromRGBO(0, 0, 0, 0.12)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0)),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromRGBO(0, 0, 0, 0.12))),
+                                  labelText: 'Dimenzije',
+                                  hintText: '16m x 2.5m x 3m',
+                                  labelStyle: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
+                                  hasFloatingPlaceholder: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
+                              onChanged: (input) {
+                                setState(() {
+                                  dimensionsVar = input;
+                                  onceToast = 0;
+                                  onceBtnPressed = 0;
+                                  areFieldsEmpty();
+                                });
+                              },
+                            ),
+                          ),
+
+                          /// BUTTOON
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: 16.0,
+                              right: 16.0,
+                              bottom: 56.0,
+                              top: 8,
+                            ),
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                minWidth: double.infinity,
+                              ),
+                              child: RaisedButton(
+                                  disabledColor:
+                                      Color.fromRGBO(219, 219, 219, 1),
+                                  disabledTextColor: Color.fromRGBO(0, 0, 0, 1),
+                                  color: Color.fromRGBO(3, 54, 255, 1),
+                                  textColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                  ),
+                                  child: Text(
+                                    'KREIRAJ RUTU',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  onPressed: _isBtnDisabled
+                                      ? null
+                                      : () {
+                                          // async {
+                                          //     try {
+                                          //       final result =
+                                          //           await InternetAddress.lookup(
+                                          //               'google.com');
+                                          //       if (result.isNotEmpty &&
+                                          //           result[0].rawAddress.isNotEmpty) {
+                                          //         print('connected');
+                                          //         Navigator.push(
+                                          //           context,
+                                          //           MaterialPageRoute(
+                                          //               builder: (context) =>
+                                          //                   CreateRoute()),
+                                          //         );
+                                          //       }
+                                          //     } on SocketException catch (_) {
+                                          //       print('not connected');
+                                          //       Navigator.of(context).push(
+                                          //           MaterialPageRoute(
+                                          //               builder: (context) =>
+                                          //                   NoInternetConnectionLogInSrceen()));
+                                          //     }
+
+                                          FocusScopeNode currentFocus =
+                                              FocusScope.of(context);
+                                          if (!currentFocus.hasPrimaryFocus) {
+                                            currentFocus.unfocus();
                                           }
-                                        } else if (percentageVar < 0 ||
-                                            percentageVar > 100) {
-                                          if (onceToast == 0) {
-                                            final snackBar = SnackBar(
-                                              duration: Duration(seconds: 2),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              backgroundColor: Color.fromRGBO(
-                                                  28, 28, 28, 1.0),
-                                              content: Text(
-                                                  'Unesite broj od 0 do 100'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                            Timer(Duration(seconds: 2), () {
-                                              onceToast = 0;
-                                            });
-                                          }
-                                        }
-                                        TimeOfDay t = TimeOfDay(
-                                            hour: int.parse(DateFormat('kk:mm')
-                                                .format(DateTime.now())
-                                                .split(":")[0]),
-                                            minute: int.parse(
-                                                DateFormat('kk:mm')
-                                                    .format(DateTime.now())
-                                                    .split(":")[1]));
-                                        if (formatted2.compareTo(formatP
-                                                .format(DateTime.now())) <
-                                            0) {
-                                          if (onceToast == 0) {
-                                            final snackBar = SnackBar(
-                                              duration: Duration(seconds: 2),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              backgroundColor: Color.fromRGBO(
-                                                  28, 28, 28, 1.0),
-                                              content: Text(
-                                                  'Datum dolaska ne može biti manji od današnjeg datuma.'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                            Timer(Duration(seconds: 2), () {
-                                              onceToast = 0;
-                                            });
-                                          }
-                                        } else if (formatted2.compareTo(formatP
-                                                .format(DateTime.now())) ==
-                                            0) {
-                                          if (timeD.compareTo(t.toString()) <
-                                              0) {
+                                          if ((percentageVar == null) ||
+                                              (dimensionsVar == '') ||
+                                              (capacityVar == null) ||
+                                              (goodsVar == '') ||
+                                              (endingDestination == '') ||
+                                              (startingDestination == '') ||
+                                              (selectedDateD == null) ||
+                                              (selectedDateP == null) ||
+                                              (timeD == null) ||
+                                              (timeP == null)) {
                                             if (onceToast == 0) {
                                               final snackBar = SnackBar(
                                                 duration: Duration(seconds: 2),
@@ -1007,7 +939,30 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 backgroundColor: Color.fromRGBO(
                                                     28, 28, 28, 1.0),
                                                 content: Text(
-                                                    'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
+                                                    'Sva polja moraju biti popunjena'),
+                                                action: SnackBarAction(
+                                                  label: 'Undo',
+                                                  onPressed: () {},
+                                                ),
+                                              );
+                                              Scaffold.of(context)
+                                                  .showSnackBar(snackBar);
+                                              onceToast = 1;
+                                              Timer(Duration(seconds: 2), () {
+                                                onceToast = 0;
+                                              });
+                                            }
+                                          } else if (percentageVar < 0 ||
+                                              percentageVar > 100) {
+                                            if (onceToast == 0) {
+                                              final snackBar = SnackBar(
+                                                duration: Duration(seconds: 2),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor: Color.fromRGBO(
+                                                    28, 28, 28, 1.0),
+                                                content: Text(
+                                                    'Unesite broj od 0 do 100'),
                                                 action: SnackBarAction(
                                                   label: 'Undo',
                                                   onPressed: () {},
@@ -1021,7 +976,17 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               });
                                             }
                                           }
-                                          if (timeD.compareTo(t.toString()) ==
+                                          TimeOfDay t = TimeOfDay(
+                                              hour: int.parse(
+                                                  DateFormat('kk:mm')
+                                                      .format(DateTime.now())
+                                                      .split(":")[0]),
+                                              minute: int.parse(
+                                                  DateFormat('kk:mm')
+                                                      .format(DateTime.now())
+                                                      .split(":")[1]));
+                                          if (formatted2.compareTo(formatP
+                                                  .format(DateTime.now())) <
                                               0) {
                                             if (onceToast == 0) {
                                               final snackBar = SnackBar(
@@ -1031,7 +996,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 backgroundColor: Color.fromRGBO(
                                                     28, 28, 28, 1.0),
                                                 content: Text(
-                                                    'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+                                                    'Datum dolaska ne može biti manji od današnjeg datuma.'),
                                                 action: SnackBarAction(
                                                   label: 'Undo',
                                                   onPressed: () {},
@@ -1044,61 +1009,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 onceToast = 0;
                                               });
                                             }
-                                          }
-                                        } else if (formatted2.compareTo(formatP
-                                                .format(DateTime.now())) >
-                                            0) {
-                                          if (formatted.compareTo(formatted2) >
+                                          } else if (formatted2.compareTo(
+                                                  formatP.format(
+                                                      DateTime.now())) ==
                                               0) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum polaska ne može biti veći od datuma dolaska.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          } else if (formatted
-                                                  .compareTo(formatted2) ==
-                                              0) {
-                                            if (timeP.compareTo(timeD) > 0) {
-                                              if (onceToast == 0) {
-                                                final snackBar = SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          28, 28, 28, 1.0),
-                                                  content: Text(
-                                                      'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
-                                                  action: SnackBarAction(
-                                                    label: 'Undo',
-                                                    onPressed: () {},
-                                                  ),
-                                                );
-                                                Scaffold.of(context)
-                                                    .showSnackBar(snackBar);
-                                                onceToast = 1;
-                                                Timer(Duration(seconds: 2), () {
-                                                  onceToast = 0;
-                                                });
-                                              }
-                                            } else if (timeP.compareTo(timeD) ==
+                                            if (timeD.compareTo(t.toString()) <
                                                 0) {
                                               if (onceToast == 0) {
                                                 final snackBar = SnackBar(
@@ -1110,7 +1025,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                       Color.fromRGBO(
                                                           28, 28, 28, 1.0),
                                                   content: Text(
-                                                      'Datumi i vremena ne mogu biti jednaki.'),
+                                                      'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
                                                   action: SnackBarAction(
                                                     label: 'Undo',
                                                     onPressed: () {},
@@ -1124,30 +1039,142 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 });
                                               }
                                             }
-                                          } else {
-                                            if (onceBtnPressed == 0) {
-                                              onSave();
-                                              createData();
-                                              onceBtnPressed = 1;
-
+                                            if (timeD.compareTo(t.toString()) ==
+                                                0) {
+                                              if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                            }
+                                          } else if (formatted2.compareTo(
+                                                  formatP
+                                                      .format(DateTime.now())) >
+                                              0) {
+                                            if (formatted
+                                                    .compareTo(formatted2) >
+                                                0) {
+                                              if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Datum polaska ne može biti veći od datuma dolaska.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                            } else if (formatted
+                                                    .compareTo(formatted2) ==
+                                                0) {
+                                              if (timeP.compareTo(timeD) > 0) {
+                                                if (onceToast == 0) {
+                                                  final snackBar = SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Color.fromRGBO(
+                                                            28, 28, 28, 1.0),
+                                                    content: Text(
+                                                        'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
+                                                    action: SnackBarAction(
+                                                      label: 'Undo',
+                                                      onPressed: () {},
+                                                    ),
+                                                  );
+                                                  Scaffold.of(context)
+                                                      .showSnackBar(snackBar);
+                                                  onceToast = 1;
+                                                  Timer(Duration(seconds: 2),
+                                                      () {
+                                                    onceToast = 0;
+                                                  });
+                                                }
+                                              } else if (timeP
+                                                      .compareTo(timeD) ==
+                                                  0) {
+                                                if (onceToast == 0) {
+                                                  final snackBar = SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Color.fromRGBO(
+                                                            28, 28, 28, 1.0),
+                                                    content: Text(
+                                                        'Datumi i vremena ne mogu biti jednaki.'),
+                                                    action: SnackBarAction(
+                                                      label: 'Undo',
+                                                      onPressed: () {},
+                                                    ),
+                                                  );
+                                                  Scaffold.of(context)
+                                                      .showSnackBar(snackBar);
+                                                  onceToast = 1;
+                                                  Timer(Duration(seconds: 2),
+                                                      () {
+                                                    onceToast = 0;
+                                                  });
+                                                }
+                                              }
+                                            } else {
+                                              if (onceBtnPressed == 0) {
+                                                print('btn kreiraj');
+                                                onSave();
+                                                createData();
+                                                onceBtnPressed = 1;
+                                              }
                                             }
                                           }
-                                        }
-                                      }),
+                                        }),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
+          // ),]
         ),
-        // ),]
       ),
-    ),
-  );
+    );
   }
 
   ///on save forms
@@ -1173,7 +1200,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   areFieldsEmpty() {
     if ((percentageVar != null) &&
         (dimensionsVar != '' && dimensionsVar != null) &&
-        (capacityVar != null && capacityVar != '') &&
+        (capacityVar != null && capacityVar != '' && capacityVar != '.') &&
         (goodsVar != '' && goodsVar != null) &&
         (endingDestination != '' && endingDestination != null) &&
         (startingDestination != '' && startingDestination != null) &&
@@ -1185,7 +1212,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       _isBtnDisabled = false;
     } else if ((percentageVar == null) ||
         (dimensionsVar == '' || dimensionsVar == null) ||
-        (capacityVar == null || capacityVar == '') ||
+        (capacityVar == null || capacityVar == '' || capacityVar == '.') ||
         (goodsVar == '' || goodsVar == null) ||
         (endingDestination == '' || endingDestination == null) ||
         (startingDestination == '' || startingDestination == null) ||
@@ -1223,7 +1250,10 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     // navigiramo do ListOfRoutes i saljemo userID i id
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
+      MaterialPageRoute(
+          builder: (context) => ShowLoadingRoutes(userID: userID)),
+
+      //MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
     );
   }
 
