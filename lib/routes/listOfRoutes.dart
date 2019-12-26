@@ -58,6 +58,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
   String userID;
   bool imaliRuta = true;
+  
 
   _ListOfRoutesPageState({this.userID});
 
@@ -244,21 +245,28 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           ],
         ));
 
-    String availability = doc.data['availability'];
+        @override
+ 
 
+    String availability = doc.data['availability'];
+     
     final rightSection = new Container(
       // width: 140,
       // height: 32,
       margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 0.0),
+      
       decoration: BoxDecoration(
           border: Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
           borderRadius: BorderRadius.all(Radius.circular(1.0))),
       child: new Padding(
         padding: EdgeInsets.only(left: 0.0, right: 0.0),
-        child: new LinearPercentIndicator(
+        child:       
+            LinearPercentIndicator(
+              
           width: 150.0,
           lineHeight: 30.0,
           percent: (double.parse(availability)) / 100,
+         
           center: RichText(
             text: TextSpan(
               children: <TextSpan>[
@@ -283,6 +291,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           backgroundColor: Colors.white,
           progressColor: Color.fromRGBO(3, 54, 255, 0.12),
         ),
+
       ),
     );
 

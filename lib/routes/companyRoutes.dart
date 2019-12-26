@@ -10,6 +10,7 @@ class CompanyRutes {
     return Firestore.instance
         .collection('Rute')
         .where('user_id', isEqualTo: id)
+        .orderBy('timestamp', descending: true)
         .getDocuments();
   }
 

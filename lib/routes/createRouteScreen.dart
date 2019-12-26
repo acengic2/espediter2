@@ -78,7 +78,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   int onceToast = 0, onceBtnPressed = 0;
 
   var controller = new MaskedTextController(
-    mask: '0.00',
+    mask: '0.0',
   );
 
   // variables
@@ -106,6 +106,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   DateTime selectedDateP;
   DateTime selectedDateD;
+
+
+/// Timestamp var [unos u bazu zbog ordera ispisa]
+ int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
+
 
   bool _screenUtilActive = true;
 
@@ -1213,7 +1218,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'dimensions': '$dimensionsVar',
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
-      'user_id': '$userID'
+      'user_id': '$userID',
+      'timestamp': '$dateOfSubmit'
     });
     print('proslo1111');
     setState(() => id = ref.documentID);
