@@ -6,18 +6,12 @@ class CompanyRutes {
   // metoda koja prima [id] (userID) i koja filtrira kroz kolekciju ruta
   // izjednacava [user_id] iz baze i id trenutno logovane kompanije 
   // i fetcha sve dokumente koji imaju taj id
-  getCompanyRoutes(String id)  {
-     return Firestore.instance
-        .collection("Rute")
+  getCompanyRoutes(String id) {
+    return Firestore.instance
+        .collection('Rute')
         .where('user_id', isEqualTo: id)
-        .orderBy('timestamp', descending: true)
-        .getDocuments()
-        ;
+        .getDocuments();
   }
-   
-
-
- 
 
 }
 
