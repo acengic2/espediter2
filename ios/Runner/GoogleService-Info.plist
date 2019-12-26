@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:355619524544:ios:c40964ae6417fc40b30225</string>
+	<string>1:355619524544:ios:882604cca585e895b30225</string>
 	<key>DATABASE_URL</key>
 	<string>https://espediter-e1b18.firebaseio.com</string>
 </dict>
