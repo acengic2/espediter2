@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
@@ -9,7 +7,6 @@ import './createRouteScreen.dart';
 import './companyRoutes.dart';
 import 'createRouteScreen.dart';
 import 'noRoutes.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 void main() => runApp(ListOfRoutes());
 
