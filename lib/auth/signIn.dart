@@ -29,10 +29,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    //MaterialApp(
-      //home: 
-      Scaffold(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: new GestureDetector(
           onTap: () {
@@ -317,8 +316,10 @@ class _LoginState extends State<Login> {
                                           }
                                         } on SocketException catch (_) {
                                           print('not connected');
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) => NoInternetConnectionLogInSrceen()));
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NoInternetConnectionLogInSrceen()));
                                         }
 
                                         FocusScopeNode currentFocus =
@@ -450,7 +451,7 @@ class _LoginState extends State<Login> {
             ],
           ),
         ),
-      //),
+      ),
     );
   }
 
