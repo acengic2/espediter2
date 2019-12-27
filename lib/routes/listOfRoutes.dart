@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
@@ -76,6 +77,15 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
+
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -182,7 +192,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                 new TextSpan(
                     text: departureDate,
                     style: new TextStyle(
-                      fontSize: 14.0,
+                      //fontSize: 14.0,
+                      fontSize:
+                        ScreenUtil.instance.setSp(13.0),
                       color: Colors.white,
                       fontFamily: "Roboto",
                     )),
