@@ -672,7 +672,14 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   decimal: false),
                               focusNode: focusPercentage,
                               decoration: InputDecoration(
+                                 
                                   enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
+                                    borderSide: BorderSide(
+                                        color: Color.fromRGBO(0, 0, 0, 0.12)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(4.0)),
                                       borderSide: BorderSide(
@@ -684,7 +691,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   hasFloatingPlaceholder: true,
                                   border: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.circular(5.0))),
+                                          BorderRadius.circular(5.0))
+                                      
+                                          
+                              ),
+                                      
                               onChanged: (input) {
                                 setState(() {
                                   if (input != '') {

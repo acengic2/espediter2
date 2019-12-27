@@ -461,7 +461,6 @@ class _LoginState extends State<Login> {
       try {
         AuthResult result = await _auth.signInWithEmailAndPassword(
             email: _email, password: _password);
-        //.then((currentUser) => Firestore.instance.collection("users").document(currentUser.uid).get().then(DocumentSnapshot result) =>
         FirebaseUser user = result.user;
         String userEmail = user.email;
         // print('SADSADSADDSADSAD $userEmail');
@@ -474,21 +473,6 @@ class _LoginState extends State<Login> {
         print(e.message);
       }
     }
-
-    //  else {
-    //   if (onceToast == 0) {
-    //     final snackBar = SnackBar(
-    //       backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-    //       content: Text('Email ili password nije validan'),
-    //       action: SnackBarAction(
-    //         label: 'Undo',
-    //         onPressed: () {},
-    //       ),
-    //     );
-    //     Scaffold.of(context).showSnackBar(snackBar);
-    //     onceToast = 1;
-    //   }
-    // }
   }
 
 // provjera emaila

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -69,9 +70,10 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         imaliRuta = true;
       } else {
         print('EMPTU');
-        imaliRuta = false;
+             imaliRuta = false; 
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+       
       }
     });
   }
