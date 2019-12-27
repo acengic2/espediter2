@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
 import './companyRoutes.dart';
+import 'createRouteScreen.dart';
 import 'noRoutes.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 void main() => runApp(ListOfRoutes());
 
@@ -25,7 +28,6 @@ class ListOfRoutes extends StatelessWidget {
   /// id kompanije [userID]
   String userID;
   ListOfRoutes({this.userID});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -36,142 +38,136 @@ class ListOfRoutes extends StatelessWidget {
 }
 
 class ListOfRoutesPage extends StatefulWidget {
-   /// id trenutne rute [id],
+  /// id trenutne rute [id],
   /// id kompanije [userID]
   String userID;
   ListOfRoutesPage({this.userID});
 
   @override
   State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState( userID:userID);
+    return _ListOfRoutesPageState(userID: userID);
   }
 }
 
 class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
   ///instanca na bazu
   final db = Firestore.instance;
+
   /// id trenutne rute [id],
   /// id kompanije [userID]
   String userID;
   bool imaliRuta = true;
-  
 
   _ListOfRoutesPageState({this.userID});
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     print(userID);
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
-           if(docs.documents.isNotEmpty){
-             print('NOT EMPRY');
-             imaliRuta = true;
-           } else {
-             print('EMPTU');
-            imaliRuta = false;
-        Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => NoRoutes()));           
-             }
-    } );
+      if (docs.documents.isNotEmpty) {
+        print('NOT EMPRY');
+        imaliRuta = true;
+      } else {
+        print('EMPTU');
+        imaliRuta = false;
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: ListView(children: <Widget>[
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: ListView(children: <Widget>[
         Container(
-          // Future builder 
+          // Future builder
           //
           //u future se poziva metoda iz klase CompanyRoutes koja prima id
           //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-           child: FutureBuilder<QuerySnapshot>(
-             future: CompanyRutes().getCompanyRoutes(userID),
-              builder: (context, snapshot) {
-                // ukoliko postoje podatci
-                //vrati Column oi mapiraj kroz iste podatke
-                if (snapshot.hasData) {
-                    return Column(
-                      children: snapshot.data.documents
-                          .map((doc) => buildItem(doc))
-                          .toList(),
-                    );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
-          ),
-
-        ]),
-        bottomNavigationBar: new BottomAppBar(
-          child: Container(
-            height: 56.0,
-            width: 360.0,
-            child: new Row(
-              children: <Widget>[
-                Container(
-                  width: 20,
-                  height: 20,
-                  margin: EdgeInsets.only(left: 16.0),
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        image: new NetworkImage(
-                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreateRoute()),
-                      );
-                    },
-                    icon: Icon(Icons.info_outline),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        floatingActionButton: Container(
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateRoute()),
-              );
+          child: FutureBuilder<QuerySnapshot>(
+            future: CompanyRutes().getCompanyRoutes(userID),
+            builder: (context, snapshot) {
+              // ukoliko postoje podatci
+              //vrati Column oi mapiraj kroz iste podatke
+              if (snapshot.hasData) {
+                return Column(
+                  children: snapshot.data.documents
+                      .map((doc) => buildItem(doc))
+                      .toList(),
+                );
+              } else {
+                return SizedBox();
+              }
             },
-            tooltip: '+',
-            child: Icon(Icons.add),
-            backgroundColor: blueColor,
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      ]),
+      bottomNavigationBar: new BottomAppBar(
+        child: Container(
+          height: 56.0,
+          width: 360.0,
+          child: new Row(
+            children: <Widget>[
+              Container(
+                width: 20,
+                height: 20,
+                margin: EdgeInsets.only(left: 16.0),
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new NetworkImage(
+                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 4.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateRoute()),
+                    );
+                  },
+                  icon: Icon(Icons.info_outline),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateRoute()),
+            );
+          },
+          tooltip: '+',
+          child: Icon(Icons.add),
+          backgroundColor: blueColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
   Card buildItem(DocumentSnapshot doc) {
-
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
     String departureDate =
-        DateFormat("d MMM").format(DateTime.parse(dateReversed));
+    DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    // String capacityStringFinal = capacityString.substring(0,1) + '.' + capacityString.substring(1,2);
 
     final leftSection = new Container(
-       height: 32,
-       width: 62,
-       margin: EdgeInsets.only(top: 8, bottom: 16),
-
+        height: 32,
+        width: 62,
+        margin: EdgeInsets.only(top: 8, bottom: 16),
         decoration: new BoxDecoration(
           shape: BoxShape.rectangle,
           color: blueColor,
@@ -235,26 +231,20 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           ],
         ));
 
-        @override
- 
-
+    @override
     String availability = doc.data['availability'];
-     
+
     final rightSection = new Container(
       margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 0.0),
-      
       decoration: BoxDecoration(
           border: Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
           borderRadius: BorderRadius.all(Radius.circular(1.0))),
       child: new Padding(
         padding: EdgeInsets.only(left: 0.0, right: 0.0),
-        child:       
-            LinearPercentIndicator(
-              
+        child: LinearPercentIndicator(
           width: 150.0,
           lineHeight: 30.0,
           percent: (double.parse(availability)) / 100,
-         
           center: RichText(
             text: TextSpan(
               children: <TextSpan>[
@@ -279,16 +269,13 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           backgroundColor: Colors.white,
           progressColor: Color.fromRGBO(3, 54, 255, 0.12),
         ),
-
       ),
     );
 
     return Card(
-      
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-
-        child: Column(          
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new RichText(
@@ -302,7 +289,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontWeight: FontWeight.bold,
                         fontFamily: "Roboto",
                       )),
-                      new TextSpan(
+                  new TextSpan(
                       text: (', '),
                       style: new TextStyle(
                         fontSize: 20.0,
@@ -335,24 +322,5 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         ),
       ),
     );
-  }
-
-  Future<bool> _onBackPressed() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateRoute()));
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Do you want to logout the app?"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("No"),
-                  onPressed: () => Navigator.pop(context, false),
-                ),
-                FlatButton(
-                  onPressed: () => exit(0),
-                  child: Text('Yes'),
-                ),
-              ],
-            ));
   }
 }
