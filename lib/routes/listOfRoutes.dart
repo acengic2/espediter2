@@ -85,52 +85,49 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
-    
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: ListView(children: <Widget>[
-          Container(
-            // Future builder
-            //
-            //u future se poziva metoda iz klase CompanyRoutes koja prima id
-            //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-            child: FutureBuilder<QuerySnapshot>(
-              future: CompanyRutes().getCompanyRoutes(userID),
-              builder: (context, snapshot) {
-                // ukoliko postoje podaci
-                // vrati Column oi mapiraj kroz iste podatke
-                if (snapshot.hasData) {
-                  return Column(
-                    children: snapshot.data.documents
-                        .map((doc) => buildItem(doc))
-                        .toList(),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
+
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: ListView(children: <Widget>[
+        Container(
+          // Future builder
+          //
+          //u future se poziva metoda iz klase CompanyRoutes koja prima id
+          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+          child: FutureBuilder<QuerySnapshot>(
+            future: CompanyRutes().getCompanyRoutes(userID),
+            builder: (context, snapshot) {
+              // ukoliko postoje podaci
+              // vrati Column oi mapiraj kroz iste podatke
+              if (snapshot.hasData) {
+                return Column(
+                  children: snapshot.data.documents
+                      .map((doc) => buildItem(doc))
+                      .toList(),
+                );
+              } else {
+                return SizedBox();
+              }
+            },
           ),
-        ]),
-        bottomNavigationBar: new BottomAppBar(
-          child: Container(
-            height: 56.0,
-            width: 360.0,
-            child: new Row(
-              children: <Widget>[
-                Container(
-                  width: 20,
-                  height: 20,
-                  margin: EdgeInsets.only(left: 16.0),
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        image: new NetworkImage(
-                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
-                  ),
+        ),
+      ]),
+      bottomNavigationBar: new BottomAppBar(
+        child: Container(
+          height: 56.0,
+          width: 360.0,
+          child: new Row(
+            children: <Widget>[
+              Container(
+                width: 20,
+                height: 20,
+                margin: EdgeInsets.only(left: 16.0),
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new NetworkImage(
+                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
                 ),
               ),
               Container(
@@ -170,7 +167,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
     String departureDate =
-    DateFormat("d MMM").format(DateTime.parse(dateReversed));
+        DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
 
@@ -192,8 +189,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                     text: departureDate,
                     style: new TextStyle(
                       //fontSize: 14.0,
-                      fontSize:
-                        ScreenUtil.instance.setSp(13.0),
+                      fontSize: ScreenUtil.instance.setSp(13.0),
                       color: Colors.white,
                       fontFamily: "Roboto",
                     )),
@@ -245,10 +241,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
     @override
     String availability = doc.data['availability'];
-    
+
     final rightSection = new Stack(
-      // fit: StackFit.passthrough,
-      //fit: StackFit.expand,
       children: <Widget>[
         Container(
           width: ScreenUtil.instance.setWidth(142.0),

@@ -37,79 +37,73 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
-        // margin:EdgeInsets.only(top: 257.0) ,
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Nemate ruta',
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+                    Widget>[
+              Text(
+                'Nemate ruta',
+                style: TextStyle(
+                    fontSize: 16, fontFamily: "Roboto", color: textColorGray80),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
+                child: Text(
+                  "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontFamily: "Roboto",
-                      color: textColorGray80),
+                      color: textColorGray60),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
-                  child: Text(
-                    "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
-                    textAlign: TextAlign.center,
+              ),
+              ButtonTheme(
+                minWidth: 154.0,
+                height: 36.0,
+                child: RaisedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    "KREIRAJ RUTU",
                     style: TextStyle(
                         fontSize: 14,
                         fontFamily: "Roboto",
-                        color: textColorGray60),
+                        color: Colors.white),
                   ),
+                  color: blueColor,
                 ),
-                ButtonTheme(
-                  minWidth: 154.0,
-                  height: 36.0,
-                  child: RaisedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateRoute()));
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    label: Text(
-                      "KREIRAJ RUTU",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Roboto",
-                          color: Colors.white),
-                    ),
-                    color: blueColor,
-                  ),
-                )
-              ],
-                  ButtonTheme(
-                    minWidth: 154.0,
-                    height: 36.0,
-                    child: RaisedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CreateRoute()));
-                      },
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        "KREIRAJ RUTU",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Roboto",
-                            color: Colors.white),
-                      ),
-                      color: blueColor,
-                    ),
-                  )
-                ],
               ),
-            ),
+              ButtonTheme(
+                minWidth: 154.0,
+                height: 36.0,
+                child: RaisedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    "KREIRAJ RUTU",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Roboto",
+                        color: Colors.white),
+                  ),
+                  color: blueColor,
+                ),
+              ),
+            ]),
           ),
         ),
       ),
@@ -130,30 +124,30 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                       image: new NetworkImage(
                           "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 4.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateRoute()));
-                    },
-                    icon: Icon(Icons.info_outline),
-                  ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 4.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                  },
+                  icon: Icon(Icons.info_outline),
                 ),
               ),
             ],
           ),
         ),
-        floatingActionButton: Container(
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CreateRoute()));
-            },
-            tooltip: '+',
-            child: Icon(Icons.add),
-            backgroundColor: blueColor,
-          ),
+      ),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CreateRoute()));
+          },
+          tooltip: '+',
+          child: Icon(Icons.add),
+          backgroundColor: blueColor,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
