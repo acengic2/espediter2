@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
 import './companyRoutes.dart';
+import 'createRouteScreen.dart';
 import 'noRoutes.dart';
 
 void main() => runApp(ListOfRoutes());
@@ -78,7 +78,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
   @override
   Widget build(BuildContext context) {
-
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
@@ -133,37 +132,37 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                             "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 4.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreateRoute()),
-                      );
-                    },
-                    icon: Icon(Icons.info_outline),
-                  ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 4.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateRoute()),
+                    );
+                  },
+                  icon: Icon(Icons.info_outline),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: Container(
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateRoute()),
-              );
-            },
-            tooltip: '+',
-            child: Icon(Icons.add),
-            backgroundColor: blueColor,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateRoute()),
+            );
+          },
+          tooltip: '+',
+          child: Icon(Icons.add),
+          backgroundColor: blueColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
@@ -171,7 +170,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     String date = doc.data['departure_date'];
     String dateReversed = date.split('/').reversed.join();
     String departureDate =
-        DateFormat("d MMM").format(DateTime.parse(dateReversed));
+    DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
 
@@ -246,7 +245,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
     @override
     String availability = doc.data['availability'];
-
+    
     final rightSection = new Stack(
       // fit: StackFit.passthrough,
       //fit: StackFit.expand,
@@ -344,25 +343,5 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         ),
       ),
     );
-  }
-
-  Future<bool> _onBackPressed() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => CreateRoute()));
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Do you want to logout the app?"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("No"),
-                  onPressed: () => Navigator.pop(context, false),
-                ),
-                FlatButton(
-                  onPressed: () => exit(0),
-                  child: Text('Yes'),
-                ),
-              ],
-            ));
   }
 }

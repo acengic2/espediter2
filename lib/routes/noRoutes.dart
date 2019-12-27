@@ -32,49 +32,59 @@ class NoRoutesScreenPage extends StatefulWidget {
 }
 
 class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
-  Future<bool> _onBackPressed() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Do you want to logout the app?"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("No"),
-                onPressed: () => Navigator.pop(context, false),
-              ),
-            ],
-          ));
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Nemate ruta',
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        // margin:EdgeInsets.only(top: 257.0) ,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Nemate ruta',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: "Roboto",
+                      color: textColorGray80),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
+                  child: Text(
+                    "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontFamily: "Roboto",
-                        color: textColorGray80),
+                        color: textColorGray60),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
-                    child: Text(
-                      "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
-                      textAlign: TextAlign.center,
+                ),
+                ButtonTheme(
+                  minWidth: 154.0,
+                  height: 36.0,
+                  child: RaisedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CreateRoute()));
+                    },
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      "KREIRAJ RUTU",
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: "Roboto",
-                          color: textColorGray60),
+                          color: Colors.white),
                     ),
+                    color: blueColor,
                   ),
+                )
+              ],
                   ButtonTheme(
                     minWidth: 154.0,
                     height: 36.0,
@@ -102,24 +112,23 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
             ),
           ),
         ),
-        bottomNavigationBar: new BottomAppBar(
-          child: Container(
-            height: 56.0,
-            width: 360.0,
-            child: new Row(
-              children: <Widget>[
-                Container(
-                  width: 20,
-                  height: 20,
-                  margin: EdgeInsets.only(left: 16.0),
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        image: new NetworkImage(
-                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
-                  ),
-                  //child: new Tab(icon: new Image.asset("assets/img/logo.png"),
+      ),
+      bottomNavigationBar: new BottomAppBar(
+        child: Container(
+          height: 56.0,
+          width: 360.0,
+          child: new Row(
+            children: <Widget>[
+              Container(
+                width: 20,
+                height: 20,
+                margin: EdgeInsets.only(left: 16.0),
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new NetworkImage(
+                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 4.0),
@@ -131,8 +140,8 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                     icon: Icon(Icons.info_outline),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         floatingActionButton: Container(
@@ -146,8 +155,8 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
             backgroundColor: blueColor,
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }

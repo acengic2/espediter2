@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/services.dart';
 import 'package:spediter/auth/loading.dart';
-
-import 'noInternetOnLogin.dart';
+import 'noInternetConnection.dart';
 
 void main() => runApp(Login());
 
@@ -80,7 +80,6 @@ class _LoginState extends State<Login> {
                                   autofocus: true,
                                   enableInteractiveSelection: false,
                                   autovalidate: false,
-
                                   decoration: InputDecoration(
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
