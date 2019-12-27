@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -107,6 +108,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   DateTime selectedDateP;
   DateTime selectedDateD;
 
+  DateTime startDateCompare;
+  DateTime endDateCompare;
+
   /// Timestamp var [unos u bazu zbog ordera ispisa]
   int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
 
@@ -195,8 +199,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       allowFontScaling: true,
     )..init(context);
 
-    return SafeArea(
-      child: Scaffold(
+      return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
@@ -309,6 +312,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         return selectedDateP;
                                       },
                                       onChanged: (input) {
+                                        startDateCompare = input;
+                                        //print('Start date for compare: $startDateCompare &&&&& $selectedDateP');
                                         onceToast = 0;
                                         onceBtnPressed = 0;
                                         areFieldsEmpty();
@@ -607,6 +612,27 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         return selectedDateD;
                                       },
                                       onChanged: (input) {
+                                      //   String fp = formatP.format(selectedDateP);
+                                      //   String fd = formatP.format(selectedDateD);
+                                      //   String fn = formatP.format(DateTime.now());
+                                      //   bool jeli = formatted2.compareTo(DateTime.now().toString()) < 0;
+                                      //   print('Test 1.1: $fp');
+                                      //   print('Test 2.1: $fd');
+                                      //   print('Test 1.2: $formatted');
+                                      //   print('Test 2.2: $formatted2');
+                                      //   print(fn);
+                                      //   print(jeli);
+                                      //   //DateTime dolazakParse = DateTime.parse(selectedDateStringD);
+                                      //  // print(dolazakParse);
+                                      //   bool jeli2 = selectedDateD.isBefore(DateTime.now());
+                                      //   print('Konačno: $jeli2');
+                                        endDateCompare = input;
+                                        selectedDateP = new DateTime(selectedDateP.year, selectedDateP.month, selectedDateP.day, 00, 00, 00, 00, 00);
+                                        selectedDateD = new DateTime(selectedDateD.year, selectedDateD.month, selectedDateD.day, 00, 00, 00, 00, 00);
+                                        print('Start date for compare: $startDateCompare &&&&& $selectedDateP');
+                                        print('End date for compare: $endDateCompare &&&&& $selectedDateD');
+                                        bool check = selectedDateD.isBefore(DateTime.now());
+                                        print(check);
                                         onceToast = 0;
                                         onceBtnPressed = 0;
                                         areFieldsEmpty();
@@ -930,66 +956,44 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   onPressed: _isBtnDisabled
                                       ? null
                                       : () {
-                                          // async {
-                                          //     try {
-                                          //       final result =
-                                          //           await InternetAddress.lookup(
-                                          //               'google.com');
-                                          //       if (result.isNotEmpty &&
-                                          //           result[0].rawAddress.isNotEmpty) {
-                                          //         print('connected');
-                                          //         Navigator.push(
-                                          //           context,
-                                          //           MaterialPageRoute(
-                                          //               builder: (context) =>
-                                          //                   CreateRoute()),
-                                          //         );
-                                          //       }
-                                          //     } on SocketException catch (_) {
-                                          //       print('not connected');
-                                          //       Navigator.of(context).push(
-                                          //           MaterialPageRoute(
-                                          //               builder: (context) =>
-                                          //                   NoInternetConnectionLogInSrceen()));
-                                          //     }
-
                                           FocusScopeNode currentFocus =
                                               FocusScope.of(context);
                                           if (!currentFocus.hasPrimaryFocus) {
                                             currentFocus.unfocus();
                                           }
-                                          if ((percentageVar == null) ||
-                                              (dimensionsVar == '') ||
-                                              (capacityVar == null) ||
-                                              (goodsVar == '') ||
-                                              (endingDestination == '') ||
-                                              (startingDestination == '') ||
-                                              (selectedDateD == null) ||
-                                              (selectedDateP == null) ||
-                                              (timeD == null) ||
-                                              (timeP == null)) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Sva polja moraju biti popunjena'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          } else if (percentageVar < 0 ||
+                                          // if ((percentageVar == null) ||
+                                          //     (dimensionsVar == '') ||
+                                          //     (capacityVar == null) ||
+                                          //     (goodsVar == '') ||
+                                          //     (endingDestination == '') ||
+                                          //     (startingDestination == '') ||
+                                          //     (selectedDateD == null) ||
+                                          //     (selectedDateP == null) ||
+                                          //     (timeD == null) ||
+                                          //     (timeP == null)) {
+                                          //   if (onceToast == 0) {
+                                          //     final snackBar = SnackBar(
+                                          //       duration: Duration(seconds: 2),
+                                          //       behavior:
+                                          //           SnackBarBehavior.floating,
+                                          //       backgroundColor: Color.fromRGBO(
+                                          //           28, 28, 28, 1.0),
+                                          //       content: Text(
+                                          //           'Sva polja moraju biti popunjena'),
+                                          //       action: SnackBarAction(
+                                          //         label: 'Undo',
+                                          //         onPressed: () {},
+                                          //       ),
+                                          //     );
+                                          //     Scaffold.of(context)
+                                          //         .showSnackBar(snackBar);
+                                          //     onceToast = 1;
+                                          //     Timer(Duration(seconds: 2), () {
+                                          //       onceToast = 0;
+                                          //     });
+                                          //   }
+                                          // }
+                                           else if (percentageVar < 0 ||
                                               percentageVar > 100) {
                                             if (onceToast == 0) {
                                               final snackBar = SnackBar(
@@ -1022,9 +1026,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                   DateFormat('kk:mm')
                                                       .format(DateTime.now())
                                                       .split(":")[1]));
-                                          if (formatted2.compareTo(formatP
-                                                  .format(DateTime.now())) <
-                                              0) {
+                                          if (selectedDateD.isBefore(DateTime.now())) {
                                             if (onceToast == 0) {
                                               final snackBar = SnackBar(
                                                 duration: Duration(seconds: 2),
@@ -1046,10 +1048,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 onceToast = 0;
                                               });
                                             }
-                                          } else if (formatted2.compareTo(
-                                                  formatP.format(
-                                                      DateTime.now())) ==
-                                              0) {
+                                          } else if (selectedDateD.isAtSameMomentAs(DateTime.now())) {
                                             if (timeD.compareTo(t.toString()) <
                                                 0) {
                                               if (onceToast == 0) {
@@ -1102,13 +1101,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                 });
                                               }
                                             }
-                                          } else if (formatted2.compareTo(
-                                                  formatP
-                                                      .format(DateTime.now())) >
-                                              0) {
-                                            if (formatted
-                                                    .compareTo(formatted2) >
-                                                0) {
+                                          } else if (selectedDateD.isAfter(DateTime.now())) {
+                                            if (selectedDateP.isAfter(selectedDateD)) {
                                               if (onceToast == 0) {
                                                 final snackBar = SnackBar(
                                                   duration:
@@ -1132,9 +1126,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                                   onceToast = 0;
                                                 });
                                               }
-                                            } else if (formatted
-                                                    .compareTo(formatted2) ==
-                                                0) {
+                                            } else if (selectedDateP.isAtSameMomentAs(selectedDateD)) {
                                               if (timeP.compareTo(timeD) > 0) {
                                                 if (onceToast == 0) {
                                                   final snackBar = SnackBar(
@@ -1210,7 +1202,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           ),
           // ),]
         ),
-      ),
+      //),
+    //),
     );
   }
 
@@ -1226,13 +1219,11 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           listOfInterdestinations += '${data[i].interdestinationData}, ';
         }
         print(listOfInterdestinations);
-        if (listOfInterdestinations == ', ') {
           listOfInterdestinations = listOfInterdestinations.substring(
               0, listOfInterdestinations.length - 2);
         }
       }
     }
-  }
 
 // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {

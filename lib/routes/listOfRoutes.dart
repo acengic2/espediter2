@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
 import './companyRoutes.dart';
+import 'createRouteScreen.dart';
 import 'noRoutes.dart';
 
 void main() => runApp(ListOfRoutes());
@@ -87,83 +89,81 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: ListView(children: <Widget>[
-          Container(
-            // Future builder
-            //
-            //u future se poziva metoda iz klase CompanyRoutes koja prima id
-            //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-            child: FutureBuilder<QuerySnapshot>(
-              future: CompanyRutes().getCompanyRoutes(userID),
-              builder: (context, snapshot) {
-                // ukoliko postoje podatci
-                //vrati Column oi mapiraj kroz iste podatke
-                if (snapshot.hasData) {
-                  return Column(
-                    children: snapshot.data.documents
-                        .map((doc) => buildItem(doc))
-                        .toList(),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
-          ),
-        ]),
-        bottomNavigationBar: new BottomAppBar(
-          child: Container(
-            height: 56.0,
-            width: 360.0,
-            child: new Row(
-              children: <Widget>[
-                Container(
-                  width: 20,
-                  height: 20,
-                  margin: EdgeInsets.only(left: 16.0),
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        image: new NetworkImage(
-                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreateRoute()),
-                      );
-                    },
-                    icon: Icon(Icons.info_outline),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        floatingActionButton: Container(
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateRoute()),
-              );
+
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: ListView(children: <Widget>[
+        Container(
+          // Future builder
+          //
+          //u future se poziva metoda iz klase CompanyRoutes koja prima id
+          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+          child: FutureBuilder<QuerySnapshot>(
+            future: CompanyRutes().getCompanyRoutes(userID),
+            builder: (context, snapshot) {
+              // ukoliko postoje podaci
+              // vrati Column oi mapiraj kroz iste podatke
+              if (snapshot.hasData) {
+                return Column(
+                  children: snapshot.data.documents
+                      .map((doc) => buildItem(doc))
+                      .toList(),
+                );
+              } else {
+                return SizedBox();
+              }
             },
-            tooltip: '+',
-            child: Icon(Icons.add),
-            backgroundColor: blueColor,
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      ]),
+      bottomNavigationBar: new BottomAppBar(
+        child: Container(
+          height: 56.0,
+          width: 360.0,
+          child: new Row(
+            children: <Widget>[
+              Container(
+                width: 20,
+                height: 20,
+                margin: EdgeInsets.only(left: 16.0),
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new NetworkImage(
+                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 4.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateRoute()),
+                    );
+                  },
+                  icon: Icon(Icons.info_outline),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateRoute()),
+            );
+          },
+          tooltip: '+',
+          child: Icon(Icons.add),
+          backgroundColor: blueColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
@@ -174,7 +174,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    // String capacityStringFinal = capacityString.substring(0,1) + '.' + capacityString.substring(1,2);
 
     final leftSection = new Container(
         height: 32,
@@ -193,7 +192,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                 new TextSpan(
                     text: departureDate,
                     style: new TextStyle(
-                      fontSize: 14.0,
+                      //fontSize: 14.0,
+                      fontSize: ScreenUtil.instance.setSp(13.0),
                       color: Colors.white,
                       fontFamily: "Roboto",
                     )),
@@ -247,8 +247,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     String availability = doc.data['availability'];
 
     final rightSection = new Stack(
-      // fit: StackFit.passthrough,
-      //fit: StackFit.expand,
       children: <Widget>[
         Container(
           width: ScreenUtil.instance.setWidth(142.0),
@@ -343,25 +341,5 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         ),
       ),
     );
-  }
-
-  Future<bool> _onBackPressed() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => CreateRoute()));
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Do you want to logout the app?"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("No"),
-                  onPressed: () => Navigator.pop(context, false),
-                ),
-                FlatButton(
-                  onPressed: () => exit(0),
-                  child: Text('Yes'),
-                ),
-              ],
-            ));
   }
 }
