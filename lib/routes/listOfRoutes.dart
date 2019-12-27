@@ -78,6 +78,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
   @override
   Widget build(BuildContext context) {
+
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
@@ -85,6 +86,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
+    
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -190,7 +192,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                 new TextSpan(
                     text: departureDate,
                     style: new TextStyle(
-                      fontSize: 14.0,
+                      //fontSize: 14.0,
+                      fontSize:
+                        ScreenUtil.instance.setSp(13.0),
                       color: Colors.white,
                       fontFamily: "Roboto",
                     )),
