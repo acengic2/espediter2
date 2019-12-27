@@ -98,8 +98,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
             child: FutureBuilder<QuerySnapshot>(
               future: CompanyRutes().getCompanyRoutes(userID),
               builder: (context, snapshot) {
-                // ukoliko postoje podatci
-                //vrati Column oi mapiraj kroz iste podatke
+                // ukoliko postoje podaci
+                // vrati Column oi mapiraj kroz iste podatke
                 if (snapshot.hasData) {
                   return Column(
                     children: snapshot.data.documents
@@ -172,7 +172,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     capacityString = doc.data['capacity'];
-    // String capacityStringFinal = capacityString.substring(0,1) + '.' + capacityString.substring(1,2);
 
     final leftSection = new Container(
         height: 32,
