@@ -68,11 +68,6 @@ class _ShowLoadingRoutes extends State<ShowLoadingRoutes> {
         ),
       ],
     )));
-    // } else {
-
-    //   Navigator.of(context)
-    //         .push(MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID,)));
-    // }
   }
 
   // loading screen for 2 seconds

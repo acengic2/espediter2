@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spediter/routes/createRouteScreen.dart';
 import './inderdestination.dart';
 
 typedef OnDelete();
@@ -11,16 +10,11 @@ class InterdestinationForm extends StatefulWidget {
   final OnDelete onDelete;
   final OnAdd onAdd;
 
-  
-  
- 
-
   InterdestinationForm({
     Key key,
     this.interdestination,
-    this.onDelete, 
+    this.onDelete,
     this.onAdd,
-
   }) : super(key: key);
 
   @override
@@ -29,13 +23,8 @@ class InterdestinationForm extends StatefulWidget {
   bool isValid() => state.validate();
 }
 
-
-
 class _UserFormState extends State<InterdestinationForm> {
   final form = GlobalKey<FormState>();
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,18 +91,20 @@ class _UserFormState extends State<InterdestinationForm> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0))),
                   ))),
-                  Expanded(
+          Expanded(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(bottom: 2.0, ),
+                margin: EdgeInsets.only(
+                  bottom: 2.0,
+                ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
                     Container(
-                      child:  IconButton(
-                          onPressed:  widget.onDelete,
-                          icon: Icon(Icons.clear),
-                        ),
+                      child: IconButton(
+                        onPressed: widget.onDelete,
+                        icon: Icon(Icons.clear),
+                      ),
                     ),
                   ],
                 ),

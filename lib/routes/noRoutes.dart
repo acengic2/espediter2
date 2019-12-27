@@ -41,11 +41,6 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                 child: Text("No"),
                 onPressed: () => Navigator.pop(context, false),
               ),
-              // FlatButton(
-              // onPressed: () => exit(0),
-              // /*Navigator.of(context).pop(true)*/
-              // child: Text('Yes'),
-              // ),
             ],
           ));
 
@@ -56,7 +51,6 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: Container(
-          // margin:EdgeInsets.only(top: 257.0) ,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -87,26 +81,7 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                     child: RaisedButton.icon(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateRoute()));
-                        // try {
-                        //   final result =
-                        //       await InternetAddress.lookup('google.com');
-                        //   if (result.isNotEmpty &&
-                        //       result[0].rawAddress.isNotEmpty) {
-                        //     print('connected');
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => CreateRoute()),
-                        //     );
-                        //   }
-                        // } on SocketException catch (_) {
-                        //   print('not connected');
-                        //   Navigator.of(context).push(MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           NoInternetConnectionLogInSrceen()));
-                        // }
+                            builder: (context) => CreateRoute()));
                       },
                       icon: Icon(
                         Icons.add,
@@ -151,26 +126,7 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                   child: IconButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateRoute()));
-                      // try {
-                      //   final result =
-                      //       await InternetAddress.lookup('google.com');
-                      //   if (result.isNotEmpty &&
-                      //       result[0].rawAddress.isNotEmpty) {
-                      //     print('connected');
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => CreateRoute()),
-                      //     );
-                      //   }
-                      // } on SocketException catch (_) {
-                      //   print('not connected');
-                      //   Navigator.of(context).push(MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           NoInternetConnectionLogInSrceen()));
-                      // }
+                          builder: (context) => CreateRoute()));
                     },
                     icon: Icon(Icons.info_outline),
                   ),
@@ -182,27 +138,8 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
         floatingActionButton: Container(
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateRoute()));
-              // try {
-              //   final result = await InternetAddress.lookup('google.com');
-              //   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-              //     print('connected');
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => CreateRoute()),
-              //     );
-              //   }
-              // } on SocketException catch (_) {
-              //   print('not connected');
-              //   Navigator.of(context).push(MaterialPageRoute(
-              //       builder: (context) => NoInternetConnectionLogInSrceen()));
-              // }
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => CreateRoute()),
-              // );
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CreateRoute()));
             },
             tooltip: '+',
             child: Icon(Icons.add),
