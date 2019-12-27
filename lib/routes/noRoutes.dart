@@ -32,185 +32,125 @@ class NoRoutesScreenPage extends StatefulWidget {
 }
 
 class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
-  Future<bool> _onBackPressed() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Do you want to logout the app?"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("No"),
-                onPressed: () => Navigator.pop(context, false),
-              ),
-              // FlatButton(
-              // onPressed: () => exit(0),
-              // /*Navigator.of(context).pop(true)*/
-              // child: Text('Yes'),
-              // ),
-            ],
-          ));
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-          // margin:EdgeInsets.only(top: 257.0) ,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Nemate ruta',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: "Roboto",
-                        color: textColorGray80),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
-                    child: Text(
-                      "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Roboto",
-                          color: textColorGray60),
-                    ),
-                  ),
-                  ButtonTheme(
-                    minWidth: 154.0,
-                    height: 36.0,
-                    child: RaisedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateRoute()));
-                        // try {
-                        //   final result =
-                        //       await InternetAddress.lookup('google.com');
-                        //   if (result.isNotEmpty &&
-                        //       result[0].rawAddress.isNotEmpty) {
-                        //     print('connected');
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => CreateRoute()),
-                        //     );
-                        //   }
-                        // } on SocketException catch (_) {
-                        //   print('not connected');
-                        //   Navigator.of(context).push(MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           NoInternetConnectionLogInSrceen()));
-                        // }
-                      },
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        "KREIRAJ RUTU",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Roboto",
-                            color: Colors.white),
-                      ),
-                      color: blueColor,
-                    ),
-                  )
-                ],
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+                    Widget>[
+              Text(
+                'Nemate ruta',
+                style: TextStyle(
+                    fontSize: 16, fontFamily: "Roboto", color: textColorGray80),
               ),
-            ),
-          ),
-        ),
-        bottomNavigationBar: new BottomAppBar(
-          child: Container(
-            height: 56.0,
-            width: 360.0,
-            child: new Row(
-              children: <Widget>[
-                Container(
-                  width: 20,
-                  height: 20,
-                  margin: EdgeInsets.only(left: 16.0),
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        image: new NetworkImage(
-                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
-                  ),
-                  //child: new Tab(icon: new Image.asset("assets/img/logo.png"),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
+                child: Text(
+                  "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Roboto",
+                      color: textColorGray60),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 4.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateRoute()));
-                      // try {
-                      //   final result =
-                      //       await InternetAddress.lookup('google.com');
-                      //   if (result.isNotEmpty &&
-                      //       result[0].rawAddress.isNotEmpty) {
-                      //     print('connected');
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => CreateRoute()),
-                      //     );
-                      //   }
-                      // } on SocketException catch (_) {
-                      //   print('not connected');
-                      //   Navigator.of(context).push(MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           NoInternetConnectionLogInSrceen()));
-                      // }
-                    },
-                    icon: Icon(Icons.info_outline),
+              ),
+              ButtonTheme(
+                minWidth: 154.0,
+                height: 36.0,
+                child: RaisedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
                   ),
+                  label: Text(
+                    "KREIRAJ RUTU",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Roboto",
+                        color: Colors.white),
+                  ),
+                  color: blueColor,
                 ),
-              ],
-            ),
+              ),
+              ButtonTheme(
+                minWidth: 154.0,
+                height: 36.0,
+                child: RaisedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    "KREIRAJ RUTU",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Roboto",
+                        color: Colors.white),
+                  ),
+                  color: blueColor,
+                ),
+              ),
+            ]),
           ),
         ),
-        floatingActionButton: Container(
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateRoute()));
-              // try {
-              //   final result = await InternetAddress.lookup('google.com');
-              //   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-              //     print('connected');
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => CreateRoute()),
-              //     );
-              //   }
-              // } on SocketException catch (_) {
-              //   print('not connected');
-              //   Navigator.of(context).push(MaterialPageRoute(
-              //       builder: (context) => NoInternetConnectionLogInSrceen()));
-              // }
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => CreateRoute()),
-              // );
-            },
-            tooltip: '+',
-            child: Icon(Icons.add),
-            backgroundColor: blueColor,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
+      bottomNavigationBar: new BottomAppBar(
+        child: Container(
+          height: 56.0,
+          width: 360.0,
+          child: new Row(
+            children: <Widget>[
+              Container(
+                width: 20,
+                height: 20,
+                margin: EdgeInsets.only(left: 16.0),
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new NetworkImage(
+                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 4.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                  },
+                  icon: Icon(Icons.info_outline),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CreateRoute()));
+          },
+          tooltip: '+',
+          child: Icon(Icons.add),
+          backgroundColor: blueColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
