@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
+import 'package:spediter/routes/companyRoutes.dart';
 import 'package:spediter/routes/form.dart';
 import 'package:spediter/routes/loadingRoutes.dart';
 import 'package:spediter/utils/screenUtils.dart';
@@ -110,6 +111,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
 
   bool _screenUtilActive = true;
+  bool imaliRuta = true;
 
   // DateTime selectedDateP = DateTime.now();
   // DateTime selectedDateD = DateTime.now();
@@ -201,11 +203,26 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
             color: Colors.black,
             icon: Icon(Icons.clear),
             onPressed: () {
-              Navigator.push(
+              CompanyRutes()
+                  .getCompanyRoutes(userID)
+                  .then((QuerySnapshot docs) {
+                if (docs.documents.isNotEmpty) {
+                  print('NOT EMPRY');
+                  imaliRuta = true;
+                  Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ListOfRoutes(userID: userID)),
               );
+                } else {
+                  print('EMPTU');
+                  imaliRuta = false;
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => NoRoutes()));
+                }
+              });
+
+              
             },
           ),
           title: const Text('Kreiranje Rute',
@@ -239,6 +256,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     padding:
                                         EdgeInsets.only(left: 4.0, right: 4.0),
                                     child: DateTimeField(
+                                       textCapitalization:
+                                              TextCapitalization.words,
                                       // style: TextStyle(fontSize: 10.0),
                                       style: TextStyle(
                                           fontSize:
@@ -258,10 +277,12 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             20.0, 10.0, 20.0, 10.0),
                                       ),
                                       format: format,
+                                     
                                       onShowPicker:
                                           (context, currentValue) async {
                                         final DateTime picked =
                                             await showDatePicker(
+                                              
                                                 locale: Locale('bs'),
                                                 context: context,
                                                 initialDate: DateTime.now(),
@@ -672,7 +693,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   decimal: false),
                               focusNode: focusPercentage,
                               decoration: InputDecoration(
-                                 
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(4.0)),
@@ -691,11 +711,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   hasFloatingPlaceholder: true,
                                   border: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.circular(5.0))
-                                      
-                                          
-                              ),
-                                      
+                                          BorderRadius.circular(5.0))),
                               onChanged: (input) {
                                 setState(() {
                                   if (input != '') {
