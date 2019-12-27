@@ -460,7 +460,6 @@ class _LoginState extends State<Login> {
       try {
         AuthResult result = await _auth.signInWithEmailAndPassword(
             email: _email, password: _password);
-        //.then((currentUser) => Firestore.instance.collection("users").document(currentUser.uid).get().then(DocumentSnapshot result) =>
         FirebaseUser user = result.user;
         String userEmail = user.email;
         // print('SADSADSADDSADSAD $userEmail');
