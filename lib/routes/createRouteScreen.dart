@@ -30,6 +30,7 @@ class CreateRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Kreiraj Rutu',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -928,29 +929,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   onPressed: _isBtnDisabled
                                       ? null
                                       : () {
-                                          // async {
-                                          //     try {
-                                          //       final result =
-                                          //           await InternetAddress.lookup(
-                                          //               'google.com');
-                                          //       if (result.isNotEmpty &&
-                                          //           result[0].rawAddress.isNotEmpty) {
-                                          //         print('connected');
-                                          //         Navigator.push(
-                                          //           context,
-                                          //           MaterialPageRoute(
-                                          //               builder: (context) =>
-                                          //                   CreateRoute()),
-                                          //         );
-                                          //       }
-                                          //     } on SocketException catch (_) {
-                                          //       print('not connected');
-                                          //       Navigator.of(context).push(
-                                          //           MaterialPageRoute(
-                                          //               builder: (context) =>
-                                          //                   NoInternetConnectionLogInSrceen()));
-                                          //     }
-
                                           FocusScopeNode currentFocus =
                                               FocusScope.of(context);
                                           if (!currentFocus.hasPrimaryFocus) {
@@ -1234,8 +1212,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         (timeP != null && timeP != '' && timeP != 'Vrijeme polaska') &&
         (_selectedVehicle != null)) {
       _isBtnDisabled = false;
-    } else 
-        {
+    } else {
       _isBtnDisabled = true;
     }
   }

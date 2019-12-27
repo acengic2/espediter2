@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spediter/routes/listOfRoutes.dart';
 import 'package:spediter/usersPages/usersHome.dart';
+
 void main() => runApp(HomePage());
 String userUid;
+
 class HomePage extends StatelessWidget {
   // This widget is the root of your application.
   final FirebaseUser user;
@@ -12,12 +14,9 @@ class HomePage extends StatelessWidget {
   const HomePage({Key key, this.user, this.email}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-  //   void inputData() async {
-  //   final FirebaseUser user = await auth.currentUser();
-  //   final uid = user.uid
-  //   // here you write the codes to input the data into firestore
-  // }   
-    userUid = Firestore.instance
+    //   // here you write the codes to input the data into firestore
+    // }
+    userUid = Firestore.instance 
         .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
         .document(user.uid) // takes user.id
         .snapshots()
@@ -26,7 +25,8 @@ class HomePage extends StatelessWidget {
       resizeToAvoidBottomPadding: false,
       body: StreamBuilder<DocumentSnapshot>(
           stream: Firestore.instance
-              .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
+              .collection(
+                  'LoggedUsers') //goes to collection LoggedUsers on firebase
               .document(user.uid) // takes user.id
               .snapshots(),
           builder:
@@ -45,42 +45,38 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
 // method for checking a role
 String usID;
 checkForID() async {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
-    
-   Firestore.instance
-        .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
-        .document(user.uid) // takes user.id
-        .snapshots()
-        .toString();
+  final FirebaseUser user = await _auth.currentUser();
 
-    usID = user.uid;
-    print(usID);
-    
+  Firestore.instance
+      //goes to collection LoggedUsers on firebase
+      .collection('LoggedUsers')
+      // takes user.id
+      .document(user.uid)
+      .snapshots()
+      .toString();
+
+  usID = user.uid;
+  print(usID);
 }
 
-checkRole(DocumentSnapshot snapshot)  {
+checkRole(DocumentSnapshot snapshot) {
   checkForID();
   if (snapshot.data['role'] == "company") {
-      
-       return ListOfRoutes(userID: usID);
+    return ListOfRoutes(userID: usID);
     //getUserIDFromRoutes();
     // return adminPage(snapshot);
-
 
   } else if (snapshot.data['role'] == "user") {
     return userPage(snapshot);
   }
 }
+
 //if is a user go to list of routes
 Center userPage(DocumentSnapshot snapshot) {
   return Center(child: ListOfUsersRoutes());
 }
-
-// // if is a admin go to no routes page
-// Center adminPage(DocumentSnapshot snapshot) {
-//   return Center(child: NoRoutes());
-// }

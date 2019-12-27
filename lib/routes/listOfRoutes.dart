@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/routes/companyRoutes.dart';
@@ -29,6 +30,7 @@ class ListOfRoutes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ListOfRoutesPage(userID: userID),
     );
   }
@@ -76,48 +78,59 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: ListView(children: <Widget>[
-        Container(
-          // Future builder
-          //
-          //u future se poziva metoda iz klase CompanyRoutes koja prima id
-          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-          child: FutureBuilder<QuerySnapshot>(
-            future: CompanyRutes().getCompanyRoutes(userID),
-            builder: (context, snapshot) {
-              // ukoliko postoje podatci
-              //vrati Column oi mapiraj kroz iste podatke
-              if (snapshot.hasData) {
-                return Column(
-                  children: snapshot.data.documents
-                      .map((doc) => buildItem(doc))
-                      .toList(),
-                );
-              } else {
-                return SizedBox();
-              }
-            },
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
+    
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: ListView(children: <Widget>[
+          Container(
+            // Future builder
+            //
+            //u future se poziva metoda iz klase CompanyRoutes koja prima id
+            //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+            child: FutureBuilder<QuerySnapshot>(
+              future: CompanyRutes().getCompanyRoutes(userID),
+              builder: (context, snapshot) {
+                // ukoliko postoje podaci
+                // vrati Column oi mapiraj kroz iste podatke
+                if (snapshot.hasData) {
+                  return Column(
+                    children: snapshot.data.documents
+                        .map((doc) => buildItem(doc))
+                        .toList(),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              },
+            ),
           ),
-        ),
-      ]),
-      bottomNavigationBar: new BottomAppBar(
-        child: Container(
-          height: 56.0,
-          width: 360.0,
-          child: new Row(
-            children: <Widget>[
-              Container(
-                width: 20,
-                height: 20,
-                margin: EdgeInsets.only(left: 16.0),
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      image: new NetworkImage(
-                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+        ]),
+        bottomNavigationBar: new BottomAppBar(
+          child: Container(
+            height: 56.0,
+            width: 360.0,
+            child: new Row(
+              children: <Widget>[
+                Container(
+                  width: 20,
+                  height: 20,
+                  margin: EdgeInsets.only(left: 16.0),
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: new DecorationImage(
+                        fit: BoxFit.fill,
+                        image: new NetworkImage(
+                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+                  ),
                 ),
               ),
               Container(
@@ -178,7 +191,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                 new TextSpan(
                     text: departureDate,
                     style: new TextStyle(
-                      fontSize: 14.0,
+                      //fontSize: 14.0,
+                      fontSize:
+                        ScreenUtil.instance.setSp(13.0),
                       color: Colors.white,
                       fontFamily: "Roboto",
                     )),
@@ -230,43 +245,52 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
     @override
     String availability = doc.data['availability'];
-
-    final rightSection = new Container(
-      margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 0.0),
-      decoration: BoxDecoration(
-          border: Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
-          borderRadius: BorderRadius.all(Radius.circular(1.0))),
-      child: new Padding(
-        padding: EdgeInsets.only(left: 0.0, right: 0.0),
-        child: LinearPercentIndicator(
-          width: 150.0,
-          lineHeight: 30.0,
-          percent: (double.parse(availability)) / 100,
-          center: RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Popunjenost: ',
-                    style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                        color: Colors.black.withOpacity(0.6))),
-                TextSpan(
-                  text: ('${doc.data['availability']} %'),
-                  style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.8)),
-                ),
-              ],
-            ),
-          ),
-          linearStrokeCap: LinearStrokeCap.butt,
-          backgroundColor: Colors.white,
-          progressColor: Color.fromRGBO(3, 54, 255, 0.12),
+    
+    final rightSection = new Stack(
+      // fit: StackFit.passthrough,
+      //fit: StackFit.expand,
+      children: <Widget>[
+        Container(
+          width: ScreenUtil.instance.setWidth(142.0),
+          height: 32,
+          margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 1.0),
+          decoration: BoxDecoration(
+              border:
+                  Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
+              borderRadius: BorderRadius.all(Radius.circular(1.0))),
         ),
-      ),
+        Container(
+            margin: EdgeInsets.only(top: 9),
+            child: LinearPercentIndicator(
+              padding: EdgeInsets.only(left: 1),
+              width: ScreenUtil.instance.setWidth(141.0),
+              lineHeight: 30.0,
+              percent: (double.parse(availability)) / 100,
+              center: RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Popunjenost: ',
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                            color: Colors.black.withOpacity(0.6))),
+                    TextSpan(
+                      text: ('${doc.data['availability']} %'),
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: ScreenUtil.instance.setSp(12.0),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.8)),
+                    ),
+                  ],
+                ),
+              ),
+              linearStrokeCap: LinearStrokeCap.butt,
+              backgroundColor: Colors.white,
+              progressColor: Color.fromRGBO(3, 54, 255, 0.12),
+            ))
+      ],
     );
 
     return Card(

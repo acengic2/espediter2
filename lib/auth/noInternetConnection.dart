@@ -22,7 +22,8 @@ class NoInternetConnectionPage2 extends StatefulWidget {
   final String title;
 
   @override
-  _NoInternetConnectionPageState createState() => _NoInternetConnectionPageState();
+  _NoInternetConnectionPageState createState() =>
+      _NoInternetConnectionPageState();
 }
 
 class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
@@ -39,7 +40,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
               children: <Widget>[
                 Text(
                   'Nemate mreze',
-                      style: TextStyle(
+                  style: TextStyle(
                       fontSize: 16,
                       fontFamily: "Roboto",
                       color: textColorGray80),
