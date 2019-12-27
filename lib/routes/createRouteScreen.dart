@@ -29,6 +29,7 @@ class CreateRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Kreiraj Rutu',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -1220,8 +1221,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         (timeP != null && timeP != '' && timeP != 'Vrijeme polaska') &&
         (_selectedVehicle != null)) {
       _isBtnDisabled = false;
-    } else 
-        {
+    } else {
       _isBtnDisabled = true;
     }
   }

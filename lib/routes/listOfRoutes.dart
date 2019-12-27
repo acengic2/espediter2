@@ -30,6 +30,7 @@ class ListOfRoutes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ListOfRoutesPage(userID: userID),
     );
   }
@@ -77,15 +78,13 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-  double defaultScreenWidth = 400.0;
+    double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
       width: defaultScreenWidth,
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
-  
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -246,23 +245,23 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     String availability = doc.data['availability'];
 
     final rightSection = new Stack(
-    // fit: StackFit.passthrough,
+      // fit: StackFit.passthrough,
       //fit: StackFit.expand,
       children: <Widget>[
         Container(
-          width: 150,
-          height: 32 ,
-            margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 1.0),
-            decoration: BoxDecoration(
-                border: Border.all(
-                    width: 1.0, color: Colors.black.withOpacity(0.12)),
-                borderRadius: BorderRadius.all(Radius.circular(1.0))),
-          ),
-          Container(
-            margin:  EdgeInsets.only(top: 9),
-           child: LinearPercentIndicator(
-         padding: EdgeInsets.only(left: 1),
-              width: 149.0,
+          width: ScreenUtil.instance.setWidth(142.0),
+          height: 32,
+          margin: EdgeInsets.only(top: 8, bottom: 16, left: 0.0, right: 1.0),
+          decoration: BoxDecoration(
+              border:
+                  Border.all(width: 1.0, color: Colors.black.withOpacity(0.12)),
+              borderRadius: BorderRadius.all(Radius.circular(1.0))),
+        ),
+        Container(
+            margin: EdgeInsets.only(top: 9),
+            child: LinearPercentIndicator(
+              padding: EdgeInsets.only(left: 1),
+              width: ScreenUtil.instance.setWidth(141.0),
               lineHeight: 30.0,
               percent: (double.parse(availability)) / 100,
               center: RichText(
@@ -272,13 +271,13 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         text: 'Popunjenost: ',
                         style: TextStyle(
                             fontFamily: 'Roboto',
-                            fontSize: 14,
+                            fontSize: ScreenUtil.instance.setSp(12.0),
                             color: Colors.black.withOpacity(0.6))),
                     TextSpan(
                       text: ('${doc.data['availability']} %'),
                       style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 14,
+                          fontSize: ScreenUtil.instance.setSp(12.0),
                           fontWeight: FontWeight.bold,
                           color: Colors.black.withOpacity(0.8)),
                     ),
@@ -288,13 +287,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
               linearStrokeCap: LinearStrokeCap.butt,
               backgroundColor: Colors.white,
               progressColor: Color.fromRGBO(3, 54, 255, 0.12),
-            )
-          )
-       
-
-
-
-
+            ))
       ],
     );
 
