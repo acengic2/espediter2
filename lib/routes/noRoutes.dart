@@ -7,6 +7,8 @@ const blueColor = Color.fromRGBO(3, 54, 255, 1);
 const textColorGray80 = Color.fromRGBO(0, 0, 0, 0.8);
 const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
 
+const noRoutesString = "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.";
+
 class NoRoutes extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -51,7 +53,7 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
               Padding(
                 padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
                 child: Text(
-                  "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.",
+                 noRoutesString ,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 14,
