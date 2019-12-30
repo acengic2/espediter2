@@ -299,6 +299,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
 
     /// Card Widget u koji spremamo svaki od sekcija [right,left,middle]
     /// i na osnovu toga kreiramo karticu
+  
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -309,7 +311,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
               text: new TextSpan(
                 children: <TextSpan>[
                   new TextSpan(
-                      text: '${doc.data['starting_destination']}',
+                      text: '${doc.data['starting_destination']}, ',
                       style: new TextStyle(
                         fontSize: 20.0,
                         color: Colors.black.withOpacity(0.8),
@@ -317,7 +319,6 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                      text: (', '),
                       style: new TextStyle(
                         fontSize: 20.0,
                         color: Colors.black.withOpacity(0.6),
@@ -331,7 +332,7 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
                         fontFamily: "Roboto",
                       )),
                   new TextSpan(
-                    text: (', ${doc.data['ending_destination']}'),
+                    text: ('${doc.data['ending_destination']}'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
