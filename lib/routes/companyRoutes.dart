@@ -13,6 +13,5 @@ class CompanyRutes {
         .orderBy('timestamp', descending: true)
         .getDocuments();
   }
-
 }
 

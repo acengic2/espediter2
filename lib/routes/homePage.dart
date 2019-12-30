@@ -1,52 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:spediter/routes/listOfRoutes.dart';
+import 'package:spediter/routes/noRoutes.dart';
 import 'package:spediter/usersPages/usersHome.dart';
+import 'package:async/async.dart';
 
 void main() => runApp(HomePage());
 String userUid;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   // This widget is the root of your application.
   final FirebaseUser user;
   final String email;
   const HomePage({Key key, this.user, this.email}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  
+   
+  
   @override
   Widget build(BuildContext context) {
-    //   // here you write the codes to input the data into firestore
-    // }
-    userUid = Firestore.instance 
-        .collection('LoggedUsers') //goes to collection LoggedUsers on firebase
-        .document(user.uid) // takes user.id
-        .snapshots()
-        .toString();
+    final AsyncMemoizer _memoizer = AsyncMemoizer();
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: StreamBuilder<DocumentSnapshot>(
-          stream: Firestore.instance
-              .collection(
-                  'LoggedUsers') //goes to collection LoggedUsers on firebase
-              .document(user.uid) // takes user.id
-              .snapshots(),
-          builder:
-              (BuildContext contex, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text(
-                  'Error: ${snapshot.error}'); //error if there is no snapshot
-            }
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return Text("Loading..."); // if you have to wait for connection
-              default:
-                return checkRole(snapshot.data);
-            }
-          }),
+      body: 
+               Column(
+          children: <Widget>[
+            FutureBuilder(
+              future: checkForRole(),
+              builder: (context, snapshot) {
+                // ukoliko postoje podaci
+
+                if (snapshot.hasData) {
+                  print('IMA');
+                  _memoizer.runOnce(() async {
+                    await Future.delayed(Duration.zero, () {
+                    return Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ListOfRoutes(userID: usID)));
+                  });
+                  });
+                  
+                  
+                } 
+                  return Center(child: ListOfRoutes(userID: usID));
+                 
+              },
+            ),
+          ],
+        ),
+      
     );
   }
 }
 
-// method for checking a role
 String usID;
 checkForID() async {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -64,19 +78,30 @@ checkForID() async {
   print(usID);
 }
 
-checkRole(DocumentSnapshot snapshot) {
+checkForRole() {
   checkForID();
-  if (snapshot.data['role'] == "company") {
-    return ListOfRoutes(userID: usID);
-    //getUserIDFromRoutes();
-    // return adminPage(snapshot);
-
-  } else if (snapshot.data['role'] == "user") {
-    return userPage(snapshot);
-  }
+  return Firestore.instance
+      .collection('LoggedUsers')
+      .where('role', isEqualTo: 'company')
+      .limit(1)
+      .getDocuments();
 }
 
-//if is a user go to list of routes
-Center userPage(DocumentSnapshot snapshot) {
-  return Center(child: ListOfUsersRoutes());
-}
+
+// checkRole(DocumentSnapshot snapshot, BuildContext context) {
+//   checkForID();
+//   if (snapshot.data['role'] == "company") {
+//     print('doslo dovdje');
+//     return Future.delayed(Duration.zero, () {
+//       Navigator.of(context).push(
+//           MaterialPageRoute(builder: (context) => ListOfRoutes(userID: usID)));
+//     });
+
+//     //  return ListOfRoutes(userID: usID);
+//   } else if (snapshot.data['role'] == "user") {
+//     return Future.delayed(Duration.zero, () {
+//       Navigator.of(context)
+//           .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+//     });
+//   } else {}
+// }
