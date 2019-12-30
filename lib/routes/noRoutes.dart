@@ -59,28 +59,7 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                       color: textColorGray60),
                 ),
               ),
-              ButtonTheme(
-                minWidth: 154.0,
-                height: 36.0,
-                child: RaisedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CreateRoute()));
-                  },
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    "KREIRAJ RUTU",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Roboto",
-                        color: Colors.white),
-                  ),
-                  color: blueColor,
-                ),
-              ),
+
               ButtonTheme(
                 minWidth: 154.0,
                 height: 36.0,

@@ -7,7 +7,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:spediter/auth/loading.dart';
 import 'package:spediter/auth/noInternetOnLogin.dart';
-import 'noInternetConnection.dart';
+
 
 void main() => runApp(Login());
 
@@ -19,11 +19,19 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  ///VARIJABLE
+  ///
+  ///error, instanca na auth
+  /// fokusi za email i pass polje
+  /// email,pass, da li user postoji, da li sifra postoji, docID, i userID
+  /// GlobalKey za formu
+  /// instanca na firebase bazu
+  /// counteri za toast i btn
   var err;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var _focusNode = new FocusNode();
   var focusNode = new FocusNode();
-  String _email = '', _password = '', userExist, passExist, id;
+  String _email = '', _password = '', userExist, passExist, id, userID;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final db = Firestore.instance;
   int onceToast = 0, onceBtnPressed = 0;
@@ -31,10 +39,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // banner za debug mode
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        // prazan prostor prilikom podizanja tastature
         resizeToAvoidBottomPadding: false,
-        body: new GestureDetector(
+        body:
+        //  detektor klika za zatvaranje tastature
+         new GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
@@ -47,6 +59,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      // row -> container -> za logo i headline
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -62,9 +75,11 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
+                      // column -> forma za popunjavanje email-a i passworda
                       Column(
                         children: <Widget>[
                           Form(
+                            // form key na osnovu kojeg kupimo podatke sa forme
                             key: _formKey,
                             child: Column(
                               children: <Widget>[
@@ -74,13 +89,16 @@ class _LoginState extends State<Login> {
                                       left: 24.0,
                                       right: 24.0,
                                       top: 24.0),
-                                  child: TextFormField(
+                                  child:
+                                  // EMAIL textform field
+                                   TextFormField(
                                     focusNode: focusNode,
                                     autocorrect: false,
                                     keyboardType: TextInputType.visiblePassword,
                                     autofocus: true,
                                     enableInteractiveSelection: false,
                                     autovalidate: false,
+                                    // dekoracija fielda
                                     decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
@@ -108,7 +126,9 @@ class _LoginState extends State<Login> {
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0))),
+                                        // VALIDACIJA fielda
                                     validator: (input) {
+                                      //  polje ne smije biti prazno
                                       if (input == '') {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
@@ -128,7 +148,9 @@ class _LoginState extends State<Login> {
                                           onceToast = 1;
                                         }
                                         return '';
-                                      } else if (!EmailValidator.validate(
+                                      }
+                                      // email mora biti validan [____@___.___]
+                                       else if (!EmailValidator.validate(
                                           input, true)) {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
@@ -147,7 +169,9 @@ class _LoginState extends State<Login> {
                                           onceToast = 1;
                                         }
                                         return '';
-                                      } else if (userExist != 'User postoji') {
+                                      }
+                                      // da li taj email stvarno postoji u bazi
+                                       else if (userExist != 'User postoji') {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
                                             duration: Duration(seconds: 2),
@@ -169,20 +193,24 @@ class _LoginState extends State<Login> {
                                       }
                                       return null;
                                     },
+                                    // na promjenu u polju setamo state
+                                    // email == input 
                                     onChanged: (input) {
                                       setState(() {
                                         _email = input;
                                       });
                                     },
-                                    //  (val) => !EmailValidator.validate(val,true)
-                                    // ? 'Not a valid email' : null,
                                   ),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(
                                       bottom: 24.0, left: 24.0, right: 24.0),
-                                  child: TextFormField(
+                                  child:
+                                  // PASSWORD textform field
+                                   TextFormField(
                                     focusNode: _focusNode,
+                                     obscureText: true,
+                                    //  dekoracija fielda
                                     decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
@@ -210,7 +238,9 @@ class _LoginState extends State<Login> {
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0))),
+                                        // VALIDACIJA fielda
                                     validator: (input) {
+                                      // polje ne smije biti prazno
                                       if (input == '') {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
@@ -230,7 +260,9 @@ class _LoginState extends State<Login> {
                                           onceToast = 1;
                                         }
                                         return '';
-                                      } else if (input.length < 6) {
+                                      }
+                                      // pass mora biti veci od 6 karaktera
+                                       else if (input.length < 6) {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
                                             duration: Duration(seconds: 2),
@@ -249,7 +281,9 @@ class _LoginState extends State<Login> {
                                           onceToast = 1;
                                         }
                                         return '';
-                                      } else if (passExist != 'Pass postoji') {
+                                      } 
+                                      // da li ta sifra postoji u bazi i da li odgovara unesenom mailu
+                                      else if (passExist != 'Pass postoji') {
                                         if (onceToast == 0) {
                                           final snackBar = SnackBar(
                                             duration: Duration(seconds: 2),
@@ -271,7 +305,8 @@ class _LoginState extends State<Login> {
                                       }
                                       return null;
                                     },
-                                    obscureText: true,
+                                  //  setanje state-a
+                                  // password == input
                                     onChanged: (input) {
                                       setState(() {
                                         _password = input;
@@ -279,6 +314,7 @@ class _LoginState extends State<Login> {
                                     },
                                   ),
                                 ),
+                                // container -> constrainedBox -> u kojem se nalazi button PRIJAVA
                                 Container(
                                   margin: EdgeInsets.only(
                                     left: 24.0,
@@ -289,7 +325,9 @@ class _LoginState extends State<Login> {
                                     constraints: const BoxConstraints(
                                       minWidth: double.infinity,
                                     ),
-                                    child: RaisedButton(
+                                    child:
+                                    // btn PRIJAVA
+                                     RaisedButton(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(4.0),
@@ -304,7 +342,10 @@ class _LoginState extends State<Login> {
                                         ),
                                       ),
                                       color: Color.fromRGBO(3, 54, 255, 1.0),
-                                      onPressed: () async {
+                                      // na press btn-a
+                                      onPressed: 
+                                      // provjera internet konekcije
+                                      () async {
                                         try {
                                           final result =
                                               await InternetAddress.lookup(
@@ -320,13 +361,13 @@ class _LoginState extends State<Login> {
                                                   builder: (context) =>
                                                       NoInternetConnectionLogInSrceen()));
                                         }
-
+                                      // zatvaranje tastature na klik dugmeta
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         if (!currentFocus.hasPrimaryFocus) {
                                           currentFocus.unfocus();
                                         }
-
+                                      // provjera da li su oba polja prazna -> email && password
                                         if (_email == '' && _password == '') {
                                           if (onceToast == 0) {
                                             final snackBar = SnackBar(
@@ -349,7 +390,11 @@ class _LoginState extends State<Login> {
                                               onceToast = 0;
                                             });
                                           }
-                                        } else {
+                                        } 
+                                        // ukoliko nisu prazna izvrsi slj funkcije -> [signIn]
+                                        // setamo counter [onceBtnPressed] na 1 nakon jednog klika kako bi 
+                                        // zabranili mogucnost vise klikova 
+                                        else {
                                           if (onceBtnPressed == 0) {
                                             signIn(
                                                 _email, _password, userExist);
@@ -360,6 +405,12 @@ class _LoginState extends State<Login> {
                                     ),
                                   ),
                                 ),
+                                /// FUTURE BUILDER 
+                                // 
+                                // ovdje provjeravamo da li password zaista postoji u bazi 
+                                // dok se provjerava printamo [Loading]
+                                // ukoliko postoji =>  String [passExist] = Pass postoji
+                                // ukoliko ne postoji =>  String [passExist] = Pass ne postoji
                                 Column(
                                   children: <Widget>[
                                     FutureBuilder(
@@ -399,6 +450,12 @@ class _LoginState extends State<Login> {
                                     ),
                                   ],
                                 ),
+                                /// FUTURE BUILDER 
+                                // 
+                                // ovdje provjeravamo da li Email/User zaista postoji u bazi 
+                                // dok se provjerava printamo [Loading]
+                                // ukoliko postoji =>  String [userExist] = User postoji
+                                // ukoliko ne postoji =>  String [userExist] = User ne postoji
                                 Column(
                                   children: <Widget>[
                                     FutureBuilder(
@@ -454,6 +511,17 @@ class _LoginState extends State<Login> {
     );
   }
 
+  /// SIGNIN metoda
+  /// 
+  /// metoda koja prima email i password
+  /// async metoda
+  /// ukoliko su validacije koje smo kreirali na textFormFields prosle
+  /// onda prelazimo na upis email-a i passworda u bazu [Auth dio baze]
+  /// nakon upisa povratnu informaciju spremamo u result, zatim sve informacije vezane za usera spremamo
+  /// u varijablu [FirebaseUser user], nakon cega izvlacimo ID, email, i user info
+  /// ukoliko sve ovo bude uspjesno, navigiramo na slj screen [ShowLoadingScreen]
+  /// cjelokupna metoda upisa je umotana u try-catch blok 
+  /// catch-amo error ukoliko ga ima i printamo u konzolu
   signIn(_email, _password, userExist) async {
     final _formState = _formKey.currentState;
     if (_formState.validate()) {
@@ -462,10 +530,9 @@ class _LoginState extends State<Login> {
             email: _email, password: _password);
         FirebaseUser user = result.user;
         String userEmail = user.email;
-        // print('SADSADSADDSADSAD $userEmail');
+        userID = user.uid;
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ShowLoading(user: user, email: userEmail)));
-        print('User ' + user.email + ' je uspjesno logovan');
+            builder: (context) => ShowLoading(user: user, email: userEmail, userID: userID)));
         return print(user);
       } catch (e) {
         err = e.message;
@@ -474,7 +541,14 @@ class _LoginState extends State<Login> {
     }
   }
 
-// provjera emaila
+/// provjera emaila
+/// 
+/// ovdje nam se nalazi logika za provjeru email-a, 
+/// odnosno da li user zaista postoji u bazi 
+/// metoda je tipa bool
+/// spajamo se na kolekciju [LoggedUsers], gdje postavljamo query
+/// da li je email == unesenom email-u
+/// limitiramo nasu pretragu na 1 document i vracamo 
   Future<bool> doesNameAlreadyExist(String name) async {
     final QuerySnapshot result = await Firestore.instance
         .collection('LoggedUsers')
@@ -485,7 +559,14 @@ class _LoginState extends State<Login> {
     return documents.length == 1;
   }
 
-  // provjera sifre
+  /// provjera sifre
+/// 
+/// ovdje nam se nalazi logika za provjeru passworda, 
+/// odnosno da li pass zaista postoji u bazi 
+/// metoda je tipa bool
+/// spajamo se na kolekciju [LoggedUsers], gdje postavljamo query
+/// da li je pass == unesenom passwordu
+/// limitiramo nasu pretragu na 1 document i vracamo 
   Future<bool> doesPassAlreadyExist(String name) async {
     final QuerySnapshot result = await Firestore.instance
         .collection('LoggedUsers')
@@ -495,4 +576,6 @@ class _LoginState extends State<Login> {
     final List<DocumentSnapshot> documents = result.documents;
     return documents.length == 1;
   }
+
+
 }
