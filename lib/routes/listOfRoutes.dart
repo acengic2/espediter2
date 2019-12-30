@@ -187,8 +187,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
           color: blueColor,
           borderRadius: BorderRadius.all(Radius.circular(1.0)),
         ),
-        child: Padding(
-          padding: EdgeInsets.only(left: 8.0, top: 6.0, right: 8.0),
+        child: Center(
+          child: Padding(
+          padding: EdgeInsets.only(left: 8.0, right: 8.0),
           child: new RichText(
             text: new TextSpan(
               children: <TextSpan>[
@@ -202,7 +203,9 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
               ],
             ),
           ),
-        ));
+        ))
+        );
+
 
     ///middle section u koji spremamo kapacitet 
     final middleSection = new Container(
