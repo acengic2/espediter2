@@ -6,7 +6,7 @@ void main() => runApp(ShowLoadingRoutes());
 
 class ShowLoadingRoutes extends StatefulWidget {
   String userID;
-//final FirebaseUser user;
+
 
 //constructor sending parameters email and user
   ShowLoadingRoutes({Key key, this.userID}) : super(key: key);

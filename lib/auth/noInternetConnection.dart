@@ -11,13 +11,13 @@ class NoInternetConnectionSrceen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'No connection screen',
-      home: NoInternetConnectionPage(title: 'No connection screen'),
+      home: NoInternetConnectionPage2(title: 'No connection screen'),
     );
   }
 }
 
-class NoInternetConnectionPage extends StatefulWidget {
-  NoInternetConnectionPage({Key key, this.title}) : super(key: key);
+class NoInternetConnectionPage2 extends StatefulWidget {
+  NoInternetConnectionPage2({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -26,7 +26,7 @@ class NoInternetConnectionPage extends StatefulWidget {
       _NoInternetConnectionPageState();
 }
 
-class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
+class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
