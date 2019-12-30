@@ -1229,21 +1229,22 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   ///on save forms
   void onSave() {
-    if (interdestinations.length > 0) {
+       if (interdestinations.length > 0) {
       var allValid = true;
       interdestinations.forEach((form) => allValid = allValid);
       if (allValid) {
         var data = interdestinations.map((it) => it.interdestination).toList();
         print(data.length);
         for (int i = 0; i < data.length; i++) {
+          if('${data[i].interdestinationData}' != '')
           listOfInterdestinations += '${data[i].interdestinationData}, ';
+          else listOfInterdestinations += '';
         }
-        print(listOfInterdestinations);
-        listOfInterdestinations = listOfInterdestinations.substring(
-            0, listOfInterdestinations.length - 2);
       }
     }
   }
+    
+   
 
 // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {
