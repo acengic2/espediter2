@@ -59,7 +59,6 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                       color: textColorGray60),
                 ),
               ),
-
               ButtonTheme(
                 minWidth: 154.0,
                 height: 36.0,
