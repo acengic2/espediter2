@@ -111,6 +111,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     mask: '0.0',
   );
 
+  var percentageController = new MaskedTextController(mask: '000');
+
   /// Stringovi
   ///
   /// companyID
@@ -788,6 +790,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                           child: TextFormField(
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: false),
+                            controller: percentageController,
                             focusNode: focusPercentage,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -1303,6 +1306,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     onceToast = 0;
     onceBtnPressed = 0;
     areFieldsEmpty();
+    FocusScope.of(context).requestFocus(focusGoods);
   }
 }
 

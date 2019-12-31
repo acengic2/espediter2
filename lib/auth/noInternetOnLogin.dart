@@ -7,6 +7,8 @@ const blueColor = Color.fromRGBO(3, 54, 255, 1);
 const textColorGray80 = Color.fromRGBO(0, 0, 0, 0.8);
 const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
 
+const String noConnection = "Nazalost nemate mreze. Rijesite problem pa pokusajte ponovno.";
+
 class NoInternetConnectionLogInSrceen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
                   child: Text(
-                    "Nažalost nemate mreže. Riješite problem, pa pokušajte ponovno.",
+                    noConnection,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 14,
