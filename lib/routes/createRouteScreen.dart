@@ -535,7 +535,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               Expanded(
                                 child: SizedBox(
                                   child: ListView.builder(
-                                      shrinkWrap: true,
+                                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
                                       addAutomaticKeepAlives: true,
                                       itemCount: interdestinations.length,
                                       itemBuilder:
