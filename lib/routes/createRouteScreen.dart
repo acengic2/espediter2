@@ -147,6 +147,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   DateTime selectedDateD;
   DateTime startDateCompare;
   DateTime endDateCompare;
+  DateTime t1, t2;
+
 
   /// Timestamp var [unos u bazu zbog ordera ispisa]
   int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
@@ -446,6 +448,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
+                                      t2 = input;
                                       onceToast = 0;
                                       onceBtnPressed = 0;
                                       areFieldsEmpty();
@@ -758,8 +761,10 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
+                                      t1 = input;
                                       onceToast = 0;
                                       onceBtnPressed = 0;
+                            
                                       areFieldsEmpty();
                                     },
                                   ),
@@ -1016,6 +1021,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                 onPressed: _isBtnDisabled
                                     ? null
                                     : () {
+                                       DateTime now = DateTime.now();
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         if (!currentFocus.hasPrimaryFocus) {
@@ -1046,175 +1052,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                             });
                                           }
                                         }
-                                        TimeOfDay t = TimeOfDay(
-                                            hour: int.parse(DateFormat('kk:mm')
-                                                .format(DateTime.now())
-                                                .split(":")[0]),
-                                            minute: int.parse(
-                                                DateFormat('kk:mm')
-                                                    .format(DateTime.now())
-                                                    .split(":")[1]));
-                                        if (selectedDateD
-                                            .isBefore(DateTime.now())) {
-                                          if (onceToast == 0) {
-                                            final snackBar = SnackBar(
-                                              duration: Duration(seconds: 2),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              backgroundColor: Color.fromRGBO(
-                                                  28, 28, 28, 1.0),
-                                              content: Text(
-                                                  'Datum dolaska ne može biti manji od današnjeg datuma.'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                            Timer(Duration(seconds: 2), () {
-                                              onceToast = 0;
-                                            });
-                                          }
-                                        } else if (selectedDateD
-                                            .isAtSameMomentAs(DateTime.now())) {
-                                          if (timeD.compareTo(t.toString()) <
-                                              0) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          }
-                                          if (timeD.compareTo(t.toString()) ==
-                                              0) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          }
-                                        } else if (selectedDateD
-                                            .isAfter(DateTime.now())) {
-                                          if (selectedDateP
-                                              .isAfter(selectedDateD)) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum polaska ne može biti veći od datuma dolaska.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          } else if (selectedDateP
-                                              .isAtSameMomentAs(
-                                                  selectedDateD)) {
-                                            if (timeP.compareTo(timeD) > 0) {
-                                              if (onceToast == 0) {
-                                                final snackBar = SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          28, 28, 28, 1.0),
-                                                  content: Text(
-                                                      'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
-                                                  action: SnackBarAction(
-                                                    label: 'Undo',
-                                                    onPressed: () {},
-                                                  ),
-                                                );
-                                                Scaffold.of(context)
-                                                    .showSnackBar(snackBar);
-                                                onceToast = 1;
-                                                Timer(Duration(seconds: 2), () {
-                                                  onceToast = 0;
-                                                });
-                                              }
-                                            } else if (timeP.compareTo(timeD) ==
-                                                0) {
-                                              if (onceToast == 0) {
-                                                final snackBar = SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          28, 28, 28, 1.0),
-                                                  content: Text(
-                                                      'Datumi i vremena ne mogu biti jednaki.'),
-                                                  action: SnackBarAction(
-                                                    label: 'Undo',
-                                                    onPressed: () {},
-                                                  ),
-                                                );
-                                                Scaffold.of(context)
-                                                    .showSnackBar(snackBar);
-                                                onceToast = 1;
-                                                Timer(Duration(seconds: 2), () {
-                                                  onceToast = 0;
-                                                });
-                                              }
-                                            }
-                                          } else {
-                                            if (onceBtnPressed == 0) {
-                                              print('btn kreiraj');
-                                              onSave();
-                                              createData();
-                                              onceBtnPressed = 1;
-                                            }
-                                          }
-                                        }
-                                      }),
+                                      validateDates(context);
+                                   }),
                           ),
                         ),
                       ],
@@ -1246,9 +1085,206 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       }
     }
   }
-    
-   
 
+
+  //validacijaaaaaa JJUSUFFF ------------------------------
+
+validateDates(BuildContext context) {
+    DateTime now = DateTime.now();
+    selectedDateP = new DateTime(selectedDateP.year, selectedDateP.month, selectedDateP.day);
+    selectedDateD = new DateTime(selectedDateD.year, selectedDateD.month, selectedDateD.day);
+    if(selectedDateD.isBefore(selectedDateP)) {
+                                            print('Datum dolaska ne može biti manji od datuma polaska.');
+                                            if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Datum polaska ne može biti veći od datuma dolaska.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                          }
+                                          else if(selectedDateP.isAtSameMomentAs(selectedDateD)) {
+                                            if(DateFormat.Hm().format(t2).compareTo(DateFormat.Hm().format(t1)) > 0) {
+                                              print('Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.');
+                                              if (onceToast == 0) {
+                                                  final snackBar = SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Color.fromRGBO(
+                                                            28, 28, 28, 1.0),
+                                                    content: Text(
+                                                        'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
+                                                    action: SnackBarAction(
+                                                      label: 'Undo',
+                                                      onPressed: () {},
+                                                    ),
+                                                  );
+                                                  Scaffold.of(context)
+                                                      .showSnackBar(snackBar);
+                                                  onceToast = 1;
+                                                  Timer(Duration(seconds: 2),
+                                                      () {
+                                                    onceToast = 0;
+                                                  });
+                                                }
+                                            }
+                                            else if(DateFormat.Hm().format(t2).compareTo(DateFormat.Hm().format(t1)) == 0) {
+                                                print('Datumi i vremena ne mogu biti jednaki.');
+                                                if (onceToast == 0) {
+                                                  final snackBar = SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Color.fromRGBO(
+                                                            28, 28, 28, 1.0),
+                                                    content: Text(
+                                                        'Datumi i vremena ne mogu biti jednaki.'),
+                                                    action: SnackBarAction(
+                                                      label: 'Undo',
+                                                      onPressed: () {},
+                                                    ),
+                                                  );
+                                                  Scaffold.of(context)
+                                                      .showSnackBar(snackBar);
+                                                  onceToast = 1;
+                                                  Timer(Duration(seconds: 2),
+                                                      () {
+                                                    onceToast = 0;
+                                                  });
+                                                }
+                                            }
+                                            else {
+                                              print('Validacija ispravna');
+                                              if (onceBtnPressed == 0) {
+                                                print('btn kreiraj');
+                                                onSave();
+                                                createData();
+                                                onceBtnPressed = 1;
+                                              }
+                                            }                                            
+                                          }
+                                          else if(selectedDateD.isBefore(DateTime(now.year, now.month, now.day))) {
+                                            print('Datum dolaska ne može biti manji od današnjeg datuma.');
+                                            if (onceToast == 0) {
+                                              final snackBar = SnackBar(
+                                                duration: Duration(seconds: 2),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor: Color.fromRGBO(
+                                                    28, 28, 28, 1.0),
+                                                content: Text(
+                                                    'Datum dolaska ne može biti manji od današnjeg datuma.'),
+                                                action: SnackBarAction(
+                                                  label: 'Undo',
+                                                  onPressed: () {},
+                                                ),
+                                              );
+                                              Scaffold.of(context)
+                                                  .showSnackBar(snackBar);
+                                              onceToast = 1;
+                                              Timer(Duration(seconds: 2), () {
+                                                onceToast = 0;
+                                              });
+                                            }
+                                          }
+                                          else if(selectedDateD.isAtSameMomentAs(DateTime(now.year, now.month, now.day))) {
+                                            if(DateFormat.Hm().format(t1).compareTo(DateFormat.Hm().format(DateTime.now())) < 0) {
+                                              print('Vrijeme dolaska ne može biti manji od trenutnog vremena, ako je datum dolaska jednako današnjem datumu.');
+                                              if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                            }
+                                            else if(DateFormat.Hm().format(t1).compareTo(DateFormat.Hm().format(DateTime.now())) == 0) {
+                                              print('Vrijeme dolaska ne može biti jednako trenutnom vremenu, ako je datum dolaska jednak današnjem datumu.');
+                                              if (onceToast == 0) {
+                                                final snackBar = SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          28, 28, 28, 1.0),
+                                                  content: Text(
+                                                      'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Undo',
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
+                                                onceToast = 1;
+                                                Timer(Duration(seconds: 2), () {
+                                                  onceToast = 0;
+                                                });
+                                              }
+                                            }
+                                            else {
+                                              print('Validacija ispravna');
+                                              if (onceBtnPressed == 0) {
+                                                print('btn kreiraj');
+                                                onSave();
+                                                createData();
+                                                onceBtnPressed = 1;
+                                              }
+                                            }
+                                          }
+                                          else {
+                                            print('Validacija ispravna');
+                                            if (onceBtnPressed == 0) {
+                                                print('btn kreiraj');
+                                                onSave();
+                                                createData();
+                                                onceBtnPressed = 1;
+                                              }
+                                          }
+  }
+
+
+
+/// ---------KRAJ validacije JUSUF -----------------------
 // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {
     if ((percentageVar != null) &&
