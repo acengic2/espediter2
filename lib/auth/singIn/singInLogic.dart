@@ -1,25 +1,23 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:spediter/auth/loading.dart';
 import 'package:spediter/auth/noInternetOnLogin.dart';
+import 'package:spediter/auth/singIn/components/logo.dart';
 
-
-void main() => runApp(Login());
-
-class Login extends StatefulWidget {
-  Login({Key key}) : super(key: key);
+class SingInBody extends StatefulWidget{
 
   @override
-  _LoginState createState() => _LoginState();
+  _SingInBodyState createState() => _SingInBodyState();
 }
 
-class _LoginState extends State<Login> {
-  ///VARIJABLE
+class _SingInBodyState extends State<SingInBody> {
+   ///VARIJABLE
   ///
   ///error, instanca na auth
   /// fokusi za email i pass polje
@@ -28,25 +26,25 @@ class _LoginState extends State<Login> {
   /// instanca na firebase bazu
   /// counteri za toast i btn
   var err;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   var _focusNode = new FocusNode();
+
   var focusNode = new FocusNode();
+
   String _email = '', _password = '', userExist, passExist, id, userID;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final db = Firestore.instance;
+
   int onceToast = 0, onceBtnPressed = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // banner za debug mode
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        // prazan prostor prilikom podizanja tastature
-        resizeToAvoidBottomPadding: false,
-        body:
-        //  detektor klika za zatvaranje tastature
-         new GestureDetector(
+  Widget build(BuildContext context){
+
+    return new GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
@@ -59,22 +57,8 @@ class _LoginState extends State<Login> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // row -> container -> za logo i headline
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset('assets/img/Logo.png'),
-                          Container(
-                            margin: EdgeInsets.only(left: 16.0),
-                            child: Text('e-Špediter',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'RobotoMono',
-                                  fontWeight: FontWeight.w500,
-                                )),
-                          ),
-                        ],
-                      ),
+                      // Logo and Headline
+                        Logo(),
                       // column -> forma za popunjavanje email-a i passworda
                       Column(
                         children: <Widget>[
@@ -506,12 +490,14 @@ class _LoginState extends State<Login> {
               ),
             ],
           ),
-        ),
-      ),
-    );
+        );
+
+      
+
+
   }
 
-  /// SIGNIN metoda
+     /// SIGNIN metoda
   /// 
   /// metoda koja prima email i password
   /// async metoda
@@ -576,6 +562,4 @@ class _LoginState extends State<Login> {
     final List<DocumentSnapshot> documents = result.documents;
     return documents.length == 1;
   }
-
-
 }

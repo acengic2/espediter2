@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:spediter/auth/signIn.dart';
 import 'package:flutter/material.dart';
+import 'package:spediter/auth/singIn/signIn.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
