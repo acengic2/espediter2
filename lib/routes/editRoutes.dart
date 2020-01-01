@@ -20,7 +20,7 @@ import 'package:flutter/rendering.dart';
 import 'listOfRoutes.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
-void main() => runApp(CreateRoute());
+void main() => runApp(EditRoute());
 
 /// varijable
 ///
@@ -35,7 +35,7 @@ const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
 // instanca na NoRoutes screen
 NoRoutes noRoutes = new NoRoutes();
 
-class CreateRoute extends StatelessWidget {
+class EditRoute extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -54,24 +54,24 @@ class CreateRoute extends StatelessWidget {
         const Locale('bs'), // Bosnian
         const Locale('en'), // English
       ],
-      home: CreateRouteScreenPage(),
+      home: EditRouteScreenPage(),
     );
   }
 }
 
-class CreateRouteScreenPage extends StatefulWidget {
+class EditRouteScreenPage extends StatefulWidget {
 
-  CreateRouteScreenPage({Key key}) : super(key: key);
+  EditRouteScreenPage({Key key}) : super(key: key);
 
   @override
-  _CreateRouteScreenPageState createState() => _CreateRouteScreenPageState();
+  _EditRouteScreenPageState createState() => _EditRouteScreenPageState();
 }
 
-class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
+class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// lista medjudestinacija
   List<InterdestinationForm> interdestinations = [];
 
-  _CreateRouteScreenPageState();
+  _EditRouteScreenPageState();
 
   /// VARIJABLE
   ///
@@ -315,7 +315,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
             });
           },
         ),
-        title: const Text('Kreiranje Rute',
+        title: const Text('Aktivna Ruta',
             style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))),
       ),
       body:
@@ -996,7 +996,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                           margin: EdgeInsets.only(
                             left: 16.0,
                             right: 16.0,
-                            bottom: 56.0,
+                       
                             top: 8,
                           ),
                           child: ConstrainedBox(
@@ -1012,7 +1012,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Text(
-                                  'KREIRAJ RUTU',
+                                  'SAČUVAJ PROMJENE',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'Roboto',
@@ -1221,6 +1221,40 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                           }
                                         }
                                       }),
+                          ),
+                        ),
+
+                        /// BUTTOON
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                            bottom: 56.0,
+                            
+                          ),
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: double.infinity,
+                            ),
+                            child: RaisedButton(
+                                disabledColor: Color.fromRGBO(219, 219, 219, 1),
+                                disabledTextColor: Color.fromRGBO(0, 0, 0, 1),
+                                color: Color.fromRGBO(174, 7, 37, 1),
+                                textColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                child: Text(
+                                  'ZAVRŠITE RUTU',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                onPressed: () {}
+  
+                            ),
                           ),
                         ),
                       ],

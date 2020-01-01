@@ -1,3 +1,5 @@
+import 'dart:io';
+import './editRoutes.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,10 +9,9 @@ import 'package:spediter/routes/companyRoutes.dart';
 import './createRouteScreen.dart';
 import './companyRoutes.dart';
 import 'createRouteScreen.dart';
-
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 void main() => runApp(ListOfRoutes());
-
 
 /// varijable
 /// 
@@ -28,49 +29,39 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 String capacityString;
+ final db = Firestore.instance;
+class ListOfRoutes extends StatefulWidget {
 
-class ListOfRoutes extends StatelessWidget {
-
-  /// id trenutno  logovanog usera [userID]
-  String userID;
-  ListOfRoutes({this.userID});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ListOfRoutesPage(userID: userID),
-    );
-  }
-}
-
-class ListOfRoutesPage extends StatefulWidget {
-
-  /// id kompanije [userID]
-  String userID;
-  ListOfRoutesPage({this.userID});
+  
+   /// id trenutno  logovanog usera [userID]
+  final String userID;
+  final String name;
+  final String id;
+  ListOfRoutes({this.userID, this.name, this.id});
 
   @override
-  State<StatefulWidget> createState() {
-    return _ListOfRoutesPageState(userID: userID);
-  }
+  _ListOfRoutesState createState() => _ListOfRoutesState(id: id);
 }
 
-class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
-  ///instanca na bazu
-  final db = Firestore.instance;
+class _ListOfRoutesState extends State<ListOfRoutes> {
 
-  /// id kompanije [userID]
-  String userID;
-  bool imaliRuta = true;
+ 
 
-  _ListOfRoutesPageState({this.userID});
+  @override
+  void initState() { 
 
+    super.initState();
+  }
+  
+
+   String id;
+   _ListOfRoutesState({this.id});
 
 /// overridana metoda iz [ScreenUtils] klase 
 /// koristi se za responsive 
   @override
   Widget build(BuildContext context) {
+
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
@@ -79,32 +70,42 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       allowFontScaling: true,
     )..init(context);
 
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: ListView(children: <Widget>[
-        Container(
-          // Future builder
-          //
-          //u future se poziva metoda iz klase CompanyRoutes koja prima id
-          //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
-          child: FutureBuilder<QuerySnapshot>(
-            future: CompanyRutes().getCompanyRoutes(userID),
-            builder: (context, snapshot) {
-              // ukoliko postoje podaci
-              // vrati Column oi mapiraj kroz iste podatke
-              if (snapshot.hasData) {
-                return Column(
-                  children: snapshot.data.documents
-                      .map((doc) => buildItem(doc))
-                      .toList(),
-                );
-              } else {
-                return SizedBox();
-              }
-            },
+
+
+    return MaterialApp(
+     debugShowCheckedModeBanner: false,
+     home: Scaffold(
+          resizeToAvoidBottomPadding: false,
+      body:ListView(children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => EditRoute()));
+            } ,
+                      child: Container(
+              // Future builder
+              //
+              //u future se poziva metoda iz klase CompanyRoutes koja prima id
+              //builder vraca context i snapshot koji koristimo kako bi mapirali kroz info
+              child: FutureBuilder<QuerySnapshot>(
+                future: CompanyRutes().getCompanyRoutes(widget.userID),
+                builder: (context, snapshot) {
+                  // ukoliko postoje podaci
+                  // vrati Column oi mapiraj kroz iste podatke
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: snapshot.data.documents
+                          .map((doc) => buildItem(doc))
+                          .toList(),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
+            ),
           ),
-        ),
-      ]),
+        ]),
       ///BottomNavigationBar
       ///
       ///u BottomNavigationBaru imamo ikonicu kompanije
@@ -158,10 +159,12 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      ),
     );
   }
+}
 
-///Card buildItem
+  ///Card buildItem
 ///
 ///ovdje kreiramo nasu karticu
 ///uzimamo informacije kroz koje smo mapirali u Future f-ji iznad 
@@ -304,7 +307,8 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
     /// i na osnovu toga kreiramo karticu
   
 
-    return Card(
+    return
+     Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -354,4 +358,3 @@ class _ListOfRoutesPageState extends State<ListOfRoutesPage> {
       ),
     );
   }
-}
