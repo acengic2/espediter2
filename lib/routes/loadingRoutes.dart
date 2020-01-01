@@ -6,22 +6,24 @@ void main() => runApp(ShowLoadingRoutes());
 
 class ShowLoadingRoutes extends StatefulWidget {
   String userID;
+  String id;
 
 
 //constructor sending parameters email and user
-  ShowLoadingRoutes({Key key, this.userID}) : super(key: key);
+  ShowLoadingRoutes({Key key, this.userID, this.id}) : super(key: key);
 
   @override
-  _ShowLoadingRoutes createState() => _ShowLoadingRoutes(userID: userID);
+  _ShowLoadingRoutes createState() => _ShowLoadingRoutes(userID: userID, id: id);
 }
 
 class _ShowLoadingRoutes extends State<ShowLoadingRoutes> {
 //  bool _loadingInProgress;
 
   String userID;
+  String id;
 // final FirebaseUser user;
 
-  _ShowLoadingRoutes({this.userID});
+  _ShowLoadingRoutes({this.userID, this.id});
 
   @override
   void initState() {
@@ -79,6 +81,6 @@ class _ShowLoadingRoutes extends State<ShowLoadingRoutes> {
 // parameters user and email
   onDoneLoading() async {
     Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)));
+        MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID, id: id)));
   }
 }
