@@ -37,8 +37,11 @@ NoRoutes noRoutes = new NoRoutes();
 
 class EditRoute extends StatelessWidget {
   // This widget is the root of your application.
+
+ 
   @override
   Widget build(BuildContext context) {
+  
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Kreiraj Rutu',
@@ -1215,7 +1218,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                             if (onceBtnPressed == 0) {
                                               print('btn kreiraj');
                                               onSave();
-                                              createData();
+                                              
                                               onceBtnPressed = 1;
                                             }
                                           }
@@ -1252,7 +1255,13 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                onPressed: () {}
+                                onPressed: () {
+                                  // brisemo iz Rute
+                                  // deleteData();
+                                  // ubacujemo u FinishedRoutes
+                                  finishedData();
+
+                                }
   
                             ),
                           ),
@@ -1286,6 +1295,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       }
     }
   }
+
+
     
    
 
@@ -1309,9 +1320,16 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   }
 
 
-  // funkcija koja snima informacije u bazu
-  createData() async {
-    DocumentReference ref = await db.collection('Rute').add({
+  // funkcija koja brise iz Rute
+  //potrebno joj je proslijediti doc.ID
+  void deleteData(DocumentSnapshot doc) async {
+    await db.collection('CRUD').document(doc.documentID).delete();
+    
+  }
+
+  //funkcija koja dodaje u zavrseneRute
+  void finishedData() async {
+    DocumentReference ref = await db.collection('FinishedRoutes').add({
       'availability': '$percentageVar',
       'capacity': '$capacityVar',
       'ending_destination': '$endingDestination',
@@ -1325,19 +1343,17 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
       'user_id': '$userID',
-      'timestamp': '$dateOfSubmit'
+      'timestamp': '$dateOfSubmit',
+      'uniqueID' : UniqueKey(),
     });
     setState(() => id = ref.documentID);
     print(ref.documentID);
     print('Unos uspjesan');
     
-    // navigiramo do ShowLoadingRoutes i saljemo userID i id
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ShowLoadingRoutes(userID: userID, id: id)),
-    );
+   
   }
+
+
   /// na promjenu dropdown-a
   onChangeDropdownItem(Vehicle vehicle) {
     setState(() {

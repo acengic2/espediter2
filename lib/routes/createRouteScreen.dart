@@ -1319,7 +1319,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
       'user_id': '$userID',
-      'timestamp': '$dateOfSubmit'
+      'timestamp': '$dateOfSubmit',
+      'uniqueKey': UniqueKey(),
     });
     setState(() => id = ref.documentID);
     print(ref.documentID);
@@ -1331,6 +1332,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       MaterialPageRoute(
           builder: (context) => ShowLoadingRoutes(userID: userID, id: id)),
     );
+    
   }
   /// na promjenu dropdown-a
   onChangeDropdownItem(Vehicle vehicle) {

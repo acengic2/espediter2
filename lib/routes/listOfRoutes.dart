@@ -29,6 +29,7 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 String capacityString;
+String uniqueID;
  final db = Firestore.instance;
 class ListOfRoutes extends StatefulWidget {
 
@@ -51,11 +52,13 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
   void initState() { 
 
     super.initState();
+  
   }
   
 
    String id;
    _ListOfRoutesState({this.id});
+   
 
 /// overridana metoda iz [ScreenUtils] klase 
 /// koristi se za responsive 
@@ -71,7 +74,6 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
     )..init(context);
 
 
-
     return MaterialApp(
      debugShowCheckedModeBanner: false,
      home: Scaffold(
@@ -79,6 +81,8 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
       body:ListView(children: <Widget>[
           GestureDetector(
             onTap: () {
+              print("DSADSADSADASDSA" + uniqueID);
+
               Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => EditRoute()));
             } ,
@@ -178,6 +182,7 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
         DateFormat("d MMM").format(DateTime.parse(dateReversed));
 
     // KAPACITET
+   
     capacityString = doc.data['capacity'];
 
     /// left section u koji spremamo datum polaska
@@ -293,6 +298,14 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black.withOpacity(0.8)),
                     ),
+                    TextSpan(
+                      text: ('${doc.data['uniqueID']} '),
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: ScreenUtil.instance.setSp(12.0),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.8)),
+                    ),
                   ],
                 ),
               ),
@@ -303,10 +316,17 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
       ],
     );
 
+    
+     getID()  {
+       /// hvata sve 3 id-a 
+          uniqueID = '${doc.data['uniqueID']}';
+          for(int i = 0; i < uniqueID.length; i++) {
+              print(i);
+          }    
+     }
+     getID();
     /// Card Widget u koji spremamo svaki od sekcija [right,left,middle]
     /// i na osnovu toga kreiramo karticu
-  
-
     return
      Card(
       child: Padding(
