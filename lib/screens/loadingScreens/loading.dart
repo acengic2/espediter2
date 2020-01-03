@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:spediter/routes/companyRoutes.dart';
-import 'package:spediter/routes/listOfRoutes.dart';
-import 'package:spediter/routes/noRoutes.dart';
+import 'package:spediter/screens/loadingScreens/components/loadingComponent.dart';
+import 'package:spediter/screens/routes/companyRoutes.dart';
+import 'package:spediter/screens/routes/listOfRoutes.dart';
+import 'package:spediter/screens/routes/noRoutes.dart';
 
 void main() => runApp(ShowLoading());
-
-  const String loadingString = "Molimo vas sačekajte trenutak.";
 
 class ShowLoading extends StatefulWidget {
   /// Varijable
@@ -33,6 +31,36 @@ class _ShowLoading extends State<ShowLoading> {
   ///
   /// id trenutno logovanog usera [usID]
   String usID;
+  String text1 = "Registracija Korisnika";
+  String text2 = "Molim vas sačekajte trenutak.";
+
+  // bool _loadingInProgress;
+
+  ///VARIJABLE
+  ///
+  /// [email ] - email trenutno logovanog usera
+  /// [user] - objekat koji sadrzi sve info o trenutno logovanom useru
+  /// [userID] - user token trenutno logovanog usera
+  String email;
+  final FirebaseUser user;
+  String userID;
+
+  _ShowLoading({this.user, this.email, this.userID});
+
+// init state f-ja koja se izvrsava prije nego se bilo sta ucita sa ovog screena
+// u njoj se aktivira [loadData()] f-ja
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: LoadingComponent(text1, text2),
+    );
+  }
 
   /// metoda koja provjerava id trenutno logovanog usera
   ///
@@ -66,71 +94,11 @@ class _ShowLoading extends State<ShowLoading> {
         .limit(1)
         .getDocuments();
   }
-  // bool _loadingInProgress;
-
-  ///VARIJABLE
-  ///
-  /// [email ] - email trenutno logovanog usera
-  /// [user] - objekat koji sadrzi sve info o trenutno logovanom useru
-  /// [userID] - user token trenutno logovanog usera
-  String email;
-  final FirebaseUser user;
-  String userID;
-
-  _ShowLoading({this.user, this.email, this.userID});
-
-// init state f-ja koja se izvrsava prije nego se bilo sta ucita sa ovog screena
-// u njoj se aktivira [loadData()] f-ja
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
 
 // Future f-ja koja se odvija na load ovog screena
 //vraca Timer u trajanju od 2 sekunde, nakon cega se aktivira f-ja [onDoneLoading]
   Future<Timer> loadData() async {
     return new Timer(Duration(seconds: 2), onDoneLoading);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final AsyncMemoizer _memoizer = AsyncMemoizer();
-    return Scaffold(
-        body: Center(
-            child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(bottom: 22),
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(
-                Color.fromRGBO(3, 54, 255, 1.0)),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            'Registracija Korisnika',
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: 'RobotoMono',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-        Container(
-          child: Text(
-            loadingString,
-            style: TextStyle(
-              fontSize: 14,
-              fontFamily: 'RobotoMono',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-      ],
-    )));
   }
 
   /// f-ja [onDoneLoading()] koja se aktivira nakon isteka Timera
@@ -142,13 +110,13 @@ class _ShowLoading extends State<ShowLoading> {
     checkForRole();
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
       if (docs.documents.isNotEmpty) {
-        print('NOT EMPRY');
+        print('NOT EMPTY');
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ListOfRoutes(
                   userID: user.uid,
                 )));
       } else {
-        print('EMPTU');
+        print('EMPTY');
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => NoRoutes()));
       }

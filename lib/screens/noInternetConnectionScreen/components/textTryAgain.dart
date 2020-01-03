@@ -1,38 +1,21 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(NoInternetConnectionSrceen());
-
 const blueColor = Color.fromRGBO(3, 54, 255, 1);
 const textColorGray80 = Color.fromRGBO(0, 0, 0, 0.8);
 const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
 
-const String noConnection = "Nazalost nemate mreze. Rijesite problem pa pokusajte ponovno.";
+class TryAgain extends StatelessWidget {
+  
+  String tryAgainStingFirstMessage = "Nemate mreže";
+  String tryAgainStingSecondMessage ="Nažalost nemate mreže. Riješite problem pa pokušajte ponovno.";
+  String buttonText = "POKUSAJTE PONOVO";
+  
 
-class NoInternetConnectionSrceen extends StatelessWidget {
+ 
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'No connection screen',
-      home: NoInternetConnectionPage2(title: 'No connection screen'),
-    );
-  }
-}
-
-class NoInternetConnectionPage2 extends StatefulWidget {
-  NoInternetConnectionPage2({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _NoInternetConnectionPageState createState() =>
-      _NoInternetConnectionPageState();
-}
-
-class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+return Container(
         // margin:EdgeInsets.only(top: 257.0) ,
         child: Center(
           child: Padding(
@@ -41,7 +24,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Nemate mreze',
+                  tryAgainStingFirstMessage,
                   style: TextStyle(
                       fontSize: 16,
                       fontFamily: "Roboto",
@@ -50,7 +33,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 16.0),
                   child: Text(
-                    noConnection,
+                    tryAgainStingSecondMessage,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 14,
@@ -64,8 +47,8 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
                   child: RaisedButton(
                     onPressed: () {},
                     color: blueColor,
-                    child: Text(
-                      "POKUSAJTE PONOVO",
+                    child: Text(buttonText,
+                      
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: "Roboto",
@@ -73,22 +56,10 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage2> {
                     ),
                   ),
                 ),
-                RaisedButton(
-                  onPressed: () {},
-                  color: Colors.white,
-                  child: Text(
-                    "VRATITE SE",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Roboto",
-                        color: Colors.black),
-                  ),
-                ),
               ],
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

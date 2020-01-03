@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'listOfRoutes.dart';
+import 'package:spediter/screens/loadingScreens/components/loadingComponent.dart';
+import 'package:spediter/screens/routes/listOfRoutes.dart';
+
 
 void main() => runApp(ShowLoadingRoutes());
 
 class ShowLoadingRoutes extends StatefulWidget {
-  String userID;
-
+  final String userID;
 
 //constructor sending parameters email and user
   ShowLoadingRoutes({Key key, this.userID}) : super(key: key);
@@ -20,7 +21,8 @@ class _ShowLoadingRoutes extends State<ShowLoadingRoutes> {
 
   String userID;
 // final FirebaseUser user;
-
+   String firstMessage = "Ruta se kreira";
+   String secondMessage = "Molim vas sačekajte trenutak.";
   _ShowLoadingRoutes({this.userID});
 
   @override
@@ -33,41 +35,7 @@ class _ShowLoadingRoutes extends State<ShowLoadingRoutes> {
   @override
   Widget build(BuildContext context) {
     //if (_loadingInProgress) {
-    return Scaffold(
-        body: Center(
-            child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(bottom: 22),
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(
-                Color.fromRGBO(3, 54, 255, 1.0)),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            'Ruta se kreira',
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: 'RobotoMono',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-        Container(
-          child: Text(
-            'Molimo vas sačekajte trenutak.',
-            style: TextStyle(
-              fontSize: 14,
-              fontFamily: 'RobotoMono',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-      ],
-    )));
+    return Scaffold(body: LoadingComponent(firstMessage, secondMessage));
   }
 
   // loading screen for 2 seconds

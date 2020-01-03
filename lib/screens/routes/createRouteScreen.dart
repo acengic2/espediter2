@@ -10,12 +10,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
-import 'package:spediter/routes/companyRoutes.dart';
-import 'package:spediter/routes/form.dart';
-import 'package:spediter/routes/loadingRoutes.dart';
+import 'package:spediter/screens/loadingScreens/loadingRoutes.dart';
+import 'package:spediter/screens/routes/companyRoutes.dart';
+import 'package:spediter/screens/routes/form.dart';
+import 'package:spediter/screens/routes/noRoutes.dart';
+
 import 'package:spediter/utils/screenUtils.dart';
 import './inderdestination.dart';
-import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
 import 'listOfRoutes.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
