@@ -1299,16 +1299,16 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
 
 // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {
-    if ((percentageVar != null) &&
-        (dimensionsVar != '' && dimensionsVar != null) &&
-        (capacityVar != null && capacityVar != '') &&
-        (goodsVar != '' && goodsVar != null) &&
-        (endingDestination != '' && endingDestination != null) &&
-        (startingDestination != '' && startingDestination != null) &&
-        (selectedDateD != null) &&
-        (selectedDateP != null) &&
-        (timeD != null && timeD != '' && timeD != 'Vrijeme dolaska') &&
-        (timeP != null && timeP != '' && timeP != 'Vrijeme polaska') &&
+    if ((percentageVar != null) ||
+        (dimensionsVar != '' && dimensionsVar != null) ||
+        (capacityVar != null && capacityVar != '') ||
+        (goodsVar != '' && goodsVar != null) ||
+        (endingDestination != '' && endingDestination != null) ||
+        (startingDestination != '' && startingDestination != null) ||
+        (selectedDateD != null) ||
+        (selectedDateP != null) ||
+        (timeD != null && timeD != '' && timeD != 'Vrijeme dolaska') ||
+        (timeP != null && timeP != '' && timeP != 'Vrijeme polaska') ||
         (_selectedVehicle != null)) {
       _isBtnDisabled = false;
     } else {
