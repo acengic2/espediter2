@@ -62,7 +62,6 @@ class CreateRoute extends StatelessWidget {
 }
 
 class CreateRouteScreenPage extends StatefulWidget {
-
   CreateRouteScreenPage({Key key}) : super(key: key);
 
   @override
@@ -194,7 +193,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     userID = user.uid;
   }
 
-    /// bool f-ja koju smo ubacili u [BackButtonInterceptor], koja mora vratiti true ili false.
+  /// bool f-ja koju smo ubacili u [BackButtonInterceptor], koja mora vratiti true ili false.
   /// u kojoj na klik back btn-a
   /// provjeravamo da li company ima rute ili ne i na osnovu toga ih
   /// redirectamo na [NoRoutes] ili na [ListOfRoutes]
@@ -202,10 +201,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutesRef(
-                  
-                )));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
       } else {
         print('EMPTU');
 
@@ -228,7 +225,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     getUserid();
     onceToast = 0;
     BackButtonInterceptor.add(myInterceptor);
-
   }
 
   ///dispose back btn-a nakon njegovog koristenja
@@ -239,9 +235,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     super.dispose();
   }
 
-
-
-  
   /// lista vozila
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
     List<DropdownMenuItem<Vehicle>> items = List();
@@ -475,8 +468,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                 imaliRuta = true;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ListOfRoutesRef()),
+                  MaterialPageRoute(builder: (context) => ListOfRoutesRef()),
                 );
               } else {
                 print('EMPTU');
@@ -544,16 +536,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     format: format,
                                     onShowPicker:
                                         (context, currentValue) async {
-                                      DateTime picked =
-                                          await showDatePicker(
-                                              locale: Locale('bs'),
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2018),
-                                              lastDate: DateTime(2100));
-                                              if (picked == null) {
-                                                picked = DateTime.now();
-                                              }
+                                      DateTime picked = await showDatePicker(
+                                          locale: Locale('bs'),
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(2018),
+                                          lastDate: DateTime(2100));
+                                      if (picked == null) {
+                                        picked = DateTime.now();
+                                      }
 
                                       setState(() {
                                         selectedDateP = picked;
@@ -641,8 +632,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
                         /// DESTINACIJA POLASKA
                         Container(
-                            margin: EdgeInsets.only(
-                                left: 16.0, right: 16.0),
+                            margin: EdgeInsets.only(left: 16.0, right: 16.0),
                             child: Row(children: <Widget>[
                               Expanded(
                                   flex: 1,
@@ -732,6 +722,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         },
                                       )))
                             ])),
+
                         /// MEDJUDESTINACIJA
                         Container(
                           child: Row(
@@ -739,8 +730,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                               Expanded(
                                 child: SizedBox(
                                   child: ListView.builder(
-                                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       addAutomaticKeepAlives: true,
                                       itemCount: interdestinations.length,
                                       itemBuilder:
@@ -752,10 +743,10 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                             ],
                           ),
                         ),
+
                         ///KRAJNJA DESTINACIJA
                         Container(
-                            margin: EdgeInsets.only(
-                                left: 16.0, right: 16.0),
+                            margin: EdgeInsets.only(left: 16.0, right: 16.0),
                             child: Row(children: <Widget>[
                               Expanded(
                                   flex: 1,
@@ -846,7 +837,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         },
                                       )))
                             ])),
-                            /// DATUM I VRIJEME DOLASKA
+
+                        /// DATUM I VRIJEME DOLASKA
                         Container(
                           margin: EdgeInsets.only(
                               bottom: 11.5, left: 16.0, right: 16.0, top: 2),
@@ -879,16 +871,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     format: format,
                                     onShowPicker:
                                         (context, currentValue) async {
-                                      DateTime picked =
-                                          await showDatePicker(
-                                              locale: Locale('bs'),
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2018),
-                                              lastDate: DateTime(2100));
-                                              if (picked == null) {
-                                                picked = DateTime.now();
-                                              }
+                                      DateTime picked = await showDatePicker(
+                                          locale: Locale('bs'),
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(2018),
+                                          lastDate: DateTime(2100));
+                                      if (picked == null) {
+                                        picked = DateTime.now();
+                                      }
                                       setState(() {
                                         selectedDateD = picked;
                                         if (selectedDateD == null) {
@@ -971,6 +962,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                             ],
                           ),
                         ),
+
                         /// DIVIDER
                         Container(
                           height: 8,
@@ -986,6 +978,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                             color: Color.fromRGBO(0, 0, 0, 0.03),
                           ),
                         ),
+
                         /// Popunjenost u procentimaaaaaaaaaaaaaaaaa
                         Container(
                           margin: EdgeInsets.only(
@@ -1076,7 +1069,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                         ),
 
                         /// VRSTE VOZILAAAA
-              
+
                         ResponsiveContainer(
                           heightPercent:
                               (68.0 / MediaQuery.of(context).size.height) * 100,
@@ -1224,8 +1217,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                         if (!currentFocus.hasPrimaryFocus) {
                                           currentFocus.unfocus();
                                         }
+
                                         /// VALIDACIJA POLJA
-                                         if (percentageVar < 0 ||
+                                        if (percentageVar < 0 ||
                                             percentageVar > 100) {
                                           if (onceToast == 0) {
                                             final snackBar = SnackBar(
@@ -1268,22 +1262,21 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
 
   ///on save forms
   void onSave() {
-       if (interdestinations.length > 0) {
+    if (interdestinations.length > 0) {
       var allValid = true;
       interdestinations.forEach((form) => allValid = allValid);
       if (allValid) {
         var data = interdestinations.map((it) => it.interdestination).toList();
         print(data.length);
         for (int i = 0; i < data.length; i++) {
-          if('${data[i].interdestinationData}' != '')
-          listOfInterdestinations += '${data[i].interdestinationData}, ';
-          else listOfInterdestinations += '';
+          if ('${data[i].interdestinationData}' != '')
+            listOfInterdestinations += '${data[i].interdestinationData}, ';
+          else
+            listOfInterdestinations += '';
         }
       }
     }
   }
-    
-   
 
 // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {
@@ -1303,7 +1296,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       _isBtnDisabled = true;
     }
   }
-
 
   // funkcija koja snima informacije u bazu
   createData() async {
@@ -1327,15 +1319,15 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     setState(() => id = ref.documentID);
     print(ref.documentID);
     print('Unos uspjesan');
-    
+
     // navigiramo do ShowLoadingRoutes i saljemo userID i id
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ShowLoadingRoutes(userID: userID, id: id)),
     );
-    
   }
+
   /// na promjenu dropdown-a
   onChangeDropdownItem(Vehicle vehicle) {
     setState(() {

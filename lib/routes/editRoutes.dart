@@ -39,12 +39,11 @@ NoRoutes noRoutes = new NoRoutes();
 
 class EditRoute extends StatelessWidget {
   // This widget is the root of your application.
-   final DocumentSnapshot post;
-   EditRoute({this.post});
+  final DocumentSnapshot post;
+  EditRoute({this.post});
 
   @override
   Widget build(BuildContext context) {
-  
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Kreiraj Rutu',
@@ -66,19 +65,19 @@ class EditRoute extends StatelessWidget {
 }
 
 class EditRouteScreenPage extends StatefulWidget {
- final DocumentSnapshot post;
-   EditRouteScreenPage({this.post});
+  final DocumentSnapshot post;
+  EditRouteScreenPage({this.post});
 
   @override
-  _EditRouteScreenPageState createState() => _EditRouteScreenPageState(post: post);
+  _EditRouteScreenPageState createState() =>
+      _EditRouteScreenPageState(post: post);
 }
 
 class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// lista medjudestinacija
   List<InterdestinationForm> interdestinations = [];
-    final DocumentSnapshot post;
-   _EditRouteScreenPageState({this.post});
-
+  final DocumentSnapshot post;
+  _EditRouteScreenPageState({this.post});
 
   /// VARIJABLE
   ///
@@ -199,7 +198,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     userID = user.uid;
   }
 
-    /// bool f-ja koju smo ubacili u [BackButtonInterceptor], koja mora vratiti true ili false.
+  /// bool f-ja koju smo ubacili u [BackButtonInterceptor], koja mora vratiti true ili false.
   /// u kojoj na klik back btn-a
   /// provjeravamo da li company ima rute ili ne i na osnovu toga ih
   /// redirectamo na [NoRoutes] ili na [ListOfRoutes]
@@ -207,9 +206,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutesRef(
-                )));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
       } else {
         print('EMPTU');
 
@@ -220,8 +218,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     // Do some stuff.
     return true;
   }
-
-
 
   /// initState metoda - lifecycle metoda koja se izvrsi prije nego se load-a sam screen
   /// u njoj pozivamo metodu [getUserID()] , setamo [Toast] counter na 0,
@@ -236,7 +232,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     BackButtonInterceptor.add(myInterceptor);
     print(post.data['departure_date']);
     print(post.data['timestamp']);
-    }
+  }
 
   ///dispose back btn-a nakon njegovog koristenja
   @override
@@ -244,12 +240,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     BackButtonInterceptor.remove(myInterceptor);
     print('Ovdje sam ');
     super.dispose();
-    
   }
 
-
-
-  
   /// lista vozila
   List<DropdownMenuItem<Vehicle>> buildDropdownMenuItems(List vehicles) {
     List<DropdownMenuItem<Vehicle>> items = List();
@@ -286,8 +278,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
         ));
       });
     }
-   
-
 
     /// RESPONSIVE
     ///
@@ -315,8 +305,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                 imaliRuta = true;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ListOfRoutesRef()),
+                  MaterialPageRoute(builder: (context) => ListOfRoutesRef()),
                 );
               } else {
                 print('EMPTU');
@@ -548,6 +537,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                         },
                                       )))
                             ])),
+
                         /// MEDJUDESTINACIJA
                         Container(
                           child: Row(
@@ -556,6 +546,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                 child: SizedBox(
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       addAutomaticKeepAlives: true,
                                       itemCount: interdestinations.length,
                                       itemBuilder:
@@ -567,6 +558,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                             ],
                           ),
                         ),
+
                         ///KRAJNJA DESTINACIJA
                         Container(
                             margin: EdgeInsets.only(
@@ -641,7 +633,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                         },
                                       )))
                             ])),
-                            /// DATUM I VRIJEME DOLASKA
+
+                        /// DATUM I VRIJEME DOLASKA
                         Container(
                           margin: EdgeInsets.only(
                               bottom: 11.5, left: 16.0, right: 16.0, top: 2),
@@ -786,6 +779,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                             ],
                           ),
                         ),
+
                         /// DIVIDER
                         Container(
                           height: 8,
@@ -801,6 +795,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                             color: Color.fromRGBO(0, 0, 0, 0.03),
                           ),
                         ),
+
                         /// Popunjenost u procentimaaaaaaaaaaaaaaaaa
                         Container(
                           margin: EdgeInsets.only(
@@ -891,7 +886,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                         ),
 
                         /// VRSTE VOZILAAAA
-              
+
                         ResponsiveContainer(
                           heightPercent:
                               (68.0 / MediaQuery.of(context).size.height) * 100,
@@ -1008,7 +1003,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                             left: 16.0,
                             right: 16.0,
-                       
                             top: 8,
                           ),
                           child: ConstrainedBox(
@@ -1039,8 +1033,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                         if (!currentFocus.hasPrimaryFocus) {
                                           currentFocus.unfocus();
                                         }
+
                                         /// VALIDACIJA POLJA
-                                         if (percentageVar < 0 ||
+                                        if (percentageVar < 0 ||
                                             percentageVar > 100) {
                                           if (onceToast == 0) {
                                             final snackBar = SnackBar(
@@ -1227,7 +1222,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                             if (onceBtnPressed == 0) {
                                               print('btn kreiraj');
                                               onSave();
-                                              
+
                                               onceBtnPressed = 1;
                                             }
                                           }
@@ -1242,7 +1237,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                             left: 16.0,
                             right: 16.0,
                             bottom: 56.0,
-                            
                           ),
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(
@@ -1269,10 +1263,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   // deleteData();
                                   // ubacujemo u FinishedRoutes
                                   finishedData();
-
-                                }
-  
-                            ),
+                                }),
                           ),
                         ),
                       ],
@@ -1290,24 +1281,21 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
 
   ///on save forms
   void onSave() {
-       if (interdestinations.length > 0) {
+    if (interdestinations.length > 0) {
       var allValid = true;
       interdestinations.forEach((form) => allValid = allValid);
       if (allValid) {
         var data = interdestinations.map((it) => it.interdestination).toList();
         print(data.length);
         for (int i = 0; i < data.length; i++) {
-          if('${data[i].interdestinationData}' != '')
-          listOfInterdestinations += '${data[i].interdestinationData}, ';
-          else listOfInterdestinations += '';
+          if ('${data[i].interdestinationData}' != '')
+            listOfInterdestinations += '${data[i].interdestinationData}, ';
+          else
+            listOfInterdestinations += '';
         }
       }
     }
   }
-
-
-    
-   
 
 // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {
@@ -1328,12 +1316,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     }
   }
 
-
   // funkcija koja brise iz Rute
   //potrebno joj je proslijediti doc.ID
   void deleteData(DocumentSnapshot doc) async {
     await db.collection('Rute').document(doc.documentID).delete();
-    
   }
 
   //funkcija koja dodaje u zavrseneRute
@@ -1353,15 +1339,12 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       'vehicle': '$vehicleVar',
       'user_id': '$userID',
       'timestamp': '$dateOfSubmit',
-      'uniqueID' : UniqueKey(),
+      'uniqueID': UniqueKey(),
     });
     setState(() => id = ref.documentID);
     print(ref.documentID);
     print('Unos uspjesan');
-    
-   
   }
-
 
   /// na promjenu dropdown-a
   onChangeDropdownItem(Vehicle vehicle) {
