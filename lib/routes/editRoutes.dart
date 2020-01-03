@@ -17,8 +17,10 @@ import 'package:spediter/utils/screenUtils.dart';
 import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
-import 'listOfRoutes.dart';
+
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+
+import 'listOfRoutesref.dart';
 
 void main() => runApp(EditRoute());
 
@@ -37,8 +39,12 @@ NoRoutes noRoutes = new NoRoutes();
 
 class EditRoute extends StatelessWidget {
   // This widget is the root of your application.
+   final DocumentSnapshot post;
+   EditRoute({this.post});
+
   @override
   Widget build(BuildContext context) {
+  
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Kreiraj Rutu',
@@ -54,24 +60,25 @@ class EditRoute extends StatelessWidget {
         const Locale('bs'), // Bosnian
         const Locale('en'), // English
       ],
-      home: EditRouteScreenPage(),
+      home: EditRouteScreenPage(post: post),
     );
   }
 }
 
 class EditRouteScreenPage extends StatefulWidget {
-
-  EditRouteScreenPage({Key key}) : super(key: key);
+ final DocumentSnapshot post;
+   EditRouteScreenPage({this.post});
 
   @override
-  _EditRouteScreenPageState createState() => _EditRouteScreenPageState();
+  _EditRouteScreenPageState createState() => _EditRouteScreenPageState(post: post);
 }
 
 class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// lista medjudestinacija
   List<InterdestinationForm> interdestinations = [];
+    final DocumentSnapshot post;
+   _EditRouteScreenPageState({this.post});
 
-  _EditRouteScreenPageState();
 
   /// VARIJABLE
   ///
@@ -201,8 +208,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutes(
-                  userID: userID,
+            builder: (context) => ListOfRoutesRef(
                 )));
       } else {
         print('EMPTU');
@@ -215,6 +221,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     return true;
   }
 
+
+
   /// initState metoda - lifecycle metoda koja se izvrsi prije nego se load-a sam screen
   /// u njoj pozivamo metodu [getUserID()] , setamo [Toast] counter na 0,
   /// ubacujemo u dropdown listu [_dropdownMenuItems] vozila,
@@ -226,8 +234,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     getUserid();
     onceToast = 0;
     BackButtonInterceptor.add(myInterceptor);
-
-  }
+    print(post.data['departure_date']);
+    print(post.data['timestamp']);
+    }
 
   ///dispose back btn-a nakon njegovog koristenja
   @override
@@ -235,6 +244,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     BackButtonInterceptor.remove(myInterceptor);
     print('Ovdje sam ');
     super.dispose();
+    
   }
 
 
@@ -276,6 +286,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
         ));
       });
     }
+   
+
 
     /// RESPONSIVE
     ///
@@ -304,7 +316,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ListOfRoutes(userID: userID)),
+                      builder: (context) => ListOfRoutesRef()),
                 );
               } else {
                 print('EMPTU');
@@ -1215,7 +1227,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                             if (onceBtnPressed == 0) {
                                               print('btn kreiraj');
                                               onSave();
-                                              createData();
+                                              
                                               onceBtnPressed = 1;
                                             }
                                           }
@@ -1252,7 +1264,13 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                onPressed: () {}
+                                onPressed: () {
+                                  // brisemo iz Rute
+                                  // deleteData();
+                                  // ubacujemo u FinishedRoutes
+                                  finishedData();
+
+                                }
   
                             ),
                           ),
@@ -1286,6 +1304,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       }
     }
   }
+
+
     
    
 
@@ -1309,9 +1329,16 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   }
 
 
-  // funkcija koja snima informacije u bazu
-  createData() async {
-    DocumentReference ref = await db.collection('Rute').add({
+  // funkcija koja brise iz Rute
+  //potrebno joj je proslijediti doc.ID
+  void deleteData(DocumentSnapshot doc) async {
+    await db.collection('Rute').document(doc.documentID).delete();
+    
+  }
+
+  //funkcija koja dodaje u zavrseneRute
+  void finishedData() async {
+    DocumentReference ref = await db.collection('FinishedRoutes').add({
       'availability': '$percentageVar',
       'capacity': '$capacityVar',
       'ending_destination': '$endingDestination',
@@ -1325,19 +1352,17 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
       'user_id': '$userID',
-      'timestamp': '$dateOfSubmit'
+      'timestamp': '$dateOfSubmit',
+      'uniqueID' : UniqueKey(),
     });
     setState(() => id = ref.documentID);
     print(ref.documentID);
     print('Unos uspjesan');
     
-    // navigiramo do ShowLoadingRoutes i saljemo userID i id
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ShowLoadingRoutes(userID: userID, id: id)),
-    );
+   
   }
+
+
   /// na promjenu dropdown-a
   onChangeDropdownItem(Vehicle vehicle) {
     setState(() {
