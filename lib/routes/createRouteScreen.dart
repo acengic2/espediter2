@@ -143,6 +143,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       timeD;
   int percentageVar;
   String capacityVar;
+  String t11;
+  String t22;
 
   /// DateTime tip datuma (radi validacije)
   DateTime selectedDateP;
@@ -273,6 +275,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     }
 
     validateDatesAndTimes(BuildContext context) {
+       t11 = DateFormat.Hm().format(t1);
+      t22 = DateFormat.Hm().format(t2);
       DateTime now = DateTime.now();
       selectedDateP = new DateTime(
           selectedDateP.year, selectedDateP.month, selectedDateP.day);
@@ -440,6 +444,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
           onceBtnPressed = 1;
         }
       }
+     
     }
 
     /// RESPONSIVE
@@ -951,7 +956,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
-                                      t1 = input;
+                                      t1 = input; 
                                       onceToast = 0;
                                       onceBtnPressed = 0;
                                       areFieldsEmpty();
@@ -1257,7 +1262,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
         ),
         // ),]
       ),
+      
     );
+    
   }
 
   ///on save forms
@@ -1297,6 +1304,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
     }
   }
 
+  
+
   // funkcija koja snima informacije u bazu
   createData() async {
     DocumentReference ref = await db.collection('Rute').add({
@@ -1306,8 +1315,8 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'starting_destination': '$startingDestination',
       'interdestination': '$listOfInterdestinations',
       'arrival_date': '$formatted2',
-      'arrival_time': '$timeP',
-      'departure_time': '$timeD',
+      'arrival_time': '$t11',
+      'departure_time': '$t22',
       'departure_date': '$formatted',
       'dimensions': '$dimensionsVar',
       'goods': '$goodsVar',
