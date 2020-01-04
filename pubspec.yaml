@@ -38,6 +38,8 @@ dependencies:
   rxdart: ^0.23.1
   async: ^2.4.0
   back_button_interceptor: ^4.2.3
+
+
  
   
   # The following adds the Cupertino Icons font to your application.

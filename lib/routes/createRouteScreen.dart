@@ -82,7 +82,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
   /// format za datum - upis u bazu prilikom preuzimanja
   final format = DateFormat.MMMMd('bs');
   final formatTime = DateFormat("HH:mm");
-  final formatP = DateFormat('dd/MM/yyyy');
+  final formatP = DateFormat('yyyy-MM-dd');
 
   /// key za formu
   final _formKey = GlobalKey<FormState>();
@@ -1314,7 +1314,6 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       'vehicle': '$vehicleVar',
       'user_id': '$userID',
       'timestamp': '$dateOfSubmit',
-      'uniqueKey': UniqueKey(),
     });
     setState(() => id = ref.documentID);
     print(ref.documentID);

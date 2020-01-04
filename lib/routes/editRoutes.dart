@@ -18,6 +18,8 @@ import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
 
+
+
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'listOfRoutesref.dart';
@@ -88,6 +90,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   final format = DateFormat.MMMMd('bs');
   final formatTime = DateFormat("HH:mm");
   final formatP = DateFormat('dd/MM/yyyy');
+  
 
   /// key za formu
   final _formKey = GlobalKey<FormState>();
@@ -113,12 +116,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// counteri za [Toast] i za [Button]
   int onceToast = 0, onceBtnPressed = 0;
 
-  ///maska za tone  0.0
-  var controller = new MaskedTextController(
-    mask: '0.0',
-  );
+ 
 
-  var percentageController = new MaskedTextController(mask: '000');
+  // var percentageController = new MaskedTextController(mask: '000');
 
   /// Stringovi
   ///
@@ -230,8 +230,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     getUserid();
     onceToast = 0;
     BackButtonInterceptor.add(myInterceptor);
-    print(post.data['departure_date']);
-    print(post.data['timestamp']);
+    
   }
 
   ///dispose back btn-a nakon njegovog koristenja
@@ -289,6 +288,14 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
+
+   TextEditingController controllerAvail = TextEditingController(text: widget.post.data['availability']);
+    ///maska za tone  0.0
+  var controller = new MaskedTextController(
+    mask: '0.0',
+    text: widget.post.data['capacity']
+  );
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -351,6 +358,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   padding:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
+                                    initialValue:  DateTime.parse(widget.post.data['departure_date']) ,
                                     textCapitalization:
                                         TextCapitalization.words,
                                     style: TextStyle(
@@ -416,6 +424,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   margin:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
+                                  
                                     resetIcon: null,
                                     readOnly: true,
                                     style: TextStyle(
@@ -427,7 +436,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                       contentPadding: EdgeInsets.fromLTRB(
                                           20.0, 10.0, 20.0, 10.0),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: BorderRadius.all( 
                                             Radius.circular(4.0)),
                                         borderSide: BorderSide(
                                             color:
@@ -502,6 +511,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                           left: 9, bottom: 8, right: 5),
                                       height: 36,
                                       child: TextFormField(
+                                        initialValue: widget.post.data['starting_destination'],
                                         textCapitalization:
                                             TextCapitalization.sentences,
                                         decoration: InputDecoration(
@@ -527,6 +537,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                         5.0))),
+                                             
                                         onChanged: (input) {
                                           setState(() {
                                             onceToast = 0;
@@ -545,6 +556,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                               Expanded(
                                 child: SizedBox(
                                   child: ListView.builder(
+                                      
                                       shrinkWrap: true,
                                       physics: ClampingScrollPhysics(),
                                       addAutomaticKeepAlives: true,
@@ -552,6 +564,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return interdestinations[index];
+                                      
                                       }),
                                 ),
                               ),
@@ -597,6 +610,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                           left: 9, bottom: 8, right: 5),
                                       height: 36,
                                       child: TextFormField(
+                                         initialValue: widget.post.data['ending_destination'],
                                         onTap: onAddForm,
                                         textCapitalization:
                                             TextCapitalization.sentences,
@@ -647,6 +661,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   padding:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
+                                    initialValue:  DateTime.parse(widget.post.data['arrival_date']),
                                     resetIcon: null,
                                     readOnly: true,
                                     style: TextStyle(
@@ -734,6 +749,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   margin:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
+                                  
                                     resetIcon: null,
                                     readOnly: true,
                                     style: TextStyle(
@@ -801,9 +817,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 2, left: 16.0, right: 16.0, top: 11.5),
                           child: TextFormField(
-                            keyboardType:
+                             
+                                                         keyboardType:
                                 TextInputType.numberWithOptions(decimal: false),
-                            controller: percentageController,
+                            controller: controllerAvail,
                             focusNode: focusPercentage,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -842,6 +859,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
                           child: TextFormField(
+                            // initialValue: widget.post.data['capacity'],
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: true),
                             controller: controller,
@@ -909,9 +927,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   const EdgeInsets.only(left: 10.0, top: 5.0),
                               child: DropdownButton(
                                 // JUSUF - Izbacio ubacio hint i disabledHint:
-                                hint: Text('Vrsta Vozila'),
+                                hint: Text( widget.post.data['vehicle']),
                                 disabledHint: Text('Vrsta Vozila'),
                                 value: _selectedVehicle,
+                                
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontFamily: "Roboto",
@@ -931,6 +950,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                               bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
                           child: TextFormField(
                             textCapitalization: TextCapitalization.sentences,
+                            initialValue: widget.post.data['goods'],
                             focusNode: focusGoods,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -966,6 +986,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 8),
                           child: TextFormField(
+                            initialValue: widget.post.data['dimensions'],
                             textCapitalization: TextCapitalization.sentences,
                             focusNode: focusDimensions,
                             decoration: InputDecoration(

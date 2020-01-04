@@ -63,30 +63,20 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
     return qn.documents;
   }
 
-  // ListTile(
-  //                   title: Text(snapshot.data[index].data['starting_destination']),
-  //                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-  //                       builder: (context) =>
-  //                           EditRoute(post: snapshot.data[index]))),
-  //                 );
-
- 
-
   @override
   Widget build(BuildContext context) {
-  // double defaultScreenWidth = 400.0;
-  //   double defaultScreenHeight = 810.0;
-  //   ScreenUtil.instance = ScreenUtil(
-  //     width: defaultScreenWidth,
-  //     height: defaultScreenHeight,
-  //     allowFontScaling: true,
-  //   )..init(context);
-   
+    // double defaultScreenWidth = 400.0;
+    //   double defaultScreenHeight = 810.0;
+    //   ScreenUtil.instance = ScreenUtil(
+    //     width: defaultScreenWidth,
+    //     height: defaultScreenHeight,
+    //     allowFontScaling: true,
+    //   )..init(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-         resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: false,
         body: Center(
           child: Container(
             child: FutureBuilder(
@@ -185,8 +175,8 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                       final rightSection = new Stack(
                         children: <Widget>[
                           Container(
-                             width: 142.0,
-                            
+                            width: 142.0,
+
                             // ScreenUtil.instance.setWidth(142.0),
                             height: 32,
                             margin: EdgeInsets.only(
@@ -203,10 +193,10 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                               child: LinearPercentIndicator(
                                 padding: EdgeInsets.only(left: 1),
                                 width: 141.0,
-                                
+
                                 // ScreenUtil.instance.setWidth(141.0),
                                 lineHeight: 30.0,
-                                percent: (double.parse(availability)) / 100,
+                                percent: (double.parse(availability)) / 100 ,
                                 center: RichText(
                                   text: TextSpan(
                                     children: <TextSpan>[
@@ -217,11 +207,9 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                                               // fontSize: ScreenUtil.instance
                                               //     .setSp(12.0),
                                               color: Colors.black
-                                                  .withOpacity(0.6))
-                                                  
-                                                  ),
+                                                  .withOpacity(0.6))),
                                       TextSpan(
-                                        text: availability,
+                                        text: availability + ' %',
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
                                             // fontSize:
@@ -313,66 +301,68 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
             ),
           ),
         ),
+
+        
+        
+       
         ///BottomNavigationBar
-      ///
-      ///u BottomNavigationBaru imamo ikonicu kompanije
-      ///info ikonicu 
-      ///i + btn na kojem dodajemo novu rutu i koji nas vodi na [CreateRoutes]
-      bottomNavigationBar: new BottomAppBar(
-        child: Container(
-          height: 56.0,
-          width: 360.0,
-          child: new Row(
-            children: <Widget>[
-              Container(
-                width: 20,
-                height: 20,
-                margin: EdgeInsets.only(left: 16.0),
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      image: new NetworkImage(
-                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+        ///
+        ///u BottomNavigationBaru imamo ikonicu kompanije
+        ///info ikonicu
+        ///i + btn na kojem dodajemo novu rutu i koji nas vodi na [CreateRoutes]
+        bottomNavigationBar: new BottomAppBar(
+          child: Container(
+            height: 56.0,
+            width: 360.0,
+            child: new Row(
+              children: <Widget>[
+                Container(
+                  width: 20,
+                  height: 20,
+                  margin: EdgeInsets.only(left: 16.0),
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: new DecorationImage(
+                        fit: BoxFit.fill,
+                        image: new NetworkImage(
+                            "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
+                  ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 4.0),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CreateRoute()),
-                    );
-                  },
-                  icon: Icon(Icons.info_outline),
+                Container(
+                  margin: EdgeInsets.only(left: 4.0),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateRoute()),
+                      );
+                    },
+                    icon: Icon(Icons.info_outline),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreateRoute()),
-            );
-          },
-          tooltip: '+',
-          child: Icon(Icons.add),
-          backgroundColor: blueColor,
+        floatingActionButton: Container(
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreateRoute()),
+              );
+            },
+            tooltip: '+',
+            child: Icon(Icons.add),
+            backgroundColor: blueColor,
+          ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+ 
+
       ),
     );
   }
 
-  navigateToEdit(DocumentSnapshot post) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => EditRoute(post: post)));
-  }
 
 }
