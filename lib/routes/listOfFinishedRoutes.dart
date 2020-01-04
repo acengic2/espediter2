@@ -193,15 +193,15 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                                         color: Colors.black.withOpacity(0.6),
                                         fontFamily: "Roboto",
                                       )),
-                                      new TextSpan(
-                                          text:
-                                              ('${snapshot.data[index].data['interdestination']}'),
-                                          style: new TextStyle(
-                                            fontSize: 20.0,
-                                            color:
-                                                Colors.black.withOpacity(0.6),
-                                            fontFamily: "Roboto",
-                                          )),
+                                      // new TextSpan(
+                                      //     text:
+                                      //         ('${snapshot.data[index].data['interdestination']}'),
+                                      //     style: new TextStyle(
+                                      //       fontSize: 20.0,
+                                      //       color:
+                                      //           Colors.black.withOpacity(0.6),
+                                      //       fontFamily: "Roboto",
+                                      //     )),
                                       new TextSpan(
                                         text:
                                             ('${snapshot.data[index].data['ending_destination']}'),

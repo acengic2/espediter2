@@ -138,8 +138,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   String userID;
   String id;
   String listOfInterdestinations = "";
-  String goodsVar = '',
-      dimensionsVar = '',
+  String goodsVar,
+      dimensionsVar,
       selectedDateStringP,
       selectedDateStringD,
       endingDestination,
@@ -239,9 +239,22 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     getUserid();
     onceToast = 0;
     BackButtonInterceptor.add(myInterceptor);
-    focusPercentage.addListener(() {
-        print('Ovdje je fokus');
-    });
+
+    populateTheVariables();
+  }
+
+  populateTheVariables() {
+    formatted  = widget.post.data['departure_date'];
+    t22 = widget.post.data['departure_time'];
+    startingDestination = widget.post.data['starting_destination'];
+    endingDestination = widget.post.data['ending_destination'];
+    formatted2 = widget.post.data['arrival_date'];
+    t11 = widget.post.data['departure_time'];
+    percentageVar = int.parse(widget.post.data['availability']);
+    capacityVar = widget.post.data['capacity'];
+    vehicleVar = widget.post.data['vehicle'];
+    goodsVar = widget.post.data['goods'];
+    dimensionsVar = widget.post.data['dimensions'];
   }
 
   ///dispose back btn-a nakon njegovog koristenja
@@ -1025,30 +1038,18 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                 hasFloatingPlaceholder: true,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0))),
-                             onSaved: (input) {
-                                setState(() {
-                                  if (input != '') {
-                                    percentageVar = int.parse(input);
-                                  } else {
-                                    percentageVar = null;
-                                  }
-                                  onceToast = 0;
-                                  onceBtnPressed = 0;
-                                  areFieldsEmpty();
-                                });
+                            onChanged: (input) {
+                              setState(() {
+                                if (input != '') {
+                                  percentageVar = int.parse(input);
+                                } else {
+                                  percentageVar = null;
+                                }
+                                onceToast = 0;
+                                onceBtnPressed = 0;
+                                areFieldsEmpty();
+                              });
                             },
-                            // onChanged: (input) {
-                            //     setState(() {
-                            //       if (input != '') {
-                            //         percentageVar = int.parse(input);
-                            //       } else {
-                            //         percentageVar = null;
-                            //       }
-                            //       onceToast = 0;
-                            //       onceBtnPressed = 0;
-                            //       areFieldsEmpty();
-                            //     });
-                            // },
                           ),
                         ),
                         ////// kapacitet u tonamaaaaaaaa
@@ -1183,7 +1184,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 8),
                           child: TextFormField(
-                            initialValue: widget.post.data['dimensions'],
+                            initialValue: dimensionsVar,
                             textCapitalization: TextCapitalization.sentences,
                             focusNode: focusDimensions,
                             decoration: InputDecoration(
@@ -1206,12 +1207,20 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0))),
                             onChanged: (input) {
-                              setState(() {
-                                dimensionsVar = input;
-                                onceToast = 0;
-                                onceBtnPressed = 0;
-                                areFieldsEmpty();
-                              });
+                              if (input == null) {
+                                setState(() {
+                                  dimensionsVar =
+                                      widget.post.data['dimensions'];
+                                });
+                              } else {
+                                setState(() {
+                                  dimensionsVar = input;
+                                });
+                              }
+
+                              onceToast = 0;
+                              onceBtnPressed = 0;
+                              areFieldsEmpty();
                             },
                           ),
                         ),
@@ -1310,10 +1319,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                 
                                   // ubacujemo u FinishedRoutes
                                   finishedData();
-                                   // brisemo iz Rute
+                                  // brisemo iz Rute
                                   deleteData(widget.post);
                                 }),
                           ),
