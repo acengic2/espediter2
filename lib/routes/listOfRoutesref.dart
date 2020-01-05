@@ -12,7 +12,7 @@ import 'createRouteScreen.dart';
 
 void main() => runApp(ListOfRoutesRef());
 
-String userID;
+
 String capacityString;
 
 /// varijable
@@ -31,23 +31,28 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 class ListOfRoutesRef extends StatefulWidget {
+  String userID;
+  ListOfRoutesRef({this.userID});
   @override
-  _ListOfRoutesRefState createState() => _ListOfRoutesRefState();
+  _ListOfRoutesRefState createState() => _ListOfRoutesRefState(userID: userID);
 }
 
 getUserid() async {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseUser user = await _auth.currentUser();
 
-  Firestore.instance
-      .collection('LoggedUsers')
-      .document(user.uid)
-      .snapshots()
-      .toString();
-  userID = user.uid;
+//   Firestore.instance
+//       .collection('LoggedUsers')
+//       .document(user.uid)
+//       .snapshots()
+//       .toString();
+//   userID = user.uid;
 }
 
 class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
+   String userID;
+   _ListOfRoutesRefState({this.userID});
+
   @override
   void initState() {
     super.initState();
@@ -80,7 +85,7 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
         body: Center(
           child: Container(
             child: FutureBuilder(
-              future: getPosts(userID),
+              future: getPosts(userID) ,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -232,7 +237,7 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    EditRoute(post: snapshot.data[index]))),
+                                    EditRoute(post: snapshot.data[index], userID: userID))),
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
