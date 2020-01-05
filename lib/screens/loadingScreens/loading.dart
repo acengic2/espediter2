@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutes.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/noRoutes.dart';
 import 'package:spediter/screens/loadingScreens/components/loadingComponent.dart';
-import 'package:spediter/screens/routes/companyRoutes.dart';
-import 'package:spediter/screens/routes/listOfRoutes.dart';
-import 'package:spediter/screens/routes/noRoutes.dart';
+
 
 void main() => runApp(ShowLoading());
 

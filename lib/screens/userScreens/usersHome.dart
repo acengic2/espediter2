@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:spediter/screens/routes/companyRoutes.dart';
-import 'package:spediter/screens/routes/createRouteScreen.dart';
+import 'package:spediter/screens/companyScreens/createRoute/createRouteScreen.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
+
 
 
 

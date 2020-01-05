@@ -3,9 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import './createRouteScreen.dart';
+import 'package:spediter/screens/companyScreens/createRoute/createRouteScreen.dart';
 import './companyRoutes.dart';
-import 'createRouteScreen.dart';
 
 
 void main() => runApp(ListOfRoutes());
