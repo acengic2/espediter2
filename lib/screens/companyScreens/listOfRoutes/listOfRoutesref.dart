@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:spediter/screens/companyScreens/createRoute/createRouteScreen.dart';
 import 'package:spediter/screens/companyScreens/createRoute/editRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/components/bottomAppBar.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/components/floatingActionButton.dart';
@@ -69,25 +69,34 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
 
   @override
   Widget build(BuildContext context) {
-    // double defaultScreenWidth = 400.0;
-    //   double defaultScreenHeight = 810.0;
-    //   ScreenUtil.instance = ScreenUtil(
-    //     width: defaultScreenWidth,
-    //     height: defaultScreenHeight,
-    //     allowFontScaling: true,
-    //   )..init(context);
+    double defaultScreenWidth = 400.0;
+      double defaultScreenHeight = 810.0;
+      ScreenUtil.instance = ScreenUtil(
+        width: defaultScreenWidth,
+        height: defaultScreenHeight,
+        allowFontScaling: true,
+      )..init(context);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Center(
-          child: Container(
+     
+    // MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   home: Scaffold(
+    //     resizeToAvoidBottomPadding: false,
+    //     body: Center(
+    //       child: 
+          return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
+          
+        ),
+          Container(
             child: FutureBuilder(
               future: getPosts(userID) ,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
+                      shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       /// DATUM
@@ -303,22 +312,28 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                 }
               },
             ),
-          ),
-        ),
+          
+          
+          )]);
+
+
+
+          
+    //     ),
 
                
-        ///BottomNavigationBar
-        ///
-        ///u BottomNavigationBaru imamo ikonicu kompanije
-        ///info ikonicu
-        ///i + btn na kojem dodajemo novu rutu i koji nas vodi na [CreateRoutes]
-        bottomNavigationBar: BottomAppBar1(),
-        floatingActionButton: FloatingActionButton1(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+    //     ///BottomNavigationBar
+    //     ///
+    //     ///u BottomNavigationBaru imamo ikonicu kompanije
+    //     ///info ikonicu
+    //     ///i + btn na kojem dodajemo novu rutu i koji nas vodi na [CreateRoutes]
+    //     bottomNavigationBar: BottomAppBar1(),
+    //     floatingActionButton: FloatingActionButton1(),
+    //     floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
  
 
-      ),
-    );
+    //   ),
+    // );
   }
 
 

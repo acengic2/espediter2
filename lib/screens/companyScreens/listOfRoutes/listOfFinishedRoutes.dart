@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:spediter/screens/companyScreens/createRoute/editRoutes.dart';
 
 
-void main() => runApp(ListOfRoutesRef());
+void main() => runApp(ListOfFinishedRoutes());
 
 String userID;
 String capacityString;
@@ -25,9 +26,9 @@ final leftSection = new Container();
 final middleSection = new Container();
 final rightSection = new Container();
 
-class ListOfRoutesRef extends StatefulWidget {
+class ListOfFinishedRoutes extends StatefulWidget {
   @override
-  _ListOfRoutesRefState createState() => _ListOfRoutesRefState();
+  _ListOfFinishedRoutesState createState() => _ListOfFinishedRoutesState();
 }
 
 getUserid() async {
@@ -42,7 +43,7 @@ getUserid() async {
   userID = user.uid;
 }
 
-class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
+class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
   @override
   void initState() {
     super.initState();
@@ -60,25 +61,28 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
 
   @override
   Widget build(BuildContext context) {
-    // double defaultScreenWidth = 400.0;
-    //   double defaultScreenHeight = 810.0;
-    //   ScreenUtil.instance = ScreenUtil(
-    //     width: defaultScreenWidth,
-    //     height: defaultScreenHeight,
-    //     allowFontScaling: true,
-    //   )..init(context);
+    double defaultScreenWidth = 400.0;
+      double defaultScreenHeight = 810.0;
+      ScreenUtil.instance = ScreenUtil(
+        width: defaultScreenWidth,
+        height: defaultScreenHeight,
+        allowFontScaling: true,
+      )..init(context);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Center(
-          child: Container(
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 8.0),
+          
+        ),  Container(
             child: FutureBuilder(
               future: getPosts(userID),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    addAutomaticKeepAlives: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       /// DATUM
@@ -89,7 +93,6 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
 
 
                       final leftSection = new Container(
-                         
                            height: 32,
                           width: 110,
                           margin: EdgeInsets.only(top: 8, bottom: 16),
@@ -116,7 +119,8 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                                 ],
                               ),
                             ),
-                          )));
+                          ))
+                      );//left section container
 
                       ///middle section u koji spremamo kapacitet
                       final middleSection = new Container(
@@ -154,10 +158,10 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                                 ),
                               ),
                             ],
-                          ));
+                          )
+                      );//Middle section Container
 
                      
-
                       return GestureDetector(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
@@ -229,12 +233,14 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                 }
               },
             ),
-          ),
-        ),
+          )]);
+
+
+    //     ),
  
 
-      ),
-    );
+    //   ),
+    // );
   }
 
 

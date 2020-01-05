@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutesref.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/listofRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/noRoutes.dart';
 import 'package:spediter/screens/loadingScreens/components/loadingComponent.dart';
 
@@ -113,7 +114,7 @@ class _ShowLoading extends State<ShowLoading> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPTY');
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutesRef(
+            builder: (context) => ListOfRoutes(
                   userID: user.uid,
                 )));
       } else {
