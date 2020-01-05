@@ -18,8 +18,6 @@ import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
 
-
-
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'listOfRoutesref.dart';
@@ -42,7 +40,10 @@ NoRoutes noRoutes = new NoRoutes();
 class EditRoute extends StatelessWidget {
   // This widget is the root of your application.
   final DocumentSnapshot post;
-  EditRoute({this.post});
+
+  EditRoute({
+    this.post,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,24 +62,31 @@ class EditRoute extends StatelessWidget {
         const Locale('bs'), // Bosnian
         const Locale('en'), // English
       ],
-      home: EditRouteScreenPage(post: post),
+      home: EditRouteScreenPage(
+        post: post,
+      ),
     );
   }
 }
 
 class EditRouteScreenPage extends StatefulWidget {
   final DocumentSnapshot post;
-  EditRouteScreenPage({this.post});
+
+  EditRouteScreenPage({
+    this.post,
+  });
 
   @override
-  _EditRouteScreenPageState createState() =>
-      _EditRouteScreenPageState(post: post);
+  _EditRouteScreenPageState createState() => _EditRouteScreenPageState(
+        post: post,
+      );
 }
 
 class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// lista medjudestinacija
   List<InterdestinationForm> interdestinations = [];
   final DocumentSnapshot post;
+
   _EditRouteScreenPageState({this.post});
 
   /// VARIJABLE
@@ -89,8 +97,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// format za datum - upis u bazu prilikom preuzimanja
   final format = DateFormat.MMMMd('bs');
   final formatTime = DateFormat("HH:mm");
-  final formatP = DateFormat('dd/MM/yyyy');
-  
+  final formatP = DateFormat('yyyy-MM-dd');
 
   /// key za formu
   final _formKey = GlobalKey<FormState>();
@@ -116,8 +123,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// counteri za [Toast] i za [Button]
   int onceToast = 0, onceBtnPressed = 0;
 
- 
-
   // var percentageController = new MaskedTextController(mask: '000');
 
   /// Stringovi
@@ -133,8 +138,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   String userID;
   String id;
   String listOfInterdestinations = "";
-  String goodsVar = '',
-      dimensionsVar = '',
+  String goodsVar,
+      dimensionsVar,
       selectedDateStringP,
       selectedDateStringD,
       endingDestination,
@@ -148,12 +153,16 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       timeD;
   int percentageVar;
   String capacityVar;
+  String t11;
+  String t22;
 
   /// DateTime tip datuma (radi validacije)
   DateTime selectedDateP;
   DateTime selectedDateD;
   DateTime startDateCompare;
   DateTime endDateCompare;
+  DateTime t1;
+  DateTime t2;
 
   /// Timestamp var [unos u bazu zbog ordera ispisa]
   int dateOfSubmit = DateTime.now().millisecondsSinceEpoch;
@@ -230,14 +239,28 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     getUserid();
     onceToast = 0;
     BackButtonInterceptor.add(myInterceptor);
-    
+
+    populateTheVariables();
+  }
+
+  populateTheVariables() {
+    formatted  = widget.post.data['departure_date'];
+    t22 = widget.post.data['departure_time'];
+    startingDestination = widget.post.data['starting_destination'];
+    endingDestination = widget.post.data['ending_destination'];
+    formatted2 = widget.post.data['arrival_date'];
+    t11 = widget.post.data['departure_time'];
+    percentageVar = int.parse(widget.post.data['availability']);
+    capacityVar = widget.post.data['capacity'];
+    vehicleVar = widget.post.data['vehicle'];
+    goodsVar = widget.post.data['goods'];
+    dimensionsVar = widget.post.data['dimensions'];
   }
 
   ///dispose back btn-a nakon njegovog koristenja
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
-    print('Ovdje sam ');
     super.dispose();
   }
 
@@ -278,6 +301,178 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       });
     }
 
+    validateDatesAndTimes(BuildContext context) {
+      t11 = DateFormat.Hm().format(t1);
+      t22 = DateFormat.Hm().format(t2);
+      DateTime now = DateTime.now();
+      selectedDateP = new DateTime(
+          selectedDateP.year, selectedDateP.month, selectedDateP.day);
+      selectedDateD = new DateTime(
+          selectedDateD.year, selectedDateD.month, selectedDateD.day);
+      if (selectedDateD.isBefore(selectedDateP)) {
+        print('Datum dolaska ne može biti manji od datuma polaska.');
+        if (onceToast == 0) {
+          final snackBar = SnackBar(
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+            content: Text('Datum polaska ne može biti veći od datuma dolaska.'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {},
+            ),
+          );
+          Scaffold.of(context).showSnackBar(snackBar);
+          onceToast = 1;
+          Timer(Duration(seconds: 2), () {
+            onceToast = 0;
+          });
+        }
+      } else if (selectedDateP.isAtSameMomentAs(selectedDateD)) {
+        if (DateFormat.Hm().format(t2).compareTo(DateFormat.Hm().format(t1)) >
+            0) {
+          print(
+              'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.');
+          if (onceToast == 0) {
+            final snackBar = SnackBar(
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+              content: Text(
+                  'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {},
+              ),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+            onceToast = 1;
+            Timer(Duration(seconds: 2), () {
+              onceToast = 0;
+            });
+          }
+        } else if (DateFormat.Hm()
+                .format(t2)
+                .compareTo(DateFormat.Hm().format(t1)) ==
+            0) {
+          print('Datumi i vremena ne mogu biti jednaki.');
+          if (onceToast == 0) {
+            final snackBar = SnackBar(
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+              content: Text('Datumi i vremena ne mogu biti jednaki.'),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {},
+              ),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+            onceToast = 1;
+            Timer(Duration(seconds: 2), () {
+              onceToast = 0;
+            });
+          }
+        } else {
+          print('Validacija ispravna');
+          if (onceBtnPressed == 0) {
+            print('btn kreiraj');
+            onSave();
+
+            onceBtnPressed = 1;
+          }
+        }
+      } else if (selectedDateD
+          .isBefore(DateTime(now.year, now.month, now.day))) {
+        print('Datum dolaska ne može biti manji od današnjeg datuma.');
+        if (onceToast == 0) {
+          final snackBar = SnackBar(
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+            content:
+                Text('Datum dolaska ne može biti manji od današnjeg datuma.'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {},
+            ),
+          );
+          Scaffold.of(context).showSnackBar(snackBar);
+          onceToast = 1;
+          Timer(Duration(seconds: 2), () {
+            onceToast = 0;
+          });
+        }
+      } else if (selectedDateD
+          .isAtSameMomentAs(DateTime(now.year, now.month, now.day))) {
+        if (DateFormat.Hm()
+                .format(t1)
+                .compareTo(DateFormat.Hm().format(DateTime.now())) <
+            0) {
+          print(
+              'Vrijeme dolaska ne može biti manji od trenutnog vremena, ako je datum dolaska jednako današnjem datumu.');
+          if (onceToast == 0) {
+            final snackBar = SnackBar(
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+              content: Text(
+                  'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {},
+              ),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+            onceToast = 1;
+            Timer(Duration(seconds: 2), () {
+              onceToast = 0;
+            });
+          }
+        } else if (DateFormat.Hm()
+                .format(t1)
+                .compareTo(DateFormat.Hm().format(DateTime.now())) ==
+            0) {
+          print(
+              'Vrijeme dolaska ne može biti jednako trenutnom vremenu, ako je datum dolaska jednak današnjem datumu.');
+          if (onceToast == 0) {
+            final snackBar = SnackBar(
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+              content: Text(
+                  'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {},
+              ),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+            onceToast = 1;
+            Timer(Duration(seconds: 2), () {
+              onceToast = 0;
+            });
+          }
+        } else {
+          print('Validacija ispravna');
+          if (onceBtnPressed == 0) {
+            print('btn kreiraj');
+            onSave();
+
+            onceBtnPressed = 1;
+          }
+        }
+      } else {
+        print('Validacija ispravna');
+        if (onceBtnPressed == 0) {
+          print('btn kreiraj');
+          onSave();
+
+          onceBtnPressed = 1;
+        }
+      }
+    }
+
     /// RESPONSIVE
     ///
     /// iz klase [ScreenUtils]
@@ -289,13 +484,12 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       allowFontScaling: true,
     )..init(context);
 
-   TextEditingController controllerAvail = TextEditingController(text: widget.post.data['availability']);
+    TextEditingController controllerAvail =
+        TextEditingController(text: widget.post.data['availability']);
+
     ///maska za tone  0.0
-  var controller = new MaskedTextController(
-    mask: '0.0',
-    text: widget.post.data['capacity']
-  );
-    
+    var controller = new MaskedTextController(
+        mask: '0.0', text: widget.post.data['capacity']);
 
     return Scaffold(
       appBar: AppBar(
@@ -358,7 +552,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   padding:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
-                                    initialValue:  DateTime.parse(widget.post.data['departure_date']) ,
+                                    initialValue: DateTime.parse(
+                                        widget.post.data['departure_date']),
                                     textCapitalization:
                                         TextCapitalization.words,
                                     style: TextStyle(
@@ -424,7 +619,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   margin:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
-                                  
+                                    initialValue: DateTime.parse(
+                                        widget.post.data['departure_date'] +
+                                            ' ' +
+                                            widget.post.data['departure_time']),
                                     resetIcon: null,
                                     readOnly: true,
                                     style: TextStyle(
@@ -436,7 +634,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                       contentPadding: EdgeInsets.fromLTRB(
                                           20.0, 10.0, 20.0, 10.0),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all( 
+                                        borderRadius: BorderRadius.all(
                                             Radius.circular(4.0)),
                                         borderSide: BorderSide(
                                             color:
@@ -462,6 +660,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
+                                      t2 = input;
                                       onceToast = 0;
                                       onceBtnPressed = 0;
                                       areFieldsEmpty();
@@ -511,7 +710,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                           left: 9, bottom: 8, right: 5),
                                       height: 36,
                                       child: TextFormField(
-                                        initialValue: widget.post.data['starting_destination'],
+                                        initialValue: widget
+                                            .post.data['starting_destination'],
                                         textCapitalization:
                                             TextCapitalization.sentences,
                                         decoration: InputDecoration(
@@ -537,7 +737,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                         5.0))),
-                                             
                                         onChanged: (input) {
                                           setState(() {
                                             onceToast = 0;
@@ -556,7 +755,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                               Expanded(
                                 child: SizedBox(
                                   child: ListView.builder(
-                                      
                                       shrinkWrap: true,
                                       physics: ClampingScrollPhysics(),
                                       addAutomaticKeepAlives: true,
@@ -564,7 +762,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return interdestinations[index];
-                                      
                                       }),
                                 ),
                               ),
@@ -610,7 +807,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                           left: 9, bottom: 8, right: 5),
                                       height: 36,
                                       child: TextFormField(
-                                         initialValue: widget.post.data['ending_destination'],
+                                        initialValue: widget
+                                            .post.data['ending_destination'],
                                         onTap: onAddForm,
                                         textCapitalization:
                                             TextCapitalization.sentences,
@@ -661,7 +859,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   padding:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
-                                    initialValue:  DateTime.parse(widget.post.data['arrival_date']),
+                                    initialValue: DateTime.parse(
+                                        widget.post.data['arrival_date']),
                                     resetIcon: null,
                                     readOnly: true,
                                     style: TextStyle(
@@ -728,10 +927,6 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                           00,
                                           00,
                                           00);
-                                      print(
-                                          'Start date for compare: $startDateCompare &&&&& $selectedDateP');
-                                      print(
-                                          'End date for compare: $endDateCompare &&&&& $selectedDateD');
                                       bool check = selectedDateD
                                           .isBefore(DateTime.now());
                                       print(check);
@@ -749,7 +944,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   margin:
                                       EdgeInsets.only(left: 4.0, right: 4.0),
                                   child: DateTimeField(
-                                  
+                                    initialValue: DateTime.parse(
+                                        widget.post.data['arrival_date'] +
+                                            ' ' +
+                                            widget.post.data['arrival_time']),
                                     resetIcon: null,
                                     readOnly: true,
                                     style: TextStyle(
@@ -785,6 +983,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                       }
                                     },
                                     onChanged: (input) {
+                                      t1 = input;
                                       onceToast = 0;
                                       onceBtnPressed = 0;
                                       areFieldsEmpty();
@@ -817,8 +1016,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 2, left: 16.0, right: 16.0, top: 11.5),
                           child: TextFormField(
-                             
-                                                         keyboardType:
+                            keyboardType:
                                 TextInputType.numberWithOptions(decimal: false),
                             controller: controllerAvail,
                             focusNode: focusPercentage,
@@ -927,10 +1125,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   const EdgeInsets.only(left: 10.0, top: 5.0),
                               child: DropdownButton(
                                 // JUSUF - Izbacio ubacio hint i disabledHint:
-                                hint: Text( widget.post.data['vehicle']),
+                                hint: Text(widget.post.data['vehicle']),
                                 disabledHint: Text('Vrsta Vozila'),
                                 value: _selectedVehicle,
-                                
+
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontFamily: "Roboto",
@@ -986,7 +1184,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 8),
                           child: TextFormField(
-                            initialValue: widget.post.data['dimensions'],
+                            initialValue: dimensionsVar,
                             textCapitalization: TextCapitalization.sentences,
                             focusNode: focusDimensions,
                             decoration: InputDecoration(
@@ -1009,12 +1207,20 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0))),
                             onChanged: (input) {
-                              setState(() {
-                                dimensionsVar = input;
-                                onceToast = 0;
-                                onceBtnPressed = 0;
-                                areFieldsEmpty();
-                              });
+                              if (input == null) {
+                                setState(() {
+                                  dimensionsVar =
+                                      widget.post.data['dimensions'];
+                                });
+                              } else {
+                                setState(() {
+                                  dimensionsVar = input;
+                                });
+                              }
+
+                              onceToast = 0;
+                              onceBtnPressed = 0;
+                              areFieldsEmpty();
                             },
                           ),
                         ),
@@ -1080,174 +1286,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                             });
                                           }
                                         }
-                                        TimeOfDay t = TimeOfDay(
-                                            hour: int.parse(DateFormat('kk:mm')
-                                                .format(DateTime.now())
-                                                .split(":")[0]),
-                                            minute: int.parse(
-                                                DateFormat('kk:mm')
-                                                    .format(DateTime.now())
-                                                    .split(":")[1]));
-                                        if (selectedDateD
-                                            .isBefore(DateTime.now())) {
-                                          if (onceToast == 0) {
-                                            final snackBar = SnackBar(
-                                              duration: Duration(seconds: 2),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              backgroundColor: Color.fromRGBO(
-                                                  28, 28, 28, 1.0),
-                                              content: Text(
-                                                  'Datum dolaska ne može biti manji od današnjeg datuma.'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                            onceToast = 1;
-                                            Timer(Duration(seconds: 2), () {
-                                              onceToast = 0;
-                                            });
-                                          }
-                                        } else if (selectedDateD
-                                            .isAtSameMomentAs(DateTime.now())) {
-                                          if (timeD.compareTo(t.toString()) <
-                                              0) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          }
-                                          if (timeD.compareTo(t.toString()) ==
-                                              0) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          }
-                                        } else if (selectedDateD
-                                            .isAfter(DateTime.now())) {
-                                          if (selectedDateP
-                                              .isAfter(selectedDateD)) {
-                                            if (onceToast == 0) {
-                                              final snackBar = SnackBar(
-                                                duration: Duration(seconds: 2),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor: Color.fromRGBO(
-                                                    28, 28, 28, 1.0),
-                                                content: Text(
-                                                    'Datum polaska ne može biti veći od datuma dolaska.'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {},
-                                                ),
-                                              );
-                                              Scaffold.of(context)
-                                                  .showSnackBar(snackBar);
-                                              onceToast = 1;
-                                              Timer(Duration(seconds: 2), () {
-                                                onceToast = 0;
-                                              });
-                                            }
-                                          } else if (selectedDateP
-                                              .isAtSameMomentAs(
-                                                  selectedDateD)) {
-                                            if (timeP.compareTo(timeD) > 0) {
-                                              if (onceToast == 0) {
-                                                final snackBar = SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          28, 28, 28, 1.0),
-                                                  content: Text(
-                                                      'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
-                                                  action: SnackBarAction(
-                                                    label: 'Undo',
-                                                    onPressed: () {},
-                                                  ),
-                                                );
-                                                Scaffold.of(context)
-                                                    .showSnackBar(snackBar);
-                                                onceToast = 1;
-                                                Timer(Duration(seconds: 2), () {
-                                                  onceToast = 0;
-                                                });
-                                              }
-                                            } else if (timeP.compareTo(timeD) ==
-                                                0) {
-                                              if (onceToast == 0) {
-                                                final snackBar = SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          28, 28, 28, 1.0),
-                                                  content: Text(
-                                                      'Datumi i vremena ne mogu biti jednaki.'),
-                                                  action: SnackBarAction(
-                                                    label: 'Undo',
-                                                    onPressed: () {},
-                                                  ),
-                                                );
-                                                Scaffold.of(context)
-                                                    .showSnackBar(snackBar);
-                                                onceToast = 1;
-                                                Timer(Duration(seconds: 2), () {
-                                                  onceToast = 0;
-                                                });
-                                              }
-                                            }
-                                          } else {
-                                            if (onceBtnPressed == 0) {
-                                              print('btn kreiraj');
-                                              onSave();
-
-                                              onceBtnPressed = 1;
-                                            }
-                                          }
-                                        }
+                                        validateDatesAndTimes(context);
                                       }),
                           ),
                         ),
@@ -1280,10 +1319,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  // brisemo iz Rute
-                                  // deleteData();
                                   // ubacujemo u FinishedRoutes
                                   finishedData();
+                                  // brisemo iz Rute
+                                  deleteData(widget.post);
                                 }),
                           ),
                         ),
@@ -1318,7 +1357,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     }
   }
 
-// funckija koja provjerava da li su polja prazna i enable/disable btn
+  // funckija koja provjerava da li su polja prazna i enable/disable btn
   areFieldsEmpty() {
     if ((percentageVar != null) ||
         (dimensionsVar != '' && dimensionsVar != null) ||
@@ -1341,26 +1380,38 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   //potrebno joj je proslijediti doc.ID
   void deleteData(DocumentSnapshot doc) async {
     await db.collection('Rute').document(doc.documentID).delete();
+    print('OBRISANA');
+    CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
+      if (docs.documents.isNotEmpty) {
+        print('NOT EMPRY');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
+      } else {
+        print('EMPTU');
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+      }
+    });
   }
 
   //funkcija koja dodaje u zavrseneRute
-  void finishedData() async {
+  finishedData() async {
     DocumentReference ref = await db.collection('FinishedRoutes').add({
       'availability': '$percentageVar',
       'capacity': '$capacityVar',
       'ending_destination': '$endingDestination',
       'starting_destination': '$startingDestination',
-      'interdestination': '$listOfInterdestinations',
+      // 'interdestination': '$listOfInterdestinations',
       'arrival_date': '$formatted2',
-      'arrival_time': '$timeP',
-      'departure_time': '$timeD',
+      'arrival_time': '$t11',
+      'departure_time': '$t22',
       'departure_date': '$formatted',
       'dimensions': '$dimensionsVar',
       'goods': '$goodsVar',
       'vehicle': '$vehicleVar',
       'user_id': '$userID',
       'timestamp': '$dateOfSubmit',
-      'uniqueID': UniqueKey(),
     });
     setState(() => id = ref.documentID);
     print(ref.documentID);
