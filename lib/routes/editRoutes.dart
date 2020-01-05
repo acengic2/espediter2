@@ -1292,8 +1292,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                               onceToast = 0;
                                             });
                                           }
-                                        }
+                                        } else { 
                                         validateDatesAndTimes(context);
+                                        }
                                       }),
                           ),
                         ),
