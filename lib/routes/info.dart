@@ -1,24 +1,11 @@
-import 'dart:async';
 import 'dart:core';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:responsive_container/responsive_container.dart';
 import 'package:spediter/routes/companyRoutes.dart';
-import 'package:spediter/routes/form.dart';
-import 'package:spediter/routes/loadingRoutes.dart';
-import 'package:spediter/utils/screenUtils.dart';
-import './inderdestination.dart';
 import 'package:spediter/routes/noRoutes.dart';
 import 'package:flutter/rendering.dart';
 import 'listOfRoutesRef.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 void main() => runApp(Info());
 
