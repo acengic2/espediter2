@@ -40,9 +40,11 @@ NoRoutes noRoutes = new NoRoutes();
 class EditRoute extends StatelessWidget {
   // This widget is the root of your application.
   final DocumentSnapshot post;
+  final String userID;
 
   EditRoute({
     this.post,
+    this.userID
   });
 
   @override
@@ -64,6 +66,7 @@ class EditRoute extends StatelessWidget {
       ],
       home: EditRouteScreenPage(
         post: post,
+        userID:userID
       ),
     );
   }
@@ -71,14 +74,17 @@ class EditRoute extends StatelessWidget {
 
 class EditRouteScreenPage extends StatefulWidget {
   final DocumentSnapshot post;
+  final String userID;
 
   EditRouteScreenPage({
     this.post,
+    this.userID
   });
 
   @override
   _EditRouteScreenPageState createState() => _EditRouteScreenPageState(
         post: post,
+        userID:userID
       );
 }
 
@@ -86,8 +92,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// lista medjudestinacija
   List<InterdestinationForm> interdestinations = [];
   final DocumentSnapshot post;
+  final String userID;
 
-  _EditRouteScreenPageState({this.post});
+  _EditRouteScreenPageState({this.post,this.userID});
 
   /// VARIJABLE
   ///
@@ -135,7 +142,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// vrijemeDolaska,vrijemePolaska, odabranoVozilo,
   /// procenat i kapacitet
   String userUid;
-  String userID;
+ 
   String id;
   String listOfInterdestinations = "";
   String goodsVar,
@@ -195,17 +202,17 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   ///
   /// ulazimo u [Auth] dio firebase i na osnovu toga izvlacimo sve info o user u nasem slucaju kompaniji
   /// nakon cega dohvatamo kolekciju [LoggedUsers] i uzimamo [user.uid] i spremamo ga u varijablu [userID]
-  getUserid() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
+  // getUserid() async {
+  //   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //   final FirebaseUser user = await _auth.currentUser();
 
-    Firestore.instance
-        .collection('LoggedUsers')
-        .document(user.uid)
-        .snapshots()
-        .toString();
-    userID = user.uid;
-  }
+  //   Firestore.instance
+  //       .collection('LoggedUsers')
+  //       .document(user.uid)
+  //       .snapshots()
+  //       .toString();
+  //   userID = user.uid;
+  // }
 
   /// bool f-ja koju smo ubacili u [BackButtonInterceptor], koja mora vratiti true ili false.
   /// u kojoj na klik back btn-a
@@ -216,7 +223,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID,)));
       } else {
         print('EMPTU');
 
@@ -506,7 +513,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                 imaliRuta = true;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ListOfRoutesRef()),
+                  MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID,)),
                 );
               } else {
                 print('EMPTU');
@@ -1385,7 +1392,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID)));
       } else {
         print('EMPTU');
 
