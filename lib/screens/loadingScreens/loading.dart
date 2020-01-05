@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
-import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutes.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutesref.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/noRoutes.dart';
 import 'package:spediter/screens/loadingScreens/components/loadingComponent.dart';
 
@@ -113,7 +113,7 @@ class _ShowLoading extends State<ShowLoading> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPTY');
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutes(
+            builder: (context) => ListOfRoutesRef(
                   userID: user.uid,
                 )));
       } else {

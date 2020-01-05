@@ -498,6 +498,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
         mask: '0.0', text: widget.post.data['capacity']);
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         /// u appBaru kreiramo X iconicu na osnovu koje izlazimo iz [CreateRoutes] i idemo na [ListOfRoutes]
         backgroundColor: Colors.white,

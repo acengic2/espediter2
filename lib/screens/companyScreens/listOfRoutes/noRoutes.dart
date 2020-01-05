@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:spediter/screens/companyScreens/createRoute/createRouteScreen.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/components/bottomAppBar.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/components/floatingActionButton.dart';
 
 void main() => runApp(NoRoutes());
 
@@ -61,75 +62,13 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                       color: textColorGray60),
                 ),
               ),
-              ButtonTheme(
-                minWidth: 154.0,
-                height: 36.0,
-                child: RaisedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CreateRoute()));
-                  },
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    "KREIRAJ RUTU",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Roboto",
-                        color: Colors.white),
-                  ),
-                  color: blueColor,
-                ),
-              ),
+            
             ]),
           ),
         ),
       ),
-      bottomNavigationBar: new BottomAppBar(
-        child: Container(
-          height: 56.0,
-          width: 360.0,
-          child: new Row(
-            children: <Widget>[
-              Container(
-                width: 20,
-                height: 20,
-                margin: EdgeInsets.only(left: 16.0),
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      image: new NetworkImage(
-                          "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 4.0),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CreateRoute()));
-                  },
-                  icon: Icon(Icons.info_outline),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => CreateRoute()));
-          },
-          tooltip: '+',
-          child: Icon(Icons.add),
-          backgroundColor: blueColor,
-        ),
-      ),
+      bottomNavigationBar: BottomAppBar1(),
+      floatingActionButton: FloatingActionButton1(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
