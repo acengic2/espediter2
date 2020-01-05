@@ -70,13 +70,13 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
 
   @override
   Widget build(BuildContext context) {
-    // double defaultScreenWidth = 400.0;
-    //   double defaultScreenHeight = 810.0;
-    //   ScreenUtil.instance = ScreenUtil(
-    //     width: defaultScreenWidth,
-    //     height: defaultScreenHeight,
-    //     allowFontScaling: true,
-    //   )..init(context);
+    double defaultScreenWidth = 400.0;
+      double defaultScreenHeight = 810.0;
+      ScreenUtil.instance = ScreenUtil(
+        width: defaultScreenWidth,
+        height: defaultScreenHeight,
+        allowFontScaling: true,
+      )..init(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -119,8 +119,8 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                                   new TextSpan(
                                       text: departureDate,
                                       style: new TextStyle(
-                                        // fontSize:
-                                        //     ScreenUtil.instance.setSp(13.0),
+                                        fontSize:
+                                            ScreenUtil.instance.setSp(13.0),
                                         color: Colors.white,
                                         fontFamily: "Roboto",
                                       )),
@@ -197,9 +197,8 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                               margin: EdgeInsets.only(top: 9),
                               child: LinearPercentIndicator(
                                 padding: EdgeInsets.only(left: 1),
-                                width: 141.0,
-
-                                // ScreenUtil.instance.setWidth(141.0),
+                                width: 
+                                      ScreenUtil.instance.setWidth(141.0),
                                 lineHeight: 30.0,
                                 percent: (double.parse(availability)) / 100 ,
                                 center: RichText(
@@ -217,8 +216,8 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                                         text: availability + ' %',
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
-                                            // fontSize:
-                                            //     ScreenUtil.instance.setSp(12.0),
+                                            fontSize:
+                                                ScreenUtil.instance.setSp(12.0),
                                             fontWeight: FontWeight.bold,
                                             color:
                                                 Colors.black.withOpacity(0.8)),
