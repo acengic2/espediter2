@@ -1247,8 +1247,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               onceToast = 0;
                                             });
                                           }
-                                        }
+                                        } else { 
                                         validateDatesAndTimes(context);
+                                        }
                                       }),
                           ),
                         ),
