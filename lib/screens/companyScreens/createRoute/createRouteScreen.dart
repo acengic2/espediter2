@@ -12,7 +12,9 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:responsive_container/responsive_container.dart';
 import 'package:spediter/screens/companyScreens/createRoute/form.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/components/divider.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutesref.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/listofRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/noRoutes.dart';
 import 'package:spediter/screens/loadingScreens/loadingRoutes.dart';
 
@@ -207,7 +209,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID,)));
       } else {
         print('EMPTU');
 
@@ -477,7 +479,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                 imaliRuta = true;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ListOfRoutesRef()),
+                  MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)),
                 );
               } else {
                 print('EMPTU');
@@ -973,20 +975,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                         ),
 
                         /// DIVIDER
-                        Container(
-                          height: 8,
-                          decoration: BoxDecoration(
-                              border: Border(
-                            top: BorderSide(
-                                width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
-                            bottom: BorderSide(
-                                width: 1, color: Color.fromRGBO(0, 0, 0, 0.12)),
-                          )),
-                          child: Divider(
-                            thickness: 8,
-                            color: Color.fromRGBO(0, 0, 0, 0.03),
-                          ),
-                        ),
+                        Divider1(),
 
                         /// Popunjenost u procentimaaaaaaaaaaaaaaaaa
                         Container(
@@ -1251,8 +1240,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               onceToast = 0;
                                             });
                                           }
-                                        }
+                                        }else{
                                         validateDatesAndTimes(context);
+                                        }
                                       }),
                           ),
                         ),
