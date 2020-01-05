@@ -204,7 +204,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef()));
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID,)));
       } else {
         print('EMPTU');
 
@@ -473,7 +473,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                 imaliRuta = true;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ListOfRoutesRef()),
+                  MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID,)),
                 );
               } else {
                 print('EMPTU');
@@ -728,6 +728,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                       )))
                             ])),
 
+                  
                         /// MEDJUDESTINACIJA
                         Container(
                           child: Row(
@@ -1247,8 +1248,9 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                               onceToast = 0;
                                             });
                                           }
-                                        }
+                                        } else { 
                                         validateDatesAndTimes(context);
+                                        }
                                       }),
                           ),
                         ),

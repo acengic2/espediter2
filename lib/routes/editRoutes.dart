@@ -1023,7 +1023,8 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           child: TextFormField(
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: false),
-                            controller: controllerAvail,
+                            // controller: controllerAvail,
+                            initialValue: widget.post.data['availability'],
                             focusNode: focusPercentage,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -1062,10 +1063,10 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                           margin: EdgeInsets.only(
                               bottom: 4.5, left: 16.0, right: 16.0, top: 4.5),
                           child: TextFormField(
-                            // initialValue: widget.post.data['capacity'],
+                            initialValue: widget.post.data['capacity'],
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: true),
-                            controller: controller,
+                            // controller: controller,
                             focusNode: focusCapacity,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -1290,8 +1291,9 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                               onceToast = 0;
                                             });
                                           }
-                                        }
+                                        } else { 
                                         validateDatesAndTimes(context);
+                                        }
                                       }),
                           ),
                         ),
