@@ -1,9 +1,0 @@
-{
-  "@@last_modified": "2019-06-27T22:25:57.081431",
-  "heyWorld": "Hey World",
-  "@heyWorld": {
-    "description": "Simple world for greeting ",
-    "type": "text",
-    "placeholders": {}
-  },
-}
