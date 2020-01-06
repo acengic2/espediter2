@@ -321,177 +321,177 @@ _textController.addListener((){
       });
     }
 
-    validateDatesAndTimes(BuildContext context) {
-      t11 = DateFormat.Hm().format(t1);
-      t22 = DateFormat.Hm().format(t2);
-      DateTime now = DateTime.now();
-      selectedDateP = new DateTime(
-          selectedDateP.year, selectedDateP.month, selectedDateP.day);
-      selectedDateD = new DateTime(
-          selectedDateD.year, selectedDateD.month, selectedDateD.day);
-      if (selectedDateD.isBefore(selectedDateP)) {
-        print('Datum dolaska ne može biti manji od datuma polaska.');
-        if (onceToast == 0) {
-          final snackBar = SnackBar(
-            duration: Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-            content: Text('Datum polaska ne može biti veći od datuma dolaska.'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {},
-            ),
-          );
-          Scaffold.of(context).showSnackBar(snackBar);
-          onceToast = 1;
-          Timer(Duration(seconds: 2), () {
-            onceToast = 0;
-          });
-        }
-      } else if (selectedDateP.isAtSameMomentAs(selectedDateD)) {
-        if (DateFormat.Hm().format(t2).compareTo(DateFormat.Hm().format(t1)) >
-            0) {
-          print(
-              'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.');
-          if (onceToast == 0) {
-            final snackBar = SnackBar(
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-              content: Text(
-                  'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () {},
-              ),
-            );
-            Scaffold.of(context).showSnackBar(snackBar);
-            onceToast = 1;
-            Timer(Duration(seconds: 2), () {
-              onceToast = 0;
-            });
-          }
-        } else if (DateFormat.Hm()
-                .format(t2)
-                .compareTo(DateFormat.Hm().format(t1)) ==
-            0) {
-          print('Datumi i vremena ne mogu biti jednaki.');
-          if (onceToast == 0) {
-            final snackBar = SnackBar(
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-              content: Text('Datumi i vremena ne mogu biti jednaki.'),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () {},
-              ),
-            );
-            Scaffold.of(context).showSnackBar(snackBar);
-            onceToast = 1;
-            Timer(Duration(seconds: 2), () {
-              onceToast = 0;
-            });
-          }
-        } else {
-          print('Validacija ispravna');
-          if (onceBtnPressed == 0) {
-            print('btn kreiraj');
-            onSave();
+    // validateDatesAndTimes(BuildContext context) {
+    //   t11 = DateFormat.Hm().format(t1);
+    //   t22 = DateFormat.Hm().format(t2);
+    //   DateTime now = DateTime.now();
+    //   selectedDateP = new DateTime(
+    //       selectedDateP.year, selectedDateP.month, selectedDateP.day);
+    //   selectedDateD = new DateTime(
+    //       selectedDateD.year, selectedDateD.month, selectedDateD.day);
+    //   if (selectedDateD.isBefore(selectedDateP)) {
+    //     print('Datum dolaska ne može biti manji od datuma polaska.');
+    //     if (onceToast == 0) {
+    //       final snackBar = SnackBar(
+    //         duration: Duration(seconds: 2),
+    //         behavior: SnackBarBehavior.floating,
+    //         backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //         content: Text('Datum polaska ne može biti veći od datuma dolaska.'),
+    //         action: SnackBarAction(
+    //           label: 'Undo',
+    //           onPressed: () {},
+    //         ),
+    //       );
+    //       Scaffold.of(context).showSnackBar(snackBar);
+    //       onceToast = 1;
+    //       Timer(Duration(seconds: 2), () {
+    //         onceToast = 0;
+    //       });
+    //     }
+    //   } else if (selectedDateP.isAtSameMomentAs(selectedDateD)) {
+    //     if (DateFormat.Hm().format(t2).compareTo(DateFormat.Hm().format(t1)) >
+    //         0) {
+    //       print(
+    //           'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.');
+    //       if (onceToast == 0) {
+    //         final snackBar = SnackBar(
+    //           duration: Duration(seconds: 2),
+    //           behavior: SnackBarBehavior.floating,
+    //           backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //           content: Text(
+    //               'Vrijeme polaska ne može biti veće od vremena dolaska, ako su datumi jednaki.'),
+    //           action: SnackBarAction(
+    //             label: 'Undo',
+    //             onPressed: () {},
+    //           ),
+    //         );
+    //         Scaffold.of(context).showSnackBar(snackBar);
+    //         onceToast = 1;
+    //         Timer(Duration(seconds: 2), () {
+    //           onceToast = 0;
+    //         });
+    //       }
+    //     } else if (DateFormat.Hm()
+    //             .format(t2)
+    //             .compareTo(DateFormat.Hm().format(t1)) ==
+    //         0) {
+    //       print('Datumi i vremena ne mogu biti jednaki.');
+    //       if (onceToast == 0) {
+    //         final snackBar = SnackBar(
+    //           duration: Duration(seconds: 2),
+    //           behavior: SnackBarBehavior.floating,
+    //           backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //           content: Text('Datumi i vremena ne mogu biti jednaki.'),
+    //           action: SnackBarAction(
+    //             label: 'Undo',
+    //             onPressed: () {},
+    //           ),
+    //         );
+    //         Scaffold.of(context).showSnackBar(snackBar);
+    //         onceToast = 1;
+    //         Timer(Duration(seconds: 2), () {
+    //           onceToast = 0;
+    //         });
+    //       }
+    //     } else {
+    //       print('Validacija ispravna');
+    //       if (onceBtnPressed == 0) {
+    //         print('btn kreiraj');
+    //         onSave();
 
-            onceBtnPressed = 1;
-          }
-        }
-      } else if (selectedDateD
-          .isBefore(DateTime(now.year, now.month, now.day))) {
-        print('Datum dolaska ne može biti manji od današnjeg datuma.');
-        if (onceToast == 0) {
-          final snackBar = SnackBar(
-            duration: Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-            content:
-                Text('Datum dolaska ne može biti manji od današnjeg datuma.'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {},
-            ),
-          );
-          Scaffold.of(context).showSnackBar(snackBar);
-          onceToast = 1;
-          Timer(Duration(seconds: 2), () {
-            onceToast = 0;
-          });
-        }
-      } else if (selectedDateD
-          .isAtSameMomentAs(DateTime(now.year, now.month, now.day))) {
-        if (DateFormat.Hm()
-                .format(t1)
-                .compareTo(DateFormat.Hm().format(DateTime.now())) <
-            0) {
-          print(
-              'Vrijeme dolaska ne može biti manji od trenutnog vremena, ako je datum dolaska jednako današnjem datumu.');
-          if (onceToast == 0) {
-            final snackBar = SnackBar(
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-              content: Text(
-                  'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () {},
-              ),
-            );
-            Scaffold.of(context).showSnackBar(snackBar);
-            onceToast = 1;
-            Timer(Duration(seconds: 2), () {
-              onceToast = 0;
-            });
-          }
-        } else if (DateFormat.Hm()
-                .format(t1)
-                .compareTo(DateFormat.Hm().format(DateTime.now())) ==
-            0) {
-          print(
-              'Vrijeme dolaska ne može biti jednako trenutnom vremenu, ako je datum dolaska jednak današnjem datumu.');
-          if (onceToast == 0) {
-            final snackBar = SnackBar(
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
-              content: Text(
-                  'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () {},
-              ),
-            );
-            Scaffold.of(context).showSnackBar(snackBar);
-            onceToast = 1;
-            Timer(Duration(seconds: 2), () {
-              onceToast = 0;
-            });
-          }
-        } else {
-          print('Validacija ispravna');
-          if (onceBtnPressed == 0) {
-            print('btn kreiraj');
-            onSave();
+    //         onceBtnPressed = 1;
+    //       }
+    //     }
+    //   } else if (selectedDateD
+    //       .isBefore(DateTime(now.year, now.month, now.day))) {
+    //     print('Datum dolaska ne može biti manji od današnjeg datuma.');
+    //     if (onceToast == 0) {
+    //       final snackBar = SnackBar(
+    //         duration: Duration(seconds: 2),
+    //         behavior: SnackBarBehavior.floating,
+    //         backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //         content:
+    //             Text('Datum dolaska ne može biti manji od današnjeg datuma.'),
+    //         action: SnackBarAction(
+    //           label: 'Undo',
+    //           onPressed: () {},
+    //         ),
+    //       );
+    //       Scaffold.of(context).showSnackBar(snackBar);
+    //       onceToast = 1;
+    //       Timer(Duration(seconds: 2), () {
+    //         onceToast = 0;
+    //       });
+    //     }
+    //   } else if (selectedDateD
+    //       .isAtSameMomentAs(DateTime(now.year, now.month, now.day))) {
+    //     if (DateFormat.Hm()
+    //             .format(t1)
+    //             .compareTo(DateFormat.Hm().format(DateTime.now())) <
+    //         0) {
+    //       print(
+    //           'Vrijeme dolaska ne može biti manji od trenutnog vremena, ako je datum dolaska jednako današnjem datumu.');
+    //       if (onceToast == 0) {
+    //         final snackBar = SnackBar(
+    //           duration: Duration(seconds: 2),
+    //           behavior: SnackBarBehavior.floating,
+    //           backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //           content: Text(
+    //               'Datum dolaska je jednak današnjem datumu, ali vrijeme dolaska ne može biti manje od trenutnog vremena.'),
+    //           action: SnackBarAction(
+    //             label: 'Undo',
+    //             onPressed: () {},
+    //           ),
+    //         );
+    //         Scaffold.of(context).showSnackBar(snackBar);
+    //         onceToast = 1;
+    //         Timer(Duration(seconds: 2), () {
+    //           onceToast = 0;
+    //         });
+    //       }
+    //     } else if (DateFormat.Hm()
+    //             .format(t1)
+    //             .compareTo(DateFormat.Hm().format(DateTime.now())) ==
+    //         0) {
+    //       print(
+    //           'Vrijeme dolaska ne može biti jednako trenutnom vremenu, ako je datum dolaska jednak današnjem datumu.');
+    //       if (onceToast == 0) {
+    //         final snackBar = SnackBar(
+    //           duration: Duration(seconds: 2),
+    //           behavior: SnackBarBehavior.floating,
+    //           backgroundColor: Color.fromRGBO(28, 28, 28, 1.0),
+    //           content: Text(
+    //               'Datum dolaska i vrijeme dolaska ne mogu biti jednaki današnjem datumu i trenutnom vremenu.'),
+    //           action: SnackBarAction(
+    //             label: 'Undo',
+    //             onPressed: () {},
+    //           ),
+    //         );
+    //         Scaffold.of(context).showSnackBar(snackBar);
+    //         onceToast = 1;
+    //         Timer(Duration(seconds: 2), () {
+    //           onceToast = 0;
+    //         });
+    //       }
+    //     } else {
+    //       print('Validacija ispravna');
+    //       if (onceBtnPressed == 0) {
+    //         print('btn kreiraj');
+    //         onSave();
 
-            onceBtnPressed = 1;
-          }
-        }
-      } else {
-        print('Validacija ispravna');
-        if (onceBtnPressed == 0) {
-          print('btn kreiraj');
-          onSave();
+    //         onceBtnPressed = 1;
+    //       }
+    //     }
+    //   } else {
+    //     print('Validacija ispravna');
+    //     if (onceBtnPressed == 0) {
+    //       print('btn kreiraj');
+    //       onSave();
 
-          onceBtnPressed = 1;
-        }
-      }
-    }
+    //       onceBtnPressed = 1;
+    //     }
+    //   }
+    // }
 
     /// RESPONSIVE
     ///
@@ -504,12 +504,12 @@ _textController.addListener((){
       allowFontScaling: true,
     )..init(context);
 
-    TextEditingController controllerAvail =
-        TextEditingController(text: widget.post.data['availability']);
+    // TextEditingController controllerAvail =
+    //     TextEditingController(text: widget.post.data['availability']);
 
     ///maska za tone  0.0
-    var controller = new MaskedTextController(
-        mask: '0.0', text: widget.post.data['capacity']);
+    // var controller = new MaskedTextController(
+    //     mask: '0.0', text: widget.post.data['capacity']);
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -1097,6 +1097,7 @@ _textController.addListener((){
                                     borderSide: BorderSide(
                                         color: Color.fromRGBO(0, 0, 0, 0.12))),
                                 labelText: 'Kapacitet u tonama',
+                                 hintText: '1.5',
                                 labelStyle: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.5)),
                                 hasFloatingPlaceholder: true,
@@ -1308,7 +1309,7 @@ _textController.addListener((){
                                             });
                                           }
                                         }else{
-                                        validateDatesAndTimes(context);
+                                       // validateDatesAndTimes(context);
                                         }
                                       }),
                           ),
@@ -1457,7 +1458,29 @@ _textController.addListener((){
     areFieldsEmpty();
     FocusScope.of(context).requestFocus(focusGoods);
   }
+
+  updateData(DocumentSnapshot doc) async {
+    await db.collection('Rute').document(doc.documentID).updateData({
+      'availability': '$percentageVar',
+      'capacity': '$capacityVar',
+      'ending_destination': '$endingDestination',
+      'starting_destination': '$startingDestination',
+      // 'interdestination': '$listOfInterdestinations',
+      'arrival_date': '$formatted2',
+      'arrival_time': '$t11',
+      'departure_time': '$t22',
+      'departure_date': '$formatted',
+      'dimensions': '$dimensionsVar',
+      'goods': '$goodsVar',
+      'vehicle': '$vehicleVar',
+      'user_id': '$userID',
+      'timestamp': '$dateOfSubmit',
+    });
+    print('Update uspjesan');
+  }
 }
+
+
 
 /// klasa vozila za dropdownlistu
 class Vehicle {
