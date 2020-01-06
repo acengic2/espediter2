@@ -999,6 +999,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     borderSide: BorderSide(
                                         color: Color.fromRGBO(0, 0, 0, 0.12))),
                                 labelText: 'Popunjenost u procentima',
+                                hintText: '0 - 100',
                                 labelStyle: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.5)),
                                 hasFloatingPlaceholder: true,
@@ -1040,6 +1041,7 @@ class _CreateRouteScreenPageState extends State<CreateRouteScreenPage> {
                                     borderSide: BorderSide(
                                         color: Color.fromRGBO(0, 0, 0, 0.12))),
                                 labelText: 'Kapacitet u tonama',
+                                hintText: '1.5',
                                 labelStyle: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.5)),
                                 hasFloatingPlaceholder: true,
