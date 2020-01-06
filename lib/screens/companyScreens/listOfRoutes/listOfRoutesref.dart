@@ -5,8 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spediter/screens/companyScreens/createRoute/editRoutes.dart';
-import 'package:spediter/screens/companyScreens/listOfRoutes/components/bottomAppBar.dart';
-import 'package:spediter/screens/companyScreens/listOfRoutes/components/floatingActionButton.dart';
+
 
 
 void main() => runApp(ListOfRoutesRef());
@@ -96,7 +95,8 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
-                      shrinkWrap: true,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       /// DATUM
@@ -313,25 +313,6 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
           
           
           )]);
-
-
-
-          
-    //     ),
-
-               
-    //     ///BottomNavigationBar
-    //     ///
-    //     ///u BottomNavigationBaru imamo ikonicu kompanije
-    //     ///info ikonicu
-    //     ///i + btn na kojem dodajemo novu rutu i koji nas vodi na [CreateRoutes]
-    //     bottomNavigationBar: BottomAppBar1(),
-    //     floatingActionButton: FloatingActionButton1(),
-    //     floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
- 
-
-    //   ),
-    // );
   }
 
 

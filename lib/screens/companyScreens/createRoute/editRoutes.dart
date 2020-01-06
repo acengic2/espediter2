@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:responsive_container/responsive_container.dart';
 import 'package:spediter/screens/companyScreens/createRoute/form.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutesref.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/listofRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/noRoutes.dart';
 
 import 'package:spediter/utils/screenUtils.dart';
@@ -32,6 +34,9 @@ void main() => runApp(EditRoute());
 const blueColor = Color.fromRGBO(3, 54, 255, 1);
 const textColorGray80 = Color.fromRGBO(0, 0, 0, 0.8);
 const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
+
+
+var  _textController = TextEditingController();
 
 // instanca na NoRoutes screen
 NoRoutes noRoutes = new NoRoutes();
@@ -91,7 +96,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   /// lista medjudestinacija
   List<InterdestinationForm> interdestinations = [];
   final DocumentSnapshot post;
-  final String userID;
+  String userID;
 
   _EditRouteScreenPageState({this.post,this.userID});
 
@@ -201,17 +206,17 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   ///
   /// ulazimo u [Auth] dio firebase i na osnovu toga izvlacimo sve info o user u nasem slucaju kompaniji
   /// nakon cega dohvatamo kolekciju [LoggedUsers] i uzimamo [user.uid] i spremamo ga u varijablu [userID]
-  // getUserid() async {
-  //   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //   final FirebaseUser user = await _auth.currentUser();
+  getUserid() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
 
-  //   Firestore.instance
-  //       .collection('LoggedUsers')
-  //       .document(user.uid)
-  //       .snapshots()
-  //       .toString();
-  //   userID = user.uid;
-  // }
+    Firestore.instance
+        .collection('LoggedUsers')
+        .document(user.uid)
+        .snapshots()
+        .toString();
+    userID = user.uid;
+  }
 
   /// bool f-ja koju smo ubacili u [BackButtonInterceptor], koja mora vratiti true ili false.
   /// u kojoj na klik back btn-a
@@ -222,7 +227,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID,)));
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID,)));
       } else {
         print('EMPTU');
 
@@ -247,6 +252,14 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
     BackButtonInterceptor.add(myInterceptor);
 
     populateTheVariables();
+
+_textController.addListener((){
+            //here you have the changes of your textfield
+         //   print("value: ${_textController.text}");
+            //use setState to rebuild the widget
+            setState(() {
+                    });
+        });
   }
 
   populateTheVariables() {
@@ -268,6 +281,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
+    _textController.dispose();
   }
 
   /// lista vozila
@@ -513,7 +527,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                 imaliRuta = true;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID,)),
+                  MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID,)),
                 );
               } else {
                 print('EMPTU');
@@ -1328,10 +1342,15 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  // ubacujemo u FinishedRoutes
+                                  
+                                  if(onceBtnPressed ==0){
+                                    // ubacujemo u FinishedRoutes
                                   finishedData();
                                   // brisemo iz Rute
                                   deleteData(widget.post);
+                                  onceBtnPressed =1;
+                                  }
+                                
                                 }),
                           ),
                         ),
@@ -1394,7 +1413,7 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       if (docs.documents.isNotEmpty) {
         print('NOT EMPRY');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ListOfRoutesRef(userID: userID)));
+            .push(MaterialPageRoute(builder: (context) => ListOfRoutes(userID: userID)));
       } else {
         print('EMPTU');
 

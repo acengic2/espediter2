@@ -4,11 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:spediter/screens/companyScreens/createRoute/editRoutes.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/companyRoutes.dart';
+import 'package:spediter/screens/singIn/components/form.dart';
 
-
-void main() => runApp(ListOfFinishedRoutes());
-
-String userID;
 String capacityString;
 
 /// varijable
@@ -27,8 +25,11 @@ final middleSection = new Container();
 final rightSection = new Container();
 
 class ListOfFinishedRoutes extends StatefulWidget {
+   String userID;
+ListOfFinishedRoutes({ this.userID});
+
   @override
-  _ListOfFinishedRoutesState createState() => _ListOfFinishedRoutesState();
+  _ListOfFinishedRoutesState createState() => _ListOfFinishedRoutesState(userID: userID);
 }
 
 getUserid() async {
@@ -44,9 +45,13 @@ getUserid() async {
 }
 
 class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
+  String userID;
+  _ListOfFinishedRoutesState({this.userID});
   @override
   void initState() {
+    getUserid();
     super.initState();
+
   }
 
   Future getPosts(String id) async {
@@ -76,7 +81,7 @@ class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
           
         ),  Container(
             child: FutureBuilder(
-              future: getPosts(userID),
+              future: getPosts(id),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -163,10 +168,7 @@ class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
 
                      
                       return GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditRoute(post: snapshot.data[index]))),
+                        
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -236,11 +238,6 @@ class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
           )]);
 
 
-    //     ),
- 
-
-    //   ),
-    // );
   }
 
 

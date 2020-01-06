@@ -1,13 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/components/bottomAppBar.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/components/divider.dart';
+import 'package:spediter/screens/companyScreens/listOfRoutes/components/floatingActionButton.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/listOfFinishedRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutesref.dart';
 
 class ListOfRoutes extends StatefulWidget {
-  String userID;
-  ListOfRoutes({this.userID});
+  final String userID;
+  ListOfRoutes({Key key,  this.userID}) : super(key: key);
 
   @override
   _ListOfRoutesState createState() => _ListOfRoutesState(userID: userID);
@@ -27,6 +29,8 @@ getUserid() async {
 
 class _ListOfRoutesState extends State<ListOfRoutes> {
   String userID;
+  String userIDF;
+
   _ListOfRoutesState({this.userID});
 
   @override
@@ -54,16 +58,27 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
                 delegate: SliverChildListDelegate([
                   Column(
                     children: <Widget>[
-                      ListOfRoutesRef(),
+
+                      ListOfRoutesRef(userID: userID),
                       Divider1(),
-                      ListOfFinishedRoutes()
+                      ListOfFinishedRoutes(userID: userID),
+
                       
                     ],
                   )
                 ]),
-              )
+                
+              ),
+             
             ],
+            
+            
           ),
-        ));
+          bottomNavigationBar: BottomAppBar1(),
+      floatingActionButton: FloatingActionButton1(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          
+        )
+        );
   }
 }
