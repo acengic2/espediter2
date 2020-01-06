@@ -112,16 +112,36 @@ class _ShowLoading extends State<ShowLoading> {
     checkForRole();
     CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
       if (docs.documents.isNotEmpty) {
+         
         print('NOT EMPTY');
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ListOfRoutes(
                   userID: user.uid,
                 )));
-      } else {
+      } 
+      else{
         print('EMPTY');
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => NoRoutes()));
       }
+
     });
+CompanyRutes().getCompanyFinishedRoutes(userID).then((QuerySnapshot docs) {
+      if (docs.documents.isNotEmpty) {
+         
+        print('NOT EMPTY');
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ListOfRoutes(
+                  userID: user.uid,
+                )));
+      } 
+      else{
+        print('EMPTY');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+      }
+
+    });
+
   }
 }

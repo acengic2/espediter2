@@ -9,7 +9,7 @@ import 'package:spediter/screens/companyScreens/listOfRoutes/listOfRoutesref.dar
 
 class ListOfRoutes extends StatefulWidget {
   final String userID;
-  ListOfRoutes({Key key,  this.userID}) : super(key: key);
+  ListOfRoutes({Key key, this.userID}) : super(key: key);
 
   @override
   _ListOfRoutesState createState() => _ListOfRoutesState(userID: userID);
@@ -53,32 +53,22 @@ class _ListOfRoutesState extends State<ListOfRoutes> {
         home: Scaffold(
           body: CustomScrollView(
             slivers: <Widget>[
-              
               SliverList(
                 delegate: SliverChildListDelegate([
                   Column(
                     children: <Widget>[
-
                       ListOfRoutesRef(userID: userID),
                       Divider1(),
                       ListOfFinishedRoutes(userID: userID),
-
-                      
                     ],
                   )
                 ]),
-                
               ),
-             
             ],
-            
-            
           ),
           bottomNavigationBar: BottomAppBar1(),
-      floatingActionButton: FloatingActionButton1(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          
-        )
-        );
+          floatingActionButton: FloatingActionButton1(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        ));
   }
 }

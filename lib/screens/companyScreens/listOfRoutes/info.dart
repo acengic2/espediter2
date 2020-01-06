@@ -70,6 +70,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           /// u appBaru kreiramo X iconicu na osnovu koje izlazimo iz [CreateRoutes] i idemo na [ListOfRoutes]
           backgroundColor: Colors.white,
@@ -102,7 +103,7 @@ class _InfoPageState extends State<InfoPage> {
               style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))),
         ),
         body:
-
+          
             /// GestureDetector na osnovu kojeg zavaramo tastaturu na klik izvan njenog prostora
             Builder(
                 builder: (context) => new GestureDetector(
