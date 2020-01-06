@@ -1,4 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:spediter/routes/companyInfo.dart';
+import 'package:spediter/routes/info.dart';
 import './editRoutes.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,8 +38,8 @@ class ListOfRoutesRef extends StatefulWidget {
 }
 
 getUserid() async {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseUser user = await _auth.currentUser();
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final FirebaseUser user = await _auth.currentUser();
 
 //   Firestore.instance
 //       .collection('LoggedUsers')
@@ -317,7 +320,14 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
             width: 360.0,
             child: new Row(
               children: <Widget>[
-                Container(
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CompanyInfo(userID: userID))
+                      );
+                  },
+                  child: Container(
                   width: 20,
                   height: 20,
                   margin: EdgeInsets.only(left: 16.0),
@@ -329,13 +339,14 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                             "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png")),
                   ),
                 ),
+                ),
                 Container(
                   margin: EdgeInsets.only(left: 4.0),
                   child: IconButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CreateRoute()),
+                        MaterialPageRoute(builder: (context) => Info())
                       );
                     },
                     icon: Icon(Icons.info_outline),

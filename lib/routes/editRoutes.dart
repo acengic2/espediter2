@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -489,12 +488,12 @@ class _EditRouteScreenPageState extends State<EditRouteScreenPage> {
       allowFontScaling: true,
     )..init(context);
 
-    TextEditingController controllerAvail =
-        TextEditingController(text: widget.post.data['availability']);
+    // TextEditingController controllerAvail =
+    //     TextEditingController(text: widget.post.data['availability']);
 
     ///maska za tone  0.0
-    var controller = new MaskedTextController(
-        mask: '0.0', text: widget.post.data['capacity']);
+    // var controller = new MaskedTextController(
+    //     mask: '0.0', text: widget.post.data['capacity']);
 
     return Scaffold(
       appBar: AppBar(
