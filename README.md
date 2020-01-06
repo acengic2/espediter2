@@ -11,10 +11,10 @@ Get the project files, open the project from the IDE. After the device/emulator 
 		flutter run
 After some time, the application will be built on the device/emulator connected and it will be usasble on the device.
 # Changes
-•	V1 – Sprint 1<br/>
-	o	User Story 1 – Log In Screen done, but having a lot of both, functional and UI bugs<br/>
-	o	User Story 2 – Create Route Screen having many bugs<br/>
-•	V2 – Sprint 2<br/>
+**•	V1 – Sprint 1<br/>**
+        o	User Story 1 – Log In Screen done, but having a lot of both, functional and UI bugs<br/>
+        o	User Story 2 – Create Route Screen having many bugs<br/>
+**•	V2 – Sprint 2<br/>**
 	o	User Story 1 – Log In Screen bugs resolved:<br/>
 		-	Checking internet connection and showing No Internet Connection Screen if there is no connection<br/>
 		-	Focus and error text color of hint text<br/>
@@ -40,7 +40,7 @@ After some time, the application will be built on the device/emulator connected 
 		-	Enable/disable 'KREIRAJ RUTU' button<br/>
 		-	Scroll on Create Route Screen<br/>
 		-	Writing interdestinations into database<br/>
-•	V3 – Sprint 3<br/>
+**•	V3 – Sprint 3<br/>**
 	o	User Story 1 – Create Route Screen bugs resolved:<br/>
 	o	User Story 2 – List of Routes Screen bugs resolved:<br/>
 	o	User Story 3 – Edit/Finish active route and list finished routes:<br/>
