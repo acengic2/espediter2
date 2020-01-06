@@ -153,7 +153,6 @@ class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
                                     new TextSpan(
                                       text: arrivalDate,
                                       style: new TextStyle(
-                                        fontWeight: FontWeight.bold,
                                         fontSize: 14.0,
                                         color: Colors.black.withOpacity(1.0),
                                         fontFamily: "Roboto",
