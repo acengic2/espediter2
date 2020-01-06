@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './createRouteScreen.dart';
+import 'companyInfo.dart';
 
 void main() => runApp(NoRoutes());
 
@@ -10,6 +11,8 @@ const textColorGray60 = Color.fromRGBO(0, 0, 0, 0.6);
 const noRoutesString = "Trenutno nemate nikakvih ruta. Molim vas kreirajte rutu.";
 
 class NoRoutes extends StatelessWidget {
+  String userID;
+  NoRoutes({this.userID});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -25,15 +28,18 @@ class NoRoutes extends StatelessWidget {
 }
 
 class NoRoutesScreenPage extends StatefulWidget {
-  NoRoutesScreenPage({Key key, this.title}) : super(key: key);
+  NoRoutesScreenPage({Key key, this.title, this.userID}) : super(key: key);
 
   final String title;
+  final String userID;
 
   @override
-  _NoRoutesScreenPageState createState() => _NoRoutesScreenPageState();
+  _NoRoutesScreenPageState createState() => _NoRoutesScreenPageState(userID: userID);
 }
 
 class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
+  String userID;
+  _NoRoutesScreenPageState({this.userID});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +116,7 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                 child: IconButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CreateRoute()));
+                        MaterialPageRoute(builder: (context) => CompanyInfo(userID: userID,)));
                   },
                   icon: Icon(Icons.info_outline),
                 ),
