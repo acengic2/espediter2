@@ -23,8 +23,8 @@ class BottomAppBar1 extends StatelessWidget {
                         builder: (context) => CompanyInfo(userID: userID)));
               },
               child: Container(
-                  width: 20,
-                  height: 20,
+                  width: 30,
+                  height: 30,
                   margin: EdgeInsets.only(left: 16.0),
                   decoration: new BoxDecoration(
                     shape: BoxShape.circle,
@@ -35,15 +35,19 @@ class BottomAppBar1 extends StatelessWidget {
                   )),
             ),
             Container(
-              margin: EdgeInsets.only(left: 4.0),
+              margin: EdgeInsets.only(left: 4.0, bottom: 0),
               child: IconButton(
+                iconSize: 35,
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Info()),
                   );
                 },
-                icon: Icon(Icons.info_outline),
+                icon: Icon(
+                    
+                  Icons.info_outline,
+                ),
               ),
             ),
           ],
