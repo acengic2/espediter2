@@ -1,10 +1,10 @@
 # e-Špediter
 e-Špediter is a mobile application that allows interaction between freight companies and others who need services provided by freight companies. Freight comapnies are able to share information about thier companies and routes they take. Other users are able to search routes they need and take contact info of the company they want to interact with.
 # Prerequisites
-In order to run the application on emulator or on device (so far, it is runnable from IDE only), following is required:
-•	Download Git and run Git Bash
-•	Download Flutter and run flutter_console.bot
-•	Download Andorid Studio for emulator
+In order to run the application on emulator or on device (so far, it is runnable from IDE only), following is required:<br/>
+•	Download Git and run Git Bash<br/>
+•	Download Flutter and run flutter_console.bot<br/>
+•	Download Andorid Studio for emulator<br/>
 •	Copy path of bin folder (from Flutter installation folder) into system paths
 # Installing
 Get the project files, open the project from the IDE. After the device/emulator is connected, in order to run the application, type in terminal:
