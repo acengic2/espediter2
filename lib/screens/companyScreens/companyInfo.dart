@@ -215,6 +215,8 @@ class _CompanyInfoPageState extends State<CompanyInfoPage> {
     )..init(context);
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
+
       appBar: AppBar(
         /// u appBaru kreiramo X iconicu na osnovu koje izlazimo iz [CreateRoutes] i idemo na [ListOfRoutes]
         backgroundColor: Colors.white,
