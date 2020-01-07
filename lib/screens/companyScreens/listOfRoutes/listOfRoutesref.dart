@@ -86,7 +86,7 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
           return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
+          padding: EdgeInsets.only(top: 5, bottom: 8.0),
           
         ),
           Container(
@@ -205,7 +205,7 @@ class _ListOfRoutesRefState extends State<ListOfRoutesRef> {
                               margin: EdgeInsets.only(top: 9),
                               child: LinearPercentIndicator(
                                 padding: EdgeInsets.only(left: 1),
-                                width: ScreenUtil.instance.setWidth(141.0),
+                                width: ScreenUtil.instance.setWidth(137.0),
                                 lineHeight: 30.0,
                                 percent: (double.parse(availability)) / 100 ,
                                 center: RichText(

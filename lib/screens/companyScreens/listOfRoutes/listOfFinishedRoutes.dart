@@ -76,10 +76,7 @@ class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
 
     return Column(
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 8.0),
-          
-        ),  Container(
+        Container(
             child: FutureBuilder(
               future: getPosts(id),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -167,7 +164,6 @@ class _ListOfFinishedRoutesState extends State<ListOfFinishedRoutes> {
 
                      
                       return GestureDetector(
-                        
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),

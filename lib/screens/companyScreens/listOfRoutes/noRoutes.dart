@@ -62,7 +62,6 @@ class _NoRoutesScreenPageState extends State<NoRoutesScreenPage> {
                       color: textColorGray60),
                 ),
               ),
-            
             ]),
           ),
         ),

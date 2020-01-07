@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:spediter/screens/companyScreens/companyInfo.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/info.dart';
-import 'package:spediter/screens/singIn/components/form.dart';
+
 
 class BottomAppBar1 extends StatelessWidget {
+ 
+  final String userID;
+  BottomAppBar1({this.userID});
+
   final NetworkImage image = new NetworkImage(
       "https://miro.medium.com/max/3150/1*K9eLa_xSyEdjP7Q13Bx9ng.png");
 
@@ -41,7 +45,7 @@ class BottomAppBar1 extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Info()),
+                    MaterialPageRoute(builder: (context) => Info(userID: userID)),
                   );
                 },
                 icon: Icon(

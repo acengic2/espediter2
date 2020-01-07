@@ -8,7 +8,6 @@ import 'package:spediter/screens/companyScreens/listOfRoutes/listofRoutes.dart';
 import 'package:spediter/screens/companyScreens/listOfRoutes/noRoutes.dart';
 import 'package:spediter/screens/loadingScreens/components/loadingComponent.dart';
 
-
 void main() => runApp(ShowLoading());
 
 class ShowLoading extends StatefulWidget {
@@ -46,6 +45,7 @@ class _ShowLoading extends State<ShowLoading> {
   String email;
   final FirebaseUser user;
   String userID;
+  String role;
 
   _ShowLoading({this.user, this.email, this.userID});
 
@@ -73,12 +73,13 @@ class _ShowLoading extends State<ShowLoading> {
   checkForID() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
-    Firestore.instance
+    
+    usID = user.uid;
+    role = Firestore.instance
         .collection('LoggedUsers')
         .document(user.uid)
         .snapshots()
         .toString();
-    usID = user.uid;
   }
 
   /// metoda koja provjerava rolu, odnosno ulogu logovanog user-a
@@ -95,12 +96,44 @@ class _ShowLoading extends State<ShowLoading> {
         .where('role', isEqualTo: 'company')
         .limit(1)
         .getDocuments();
-  }
+  } 
 
 // Future f-ja koja se odvija na load ovog screena
 //vraca Timer u trajanju od 2 sekunde, nakon cega se aktivira f-ja [onDoneLoading]
   Future<Timer> loadData() async {
     return new Timer(Duration(seconds: 2), onDoneLoading);
+  }
+
+  chekingEverything() {
+    checkForRole();
+   
+    
+    CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
+      if (docs.documents.isNotEmpty) {
+        print('NOT EMPTY');
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ListOfRoutes(
+                  userID: user.uid,
+                )));
+      } else {
+        print('EMPTY');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+      }
+    });
+    // CompanyRutes().getCompanyFinishedRoutes(userID).then((QuerySnapshot docs) {
+    //   if (docs.documents.isNotEmpty) {
+    //     print('NOT EMPTY');
+    //     Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => ListOfRoutes(
+    //               userID: user.uid,
+    //             )));
+    //   } else {
+    //     print('EMPTY');
+    //     Navigator.of(context)
+    //         .push(MaterialPageRoute(builder: (context) => NoRoutes()));
+    //   }
+    // });
   }
 
   /// f-ja [onDoneLoading()] koja se aktivira nakon isteka Timera
@@ -109,39 +142,6 @@ class _ShowLoading extends State<ShowLoading> {
   /// nakon cega na osnovu te provjere redirektamo [na osnovu da li ja kompanija ima ruta ili ne ]
   /// na [NoRoutes] ili na [ListOfRoutes]
   onDoneLoading() async {
-    checkForRole();
-    CompanyRutes().getCompanyRoutes(userID).then((QuerySnapshot docs) {
-      if (docs.documents.isNotEmpty) {
-         
-        print('NOT EMPTY');
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutes(
-                  userID: user.uid,
-                )));
-      } 
-      else{
-        print('EMPTY');
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
-      }
-
-    });
-CompanyRutes().getCompanyFinishedRoutes(userID).then((QuerySnapshot docs) {
-      if (docs.documents.isNotEmpty) {
-         
-        print('NOT EMPTY');
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListOfRoutes(
-                  userID: user.uid,
-                )));
-      } 
-      else{
-        print('EMPTY');
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => NoRoutes()));
-      }
-
-    });
-
+    chekingEverything();
   }
 }
